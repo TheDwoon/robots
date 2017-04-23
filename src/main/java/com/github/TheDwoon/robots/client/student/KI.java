@@ -9,8 +9,8 @@ public class KI {
 		this.robot = robot;
 	}
 
-	public void doTurn() {
-		robot.turnLeft();
-		robot.getWeaponModule().shoot();
-	}
+	// public Action doTurn() {
+	// robot.turnLeft();
+	// robot.getWeaponModule().shoot();
+	// }
 }
