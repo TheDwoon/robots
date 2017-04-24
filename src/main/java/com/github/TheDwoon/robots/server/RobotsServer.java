@@ -4,26 +4,27 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
+import com.esotericsoftware.kryonet.rmi.RemoteObject;
 import com.github.TheDwoon.robots.client.UpdateHandler;
 import com.github.TheDwoon.robots.game.Board;
+import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.network.KryoRegistry;
 
 public final class RobotsServer {
 	public static void main(final String[] args) throws IOException {
 		System.out.println("Server!");
 
+		KryoNetLoggerProxy.setAsKryoLogger();
+
 		RobotsServer robotsServer = new RobotsServer();
 
 		Server server = new Server();
-		Kryo kryo = server.getKryo();
-
-		ObjectSpace.registerClasses(kryo);
-		KryoRegistry.register(kryo);
+		KryoRegistry.register(server.getKryo());
 		ObjectSpace objectSpace = new ObjectSpace();
 
 		server.addListener(new Listener() {
@@ -34,11 +35,18 @@ public final class RobotsServer {
 					ObjectSpace.getRemoteObject(connection, 1, UpdateHandler.class);
 				robotsServer.addUpdateHandler(updateHandler);
 
-
 				// TODO (sigmarw, 23.04.2017): remove test
-				new Thread(() -> updateHandler.handleUpdate(new int[] {})).start();
-				// updateHandler.handleUpdate(new Field[] { new Field(1, 1, null, true, null) });
-				System.out.println("Client connected!");
+				new Thread(() -> {
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					((RemoteObject) updateHandler).setTransmitReturnValue(false);
+					updateHandler.handleUpdate(new Field[] {});
+					// updateHandler.handleUpdate(new Field[] { new Field(1, 1, null, true, null)
+					// });
+				}).start();
 			}
 
 			@Override

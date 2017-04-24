@@ -1,4 +1,9 @@
 /.classpath
 /.settings
+/.factorypath
 /target
 /.project
+/.idea
+/*.iml
+/logs/
+/bin/
