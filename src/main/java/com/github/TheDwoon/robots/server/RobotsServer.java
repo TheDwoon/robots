@@ -55,7 +55,7 @@ public final class RobotsServer {
 			}
 		});
 		server.start();
-		server.bind(32005);
+		server.bind(32005, 32006);
 
 		while (true) {
 			try {

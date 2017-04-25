@@ -1,7 +1,11 @@
 package com.github.TheDwoon.robots.client;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.Arrays;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
@@ -11,6 +15,8 @@ import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.network.KryoRegistry;
 
 public final class RobotsClient {
+
+	private static final Logger log = LogManager.getLogger();
 
 	public static void main(final String[] args) throws IOException {
 		System.out.println("Client!");
@@ -27,7 +33,13 @@ public final class RobotsClient {
 		objectSpace.addConnection(client);
 
 		client.start();
-		client.connect(5000, "localhost", 32005);
+
+		InetAddress serverAddress = client.discoverHost(32006, 5000);
+		if (serverAddress == null) {
+			log.debug("Falling back on predefined server host");
+			serverAddress = InetAddress.getLoopbackAddress();
+		}
+		client.connect(5000, serverAddress, 32005);
 
 		try {
 			Thread.sleep(10000);
