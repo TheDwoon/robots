@@ -33,8 +33,8 @@ public final class RobotsClient {
 
 		InetAddress serverAddress = client.discoverHost(32006, 5000);
 		if (serverAddress == null) {
-			log.debug("Falling back on predefined server host");
 			serverAddress = InetAddress.getLoopbackAddress();
+			log.debug("Server discovery failed. Falling back to " + serverAddress.getHostName());
 		}
 		client.connect(5000, serverAddress, 32005);
 
@@ -58,6 +58,7 @@ public final class RobotsClient {
 		@Override
 		public void handleUpdates(final Field[] updates) {
 			board.update(updates);
+			log.debug("Board update. New board state is:%n%s", board);
 		}
 
 	}

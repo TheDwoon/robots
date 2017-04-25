@@ -55,4 +55,10 @@ public class Field {
 		return visitable;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("[%c/%c]", visitor != null ? visitor.getType().charAt(0) : ' ',
+			item != null ? item.getType().charAt(0) : ' ');
+	}
+
 }

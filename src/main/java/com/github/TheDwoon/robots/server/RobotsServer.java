@@ -21,6 +21,10 @@ public final class RobotsServer {
 
 		RobotsServer robotsServer = new RobotsServer();
 
+		Server discoveryServer = new Server();
+		discoveryServer.start();
+		discoveryServer.bind(32007, 32006);
+
 		Server server = new Server();
 		KryoRegistry.register(server.getKryo());
 		ObjectSpace objectSpace = new ObjectSpace();
@@ -42,8 +46,7 @@ public final class RobotsServer {
 					}
 					((RemoteObject) updateHandler).setTransmitReturnValue(false);
 					updateHandler.handleUpdates(new Field[] {});
-					// updateHandler.handleUpdate(new Field[] { new Field(1, 1, null, true, null)
-					// });
+					updateHandler.handleUpdates(new Field[] { new Field(1, 1, null, true, null) });
 				}).start();
 			}
 
@@ -53,7 +56,7 @@ public final class RobotsServer {
 			}
 		});
 		server.start();
-		server.bind(32005, 32006);
+		server.bind(32005);
 
 		while (true) {
 			try {
@@ -63,6 +66,7 @@ public final class RobotsServer {
 				break;
 			}
 		}
+		discoveryServer.stop();
 		server.stop();
 	}
 

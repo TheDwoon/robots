@@ -7,4 +7,8 @@ public abstract class Item {
 		this.uuid = uuid;
 	}
 
+	public String getType() {
+		return getClass().getSimpleName();
+	}
+
 }

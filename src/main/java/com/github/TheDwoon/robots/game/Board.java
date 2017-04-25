@@ -25,4 +25,19 @@ public class Board {
 		}
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (Field[] row : fields) {
+			for (int y = 0; y < row.length; y++) {
+				sb.append(row[y]);
+				if (y < row.length - 1) {
+					sb.append(' ');
+				}
+			}
+			sb.append('\n');
+		}
+		return sb.toString();
+	}
+
 }
