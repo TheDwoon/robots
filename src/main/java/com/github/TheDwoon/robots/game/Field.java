@@ -1,5 +1,6 @@
 package com.github.TheDwoon.robots.game;
 
+import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
 
 public class Field {

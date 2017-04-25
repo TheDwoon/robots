@@ -1,6 +1,6 @@
 package com.github.TheDwoon.robots.client.student;
 
-import com.github.TheDwoon.robots.game.Robot;
+import com.github.TheDwoon.robots.game.entity.Robot;
 
 public class KI {
 	Robot robot;

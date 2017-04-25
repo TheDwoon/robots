@@ -1,0 +1,25 @@
+package com.github.TheDwoon.robots.game.entity;
+
+import com.github.TheDwoon.robots.game.Field;
+
+public abstract class Entity {
+
+	private Field position;
+
+	public Entity(final Field position) {
+		this.position = position;
+	}
+
+	public Field getPosition() {
+		return position;
+	}
+
+	// TODO: maybe not public?
+	public void setPosition(final Field position) {
+		this.position = position;
+	}
+
+	public String getType() {
+		return getClass().getSimpleName();
+	}
+}
