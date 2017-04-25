@@ -1,6 +1,6 @@
 package com.github.TheDwoon.robots.game;
 
-import com.github.TheDwoon.robots.game.entity.Robot;
+import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.items.Item;
 
 public class Field {
@@ -10,14 +10,14 @@ public class Field {
 
 	private Item item;
 	private final boolean visitable;
-	private Robot visitor;
+	private Entity visitor;
 
 	public Field(final int x, final int y, final boolean visitable) {
 		this(x, y, null, visitable, null);
 	}
 
 	public Field(final int x, final int y, final Item item, final boolean visitable,
-		final Robot visitor) {
+		final Entity visitor) {
 		this.x = x;
 		this.y = y;
 		this.item = item;
@@ -33,11 +33,13 @@ public class Field {
 		this.item = item;
 	}
 
-	public Robot getVisitor() {
+	public Entity getVisitor() {
 		return visitor;
 	}
 
-	public void setVisitor(final Robot visitor) {
+	public void setVisitor(final Entity visitor) {
+		// TODO (sigmarw, 25.04.2017): maybe add plausibility checks
+		visitor.setPosition(this);
 		this.visitor = visitor;
 	}
 

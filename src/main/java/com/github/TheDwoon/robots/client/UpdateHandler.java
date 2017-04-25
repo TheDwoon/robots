@@ -4,5 +4,5 @@ import com.github.TheDwoon.robots.game.Field;
 
 public interface UpdateHandler {
 
-	void handleUpdate(Field[] updatedFields);
+	void handleUpdates(Field[] updates);
 }

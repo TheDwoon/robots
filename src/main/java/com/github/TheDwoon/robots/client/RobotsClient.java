@@ -2,7 +2,6 @@ package com.github.TheDwoon.robots.client;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,8 +18,6 @@ public final class RobotsClient {
 	private static final Logger log = LogManager.getLogger();
 
 	public static void main(final String[] args) throws IOException {
-		System.out.println("Client!");
-
 		KryoNetLoggerProxy.setAsKryoLogger();
 
 		RobotsClient robotsClient = new RobotsClient();
@@ -59,9 +56,8 @@ public final class RobotsClient {
 	private class UpdateHandlerImpl implements UpdateHandler {
 
 		@Override
-		public void handleUpdate(final Field[] updatedFields) {
-			// TODO (sigmarw, 23.04.2017): remove dummy & implement logic
-			System.out.println("Got it!" + Arrays.toString(updatedFields));
+		public void handleUpdates(final Field[] updates) {
+			board.update(updates);
 		}
 
 	}

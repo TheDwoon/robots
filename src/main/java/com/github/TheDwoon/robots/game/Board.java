@@ -18,4 +18,11 @@ public class Board {
 		this.fields = fields;
 	}
 
+	public void update(final Field... updates) {
+		for (Field update : updates) {
+			// TODO (sigmarw, 25.04.2017): maybe really update the field's members
+			fields[update.getX()][update.getY()] = update;
+		}
+	}
+
 }

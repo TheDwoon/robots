@@ -14,7 +14,7 @@ public abstract class Entity {
 		return position;
 	}
 
-	// TODO: maybe not public?
+	// TODO (sigmarw, 25.04.2017): maybe not public?
 	public void setPosition(final Field position) {
 		this.position = position;
 	}

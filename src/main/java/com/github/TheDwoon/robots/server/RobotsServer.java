@@ -17,8 +17,6 @@ import com.github.TheDwoon.robots.network.KryoRegistry;
 
 public final class RobotsServer {
 	public static void main(final String[] args) throws IOException {
-		System.out.println("Server!");
-
 		KryoNetLoggerProxy.setAsKryoLogger();
 
 		RobotsServer robotsServer = new RobotsServer();
@@ -43,7 +41,7 @@ public final class RobotsServer {
 						e.printStackTrace();
 					}
 					((RemoteObject) updateHandler).setTransmitReturnValue(false);
-					updateHandler.handleUpdate(new Field[] {});
+					updateHandler.handleUpdates(new Field[] {});
 					// updateHandler.handleUpdate(new Field[] { new Field(1, 1, null, true, null)
 					// });
 				}).start();
