@@ -1,19 +1,23 @@
 package com.github.TheDwoon.robots.game.entity;
 
-import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.InventoryHolder;
 import com.github.TheDwoon.robots.game.items.weapons.Weapon;
 
-public class Robot extends Entity {
+public class Robot extends LivingEntity implements InventoryHolder {
+	private static final int MAX_HEALTH = 3;
+	
 	private final Inventory inventory;
 	private Weapon weapon;
 
-	public Robot(final Field position, final Inventory inventory, final Weapon weapon) {
-		super(position);
+	public Robot(int x, int y, final Inventory inventory, final Weapon weapon) {
+		super(x, y, MAX_HEALTH);
+		
 		this.inventory = inventory;
 		this.weapon = weapon;
 	}
 
+	@Override
 	public Inventory getInventory() {
 		return inventory;
 	}
@@ -42,4 +46,15 @@ public class Robot extends Entity {
 		// TODO: implement network
 	}
 
+	void lookDown() {
+		// TODO: implement network
+	}
+	
+	void lookLeft() {
+		// TODO: implement network
+	}
+	
+	void lookRight() {
+		// TODO: implement network
+	}
 }

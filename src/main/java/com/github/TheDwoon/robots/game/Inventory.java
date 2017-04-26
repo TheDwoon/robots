@@ -1,30 +1,22 @@
 package com.github.TheDwoon.robots.game;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
 
 import com.github.TheDwoon.robots.game.items.Item;
 
 public class Inventory {
 
-	private final int size;
-	private final List<Item> items;
+	private final Item[] items;
 
 	public Inventory(final int size) {
-		this.size = size;
-		items = new LinkedList<>();
+		this.items = new Item[size];
 	}
 
 	public Item[] getItems() {
-		return items.toArray(new Item[items.size()]);
+		return Arrays.copyOf(items, items.length);
 	}
 
 	public void addItem(final Item item) {
 		// TODO: implement network
 	}
-
-	public boolean contains(final Item item) {
-		return items.contains(item);
-	}
-
 }

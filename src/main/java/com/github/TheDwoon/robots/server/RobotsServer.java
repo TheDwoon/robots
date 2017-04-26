@@ -12,6 +12,7 @@ import com.esotericsoftware.kryonet.rmi.RemoteObject;
 import com.github.TheDwoon.robots.client.UpdateHandler;
 import com.github.TheDwoon.robots.game.Board;
 import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.game.Material;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.network.KryoRegistry;
 
@@ -46,7 +47,7 @@ public final class RobotsServer {
 					}
 					((RemoteObject) updateHandler).setTransmitReturnValue(false);
 					updateHandler.handleUpdates(new Field[] {});
-					updateHandler.handleUpdates(new Field[] { new Field(1, 1, null, true, null) });
+					updateHandler.handleUpdates(new Field[] { new Field(1, 1, Material.GRASS) });
 				}).start();
 			}
 
