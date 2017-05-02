@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="206.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <StackPane prefHeight="50.0" prefWidth="50.0">
+         <children>
+            <ImageView fx:id="robot" pickOnBounds="true" preserveRatio="true" />
+            <VBox alignment="BOTTOM_CENTER">
+               <children>
+                  <Label fx:id="robotName" text="Robot" wrapText="true">
+                     <font>
+                        <Font size="9.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+      <Separator orientation="VERTICAL" />
+      <GridPane fx:id="inventory" HBox.hgrow="ALWAYS">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="16.66" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="16.66" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="16.66" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="16.66" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="16.66" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="16.66" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints percentHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints percentHeight="50.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+   </children>
+</fx:root>
