@@ -10,7 +10,10 @@ public class Board {
 	private static final int DEFAULT_HEIGHT = 100;
 	private static final Material DEFAULT_MATERIAL = Material.GRASS;
 	private static final Material DEFAULT_BORDER = Material.VOID;
-
+	
+	private static volatile Long uuidCounter = new Long(1);
+	
+	private final long uuid;
 	private final List<Entity> entities;
 	private final Field[][] fields;
 		
@@ -29,14 +32,24 @@ public class Board {
 					fields[x][y] = new Field(x, y, DEFAULT_MATERIAL);
 			}
 		}
-
+		this.uuid = obtainUUID();
 	}
 
 	public Board(final Field[][] fields) {
 		this.entities = new ArrayList<>(64);
 		this.fields = fields;
+		this.uuid = obtainUUID();
 	}
 
+	private static long obtainUUID() {
+		long uuid = 0;		
+		synchronized (uuidCounter) {
+			uuid = uuidCounter++;
+		}
+		
+		return uuid;
+	}
+	
 	public void update(final Field... updates) {
 		for (Field update : updates) {
 			// TODO (danielw, 26.04.2017): send updates to client
@@ -44,6 +57,10 @@ public class Board {
 		}
 	}
 
+	public Field getField(int x, int y) {
+		return fields[x][y];
+	}
+	
 	public void spawnEntity(Entity entity, int x, int y) {
 		if (entity != null) {
 			entity.setPosition(x, y);
@@ -61,9 +78,9 @@ public class Board {
 		if (entity != null)
 			entities.remove(entity);
 	}
-	
-	public void removeEntity(long uuid) {
-		// TODO (danielw, 27.04.16): implement
+		
+	public final long getUUID() {
+		return uuid;
 	}
 	
 	@Override

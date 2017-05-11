@@ -21,6 +21,6 @@ public class KryoRegistry {
 		kryo.addDefaultSerializer(Throwable.class, new ThrowableSerializer());
 
 		kryo.register(UpdateHandler.class);
-		kryo.register(Field.class, new FieldSerializer<>(kryo, Field.class));
+		kryo.register(Field.class, new FieldSerializer<Field>(kryo, Field.class));
 	}
 }

@@ -45,7 +45,7 @@ public final class RobotsServer {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					((RemoteObject) updateHandler).setTransmitReturnValue(false);
+					//((RemoteObject) updateHandler).setTransmitReturnValue(false);
 					updateHandler.handleUpdates(new Field[] {});
 					updateHandler.handleUpdates(new Field[] { new Field(1, 1, Material.GRASS) });
 				}).start();
