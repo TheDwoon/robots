@@ -22,39 +22,4 @@ public class Robot extends LivingEntity implements InventoryHolder {
 		return inventory;
 	}
 
-	public Weapon getWeapon() {
-		return weapon;
-	}
-
-	public void switchWeapon(final Weapon weapon) {
-
-	}
-
-	void turnLeft() {
-		// TODO: implement network
-	}
-
-	void turnRight() {
-		// TODO: implement network
-	}
-
-	void moveForward() {
-		// TODO: implement network
-	}
-
-	void moveBackward() {
-		// TODO: implement network
-	}
-
-	void lookDown() {
-		// TODO: implement network
-	}
-	
-	void lookLeft() {
-		// TODO: implement network
-	}
-	
-	void lookRight() {
-		// TODO: implement network
-	}
 }
