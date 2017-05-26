@@ -19,10 +19,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public final class GameDisplay extends HBox {
 
+	@FXML
+	private Pane gameBoardContainer;
 	@FXML
 	private GridPane gameBoard;
 	@FXML
@@ -36,33 +39,34 @@ public final class GameDisplay extends HBox {
 	public GameDisplay(final Board board) throws IOException {
 		FXMLUtils.loadFxRoot(this);
 
-
 		// TODO (sigmarw, 02.05.2017): initialize with board
 		// TODO (sigmarw, 02.05.2017): remove dummy
 		boardFieldDisplays = new BoardFieldDisplay[15][10];
 
 		fieldSize = new DoubleBinding() {
-            {
-				super.bind(gameBoard.widthProperty(), gameBoard.heightProperty());
-            }
+			{
+				super.bind(gameBoardContainer.widthProperty(), gameBoardContainer.heightProperty());
+			}
 
-            @Override
-            public void dispose() {
-				super.unbind(gameBoard.widthProperty(), gameBoard.heightProperty());
-            }
+			@Override
+			public void dispose() {
+				super.unbind(gameBoardContainer.widthProperty(),
+					gameBoardContainer.heightProperty());
+			}
 
-            @Override
-            protected double computeValue() {
-				return min(gameBoard.widthProperty().getValue() / boardFieldDisplays.length,
-					gameBoard.heightProperty().getValue() / boardFieldDisplays[0].length);
-            }
+			@Override
+			protected double computeValue() {
+				return min(
+					gameBoardContainer.widthProperty().getValue() / boardFieldDisplays.length,
+					gameBoardContainer.heightProperty().getValue() / boardFieldDisplays[0].length);
+			}
 
-            @Override
-            public ObservableList<?> getDependencies() {
-				return FXCollections.observableArrayList(gameBoard.widthProperty(),
-					gameBoard.heightProperty());
-            }
-        };
+			@Override
+			public ObservableList<?> getDependencies() {
+				return FXCollections.observableArrayList(gameBoardContainer.widthProperty(),
+					gameBoardContainer.heightProperty());
+			}
+		};
 		for (int x = 0; x < boardFieldDisplays.length; x++) {
 			gameBoard.addColumn(x);
 		}
