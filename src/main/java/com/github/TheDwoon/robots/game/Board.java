@@ -15,7 +15,7 @@ public class Board {
 	private final List<Entity> entities;
 	private final Field[][] fields;
 		
-	public Board(int uuid, final int width, final int height) {
+	public Board(long uuid, final int width, final int height) {
 		this.entities = new ArrayList<>(64);
 		this.fields = new Field[width][height];
 		for (int x = 0; x < width; x++) {
