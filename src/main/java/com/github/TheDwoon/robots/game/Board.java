@@ -10,18 +10,12 @@ public class Board {
 	private static final int DEFAULT_HEIGHT = 100;
 	private static final Material DEFAULT_MATERIAL = Material.GRASS;
 	private static final Material DEFAULT_BORDER = Material.VOID;
-	
-	private static volatile Long uuidCounter = new Long(1);
-	
+		
 	private final long uuid;
 	private final List<Entity> entities;
 	private final Field[][] fields;
 		
-	public Board() {
-		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	}
-
-	public Board(final int width, final int height) {
+	public Board(int uuid, final int width, final int height) {
 		this.entities = new ArrayList<>(64);
 		this.fields = new Field[width][height];
 		for (int x = 0; x < width; x++) {
@@ -32,29 +26,13 @@ public class Board {
 					fields[x][y] = new Field(x, y, DEFAULT_MATERIAL);
 			}
 		}
-		this.uuid = obtainUUID();
+		this.uuid = uuid;
 	}
 
-	public Board(final Field[][] fields) {
+	public Board(long uuid, final Field[][] fields) {
 		this.entities = new ArrayList<>(64);
 		this.fields = fields;
-		this.uuid = obtainUUID();
-	}
-
-	private static long obtainUUID() {
-		long uuid = 0;		
-		synchronized (uuidCounter) {
-			uuid = uuidCounter++;
-		}
-		
-		return uuid;
-	}
-	
-	public void update(final Field... updates) {
-		for (Field update : updates) {
-			// TODO (danielw, 26.04.2017): send updates to client
-			fields[update.getX()][update.getY()] = update;
-		}
+		this.uuid = uuid;
 	}
 
 	public Field getField(int x, int y) {

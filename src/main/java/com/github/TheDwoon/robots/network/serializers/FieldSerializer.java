@@ -24,5 +24,4 @@ public class FieldSerializer extends Serializer<Field> {
 		
 		return new Field(x, y, material);
 	}
-
 }

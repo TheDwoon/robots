@@ -11,14 +11,25 @@ public abstract class Entity {
 	private final long uuid;
 	private int x;
 	private int y;
-
+	
+	
 	public Entity(int x, int y) {
-		synchronized (uuidCounter) {
-			// generate a unique uuid
-			this.uuid = uuidCounter++;
-		}
+		this(obtainUUID(), x, y);
+	}
+	
+	public Entity(long uuid, int x, int y) {
+		this.uuid = uuid;		
 		this.x = x;
 		this.y = y;
+	}
+	
+	private static long obtainUUID() {
+		long uuid = 0;
+		synchronized (uuidCounter) {
+			uuid = uuidCounter++;
+		}
+		
+		return uuid;
 	}
 
 	public final long getUUID() {
@@ -46,6 +57,10 @@ public abstract class Entity {
 		setY(y);
 	}
 
+	public void update() {
+		
+	}
+	
 	public String getType() {
 		return getClass().getSimpleName();
 	}
