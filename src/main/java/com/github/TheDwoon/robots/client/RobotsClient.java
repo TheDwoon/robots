@@ -9,7 +9,10 @@ import org.apache.logging.log4j.Logger;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import com.github.TheDwoon.robots.game.Board;
+import com.github.TheDwoon.robots.game.BoardObserver;
 import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.game.InventoryObserver;
+import com.github.TheDwoon.robots.game.entity.EntityObserver;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.network.KryoRegistry;
 
@@ -21,12 +24,16 @@ public final class RobotsClient {
 		KryoNetLoggerProxy.setAsKryoLogger();
 
 		RobotsClient robotsClient = new RobotsClient();
-		UpdateHandler updateHandler = robotsClient.new UpdateHandlerImpl();
+		InventoryObserver inventoryObserver;
+		BoardObserver boardObserver;
+		EntityObserver entityObserver;
 
 		Client client = new Client();
 		KryoRegistry.register(client.getKryo());
 		ObjectSpace objectSpace = new ObjectSpace();
-		objectSpace.register(1, updateHandler);
+		objectSpace.register(1, inventoryObserver);
+		objectSpace.register(2, boardObserver);
+		objectSpace.register(3, entityObserver);
 		objectSpace.addConnection(client);
 
 		client.start();
