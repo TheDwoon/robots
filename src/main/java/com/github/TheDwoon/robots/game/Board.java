@@ -12,10 +12,14 @@ public class Board {
 	private static final Material DEFAULT_BORDER = Material.VOID;
 		
 	private final long uuid;
+	private final int width;
+	private final int height;
 	private final List<Entity> entities;
 	private final Field[][] fields;
 		
 	public Board(long uuid, final int width, final int height) {
+		this.width = width;
+		this.height = height;
 		this.entities = new ArrayList<>(64);
 		this.fields = new Field[width][height];
 		for (int x = 0; x < width; x++) {
@@ -32,9 +36,19 @@ public class Board {
 	public Board(long uuid, final Field[][] fields) {
 		this.entities = new ArrayList<>(64);
 		this.fields = fields;
+		this.width = fields.length;
+		this.height = fields[0].length;
 		this.uuid = uuid;
 	}
 
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
 	public Field getField(int x, int y) {
 		return fields[x][y];
 	}
@@ -59,6 +73,10 @@ public class Board {
 		
 	public final long getUUID() {
 		return uuid;
+	}
+	
+	public List<Entity> getEntities() {
+		return entities;
 	}
 	
 	@Override
