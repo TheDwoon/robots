@@ -12,12 +12,12 @@ import com.github.TheDwoon.robots.game.InventoryObserver;
 import com.github.TheDwoon.robots.game.entity.EntityObserver;
 import com.github.TheDwoon.robots.network.KryoRegistry;
 
-public class KIServer implements Closeable {
+public class AIServer implements Closeable {
 
 	private Server discoveryServer;
 	private Server server;
 
-	public KIServer() throws IOException {
+	public AIServer() throws IOException {
 		discoveryServer = new Server();
 		discoveryServer.start();
 		discoveryServer.bind(32007, 32006);

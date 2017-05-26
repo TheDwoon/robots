@@ -7,7 +7,7 @@ public final class RobotsServer {
 	public static void main(final String[] args) throws IOException {
 		KryoNetLoggerProxy.setAsKryoLogger();
 
-		try (KIServer kiServer = new KIServer(); UIServer uiServer = new UIServer()) {
+		try (AIServer aiServer = new AIServer(); UIServer uiServer = new UIServer()) {
 			while (true) {
 				try {
 					Thread.sleep(5000);
