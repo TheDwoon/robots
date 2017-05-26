@@ -1,4 +1,7 @@
-package com.github.TheDwoon.robots.game.entity;
+package com.github.TheDwoon.robots.game.interaction;
+
+import com.github.TheDwoon.robots.game.entity.Entity;
+import com.github.TheDwoon.robots.game.entity.Robot;
 
 public interface EntityObserver {
 	void spawnEntity(Entity entity);

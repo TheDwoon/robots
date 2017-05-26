@@ -8,11 +8,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
-import com.github.TheDwoon.robots.game.Board;
-import com.github.TheDwoon.robots.game.BoardObserver;
-import com.github.TheDwoon.robots.game.Field;
-import com.github.TheDwoon.robots.game.InventoryObserver;
-import com.github.TheDwoon.robots.game.entity.EntityObserver;
+import com.github.TheDwoon.robots.game.interaction.BoardObserver;
+import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
+import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.network.KryoRegistry;
 
@@ -31,9 +29,6 @@ public final class RobotsClient {
 		Client client = new Client();
 		KryoRegistry.register(client.getKryo());
 		ObjectSpace objectSpace = new ObjectSpace();
-		objectSpace.register(1, inventoryObserver);
-		objectSpace.register(2, boardObserver);
-		objectSpace.register(3, entityObserver);
 		objectSpace.addConnection(client);
 
 		client.start();
@@ -52,22 +47,6 @@ public final class RobotsClient {
 		}
 
 		client.stop();
-	}
-
-	private Board board;
-
-	public RobotsClient() {
-		board = new Board();
-	}
-
-	private class UpdateHandlerImpl implements UpdateHandler {
-
-		@Override
-		public void handleUpdates(final Field[] updates) {
-			board.update(updates);
-			log.debug("Board update. New board state is:%n%s", board);
-		}
-
 	}
 
 }

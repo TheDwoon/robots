@@ -7,9 +7,9 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
-import com.github.TheDwoon.robots.game.BoardObserver;
-import com.github.TheDwoon.robots.game.InventoryObserver;
-import com.github.TheDwoon.robots.game.entity.EntityObserver;
+import com.github.TheDwoon.robots.game.interaction.BoardObserver;
+import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
+import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.network.KryoRegistry;
 
 public class UIServer implements Closeable {
