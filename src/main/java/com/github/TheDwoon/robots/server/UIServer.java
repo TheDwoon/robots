@@ -7,6 +7,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
+import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.game.Material;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
@@ -37,6 +39,11 @@ public class UIServer implements Closeable {
 				EntityObserver entityObserver =
 					ObjectSpace.getRemoteObject(connection, 3, EntityObserver.class);
 				// TODO (sigmar, 26.05.2017): insert observer registration here
+				new Thread(() -> {
+					boardObserver.setSize(1, 15, 10);
+					boardObserver.updateField(2, new Field(2, 3, Material.GRASS));
+					boardObserver.updateField(2, new Field(4, 4, Material.WATER));
+				}).start();
 			}
 
 			@Override

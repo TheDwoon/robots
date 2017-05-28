@@ -66,11 +66,19 @@ public abstract class Entity {
 	}
 
 	@Override
-	public final boolean equals(Object obj) {
-		// entities are only equals if their uuid matches.
-		if (obj instanceof Entity)
-			return this.uuid == ((Entity) obj).uuid;
-		
-		return false;
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		Entity entity = (Entity) o;
+
+		return uuid == entity.uuid;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) (uuid ^ (uuid >>> 32));
 	}
 }

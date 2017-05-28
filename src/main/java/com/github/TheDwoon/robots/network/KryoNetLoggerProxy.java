@@ -1,18 +1,11 @@
 package com.github.TheDwoon.robots.network;
 
-import static org.apache.logging.log4j.Level.DEBUG;
-import static org.apache.logging.log4j.Level.ERROR;
-import static org.apache.logging.log4j.Level.FATAL;
-import static org.apache.logging.log4j.Level.INFO;
-import static org.apache.logging.log4j.Level.OFF;
-import static org.apache.logging.log4j.Level.TRACE;
-import static org.apache.logging.log4j.Level.WARN;
-
+import com.esotericsoftware.minlog.Log;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.esotericsoftware.minlog.Log;
+import static org.apache.logging.log4j.Level.*;
 
 public final class KryoNetLoggerProxy extends com.esotericsoftware.minlog.Log.Logger {
 

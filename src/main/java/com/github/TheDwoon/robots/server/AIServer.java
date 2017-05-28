@@ -1,16 +1,16 @@
 package com.github.TheDwoon.robots.server;
 
-import java.io.Closeable;
-import java.io.IOException;
-
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
-import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
+import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.network.KryoRegistry;
+
+import java.io.Closeable;
+import java.io.IOException;
 
 public class AIServer implements Closeable {
 
@@ -30,12 +30,12 @@ public class AIServer implements Closeable {
 			@Override
 			public void connected(final Connection connection) {
 				objectSpace.addConnection(connection);
-				InventoryObserver inventoryObserver =
-					ObjectSpace.getRemoteObject(connection, 1, InventoryObserver.class);
 				BoardObserver boardObserver =
-					ObjectSpace.getRemoteObject(connection, 2, BoardObserver.class);
+					ObjectSpace.getRemoteObject(connection, 1, BoardObserver.class);
 				EntityObserver entityObserver =
-					ObjectSpace.getRemoteObject(connection, 3, EntityObserver.class);
+					ObjectSpace.getRemoteObject(connection, 2, EntityObserver.class);
+				InventoryObserver inventoryObserver =
+					ObjectSpace.getRemoteObject(connection, 3, InventoryObserver.class);
 				// TODO (sigmar, 26.05.2017): insert RemoteRobot instantiation here
 			}
 

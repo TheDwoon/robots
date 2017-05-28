@@ -1,14 +1,14 @@
 package com.github.TheDwoon.robots.gui;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Tooltip;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class FXMLUtils {
 

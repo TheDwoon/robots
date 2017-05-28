@@ -1,14 +1,13 @@
 package com.github.TheDwoon.robots.gui;
 
-import java.io.IOException;
-
 import com.github.TheDwoon.robots.game.Material;
 import com.github.TheDwoon.robots.game.entity.Entity;
-
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+
+import java.io.IOException;
 
 public abstract class FieldDisplay extends StackPane {
 
@@ -30,6 +29,10 @@ public abstract class FieldDisplay extends StackPane {
 		});
 		background.setImage(backgroundImage);
 		entity.setImage(entityImage);
+	}
+
+	protected void setBackgroundImage(final Image backgroundImage) {
+		background.setImage(backgroundImage);
 	}
 
 	protected void setEntityImage(final Image entityImage) {

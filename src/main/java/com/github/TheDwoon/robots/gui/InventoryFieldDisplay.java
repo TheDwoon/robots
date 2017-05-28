@@ -1,8 +1,8 @@
 package com.github.TheDwoon.robots.gui;
 
-import java.io.IOException;
-
 import com.github.TheDwoon.robots.game.items.Item;
+
+import java.io.IOException;
 
 public class InventoryFieldDisplay extends FieldDisplay {
 

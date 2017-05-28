@@ -1,18 +1,14 @@
 package com.github.TheDwoon.robots.gui;
 
-import static java.lang.Math.min;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.github.TheDwoon.robots.game.Board;
 import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.game.Inventory;
 import com.github.TheDwoon.robots.game.Material;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.Robot;
+import com.github.TheDwoon.robots.game.interaction.BoardObserver;
+import com.github.TheDwoon.robots.game.interaction.EntityObserver;
+import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.game.items.Item;
-
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,112 +17,171 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public final class GameDisplay extends HBox {
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-	@FXML
-	private Pane gameBoardContainer;
-	@FXML
-	private GridPane gameBoard;
-	@FXML
-	private VBox robots;
+import static java.lang.Math.min;
 
-	private DoubleBinding fieldSize;
+public final class GameDisplay extends HBox
+        implements BoardObserver, EntityObserver, InventoryObserver {
 
-	private BoardFieldDisplay[][] boardFieldDisplays;
-	private Map<Robot, RobotDisplay> robotDisplays;
+    private static final Logger log = LogManager.getLogger();
 
-	public GameDisplay(final Board board) throws IOException {
-		FXMLUtils.loadFxRoot(this);
+    @FXML
+    private Pane gameBoardContainer;
+    @FXML
+    private GridPane gameBoard;
+    @FXML
+    private VBox robotsContainer;
 
-		// TODO (sigmarw, 02.05.2017): initialize with board
-		// TODO (sigmarw, 02.05.2017): remove dummy
-		boardFieldDisplays = new BoardFieldDisplay[15][10];
+    private DoubleBinding fieldSize;
 
-		fieldSize = new DoubleBinding() {
-			{
-				super.bind(gameBoardContainer.widthProperty(), gameBoardContainer.heightProperty());
-			}
+    private BoardFieldDisplay[][] boardFieldDisplays;
+    private Map<Long, Entity> entities;
+    //    private Map<Long, Robot> robots;
+    private Map<Long, RobotDisplay> inventories;
+    private Map<Robot, RobotDisplay> robotDisplays;
 
-			@Override
-			public void dispose() {
-				super.unbind(gameBoardContainer.widthProperty(),
-					gameBoardContainer.heightProperty());
-			}
+    public GameDisplay() throws IOException {
+        FXMLUtils.loadFxRoot(this);
+        fieldSize = new DoubleBinding() {
 
-			@Override
-			protected double computeValue() {
-				return min(
-					gameBoardContainer.widthProperty().getValue() / boardFieldDisplays.length,
-					gameBoardContainer.heightProperty().getValue() / boardFieldDisplays[0].length);
-			}
+            {
+                super.bind(gameBoardContainer.widthProperty(), gameBoardContainer.heightProperty());
+            }
 
-			@Override
-			public ObservableList<?> getDependencies() {
-				return FXCollections.observableArrayList(gameBoardContainer.widthProperty(),
-					gameBoardContainer.heightProperty());
-			}
-		};
-		for (int x = 0; x < boardFieldDisplays.length; x++) {
-			gameBoard.addColumn(x);
-		}
-		for (int y = 0; y < boardFieldDisplays[0].length; y++) {
-			gameBoard.addRow(y);
-		}
-		for (int x = 0; x < boardFieldDisplays.length; x++) {
-			for (int y = 0; y < boardFieldDisplays[x].length; y++) {
-				// TODO (sigmarw, 02.05.2017): remove dummy
-				BoardFieldDisplay boardFieldDisplay =
-					new BoardFieldDisplay(new Field(x, y, Material.GRASS), null, fieldSize);
-				boardFieldDisplays[x][y] = boardFieldDisplay;
-				gameBoard.add(boardFieldDisplay, x, y);
-			}
-		}
-		// TODO (sigmarw, 02.05.2017): remove debug
-		gameBoard.setGridLinesVisible(true);
+            @Override
+            public void dispose() {
+                super.unbind(gameBoardContainer.widthProperty(),
+                        gameBoardContainer.heightProperty());
+            }
 
-		robotDisplays = new HashMap<>();
-		addRobot(new Robot(3, 3, null, null));
+            @Override
+            protected double computeValue() {
+                return min(
+                        gameBoardContainer.widthProperty().getValue() / boardFieldDisplays.length,
+                        gameBoardContainer.heightProperty().getValue()
+                                / boardFieldDisplays[0].length);
+            }
 
-	}
+            @Override
+            public ObservableList<?> getDependencies() {
+                return FXCollections.observableArrayList(gameBoardContainer.widthProperty(),
+                        gameBoardContainer.heightProperty());
+            }
+        };
 
-	public void updateEntities(final Entity[] update) {
-		// TODO (sigmarw, 02.05.2017): implement
-	}
+        boardFieldDisplays = new BoardFieldDisplay[0][0];
+        entities = new HashMap<>();
+        //        robots = new HashMap<>();
+        inventories = new HashMap<>();
+        robotDisplays = new HashMap<>();
+    }
 
-	public void addRobot(final Robot robot) throws IOException {
-		RobotDisplay robotDisplay = new RobotDisplay(robot);
-		robotDisplays.put(robot, robotDisplay);
-		robots.getChildren().add(robotDisplay);
-		addToBoard(robot);
-	}
+    @Override
+    public void setSize(long uuid, int width, int height) {
+        boardFieldDisplays = new BoardFieldDisplay[width][height];
 
-	public void removeRobot(final Robot robot) {
-		RobotDisplay robotDisplay = robotDisplays.remove(robot);
-		if (robotDisplay != null) {
-			robots.getChildren().remove(robotDisplay);
-		}
-		removeFromBoard(robot);
-	}
+        gameBoard.getChildren().clear();
+        try {
+            for (int x = 0; x < boardFieldDisplays.length; x++) {
+                for (int y = 0; y < boardFieldDisplays[x].length; y++) {
+                    // fill with default values
+                    BoardFieldDisplay boardFieldDisplay =
+                            new BoardFieldDisplay(new Field(x, y, Material.VOID), null, fieldSize);
+                    boardFieldDisplays[x][y] = boardFieldDisplay;
+                }
+            }
+            for (int x = 0; x < boardFieldDisplays.length; x++) {
+                gameBoard.addColumn(x, boardFieldDisplays[x]);
+            }
+        } catch (IOException e) {
+            log.catching(e);
+        }
+    }
 
-	public void addItem(final Item item) {
-		addToBoard(item);
-	}
+    @Override
+    public void updateField(long uuid, Field field) {
+        boardFieldDisplays[field.getX()][field.getY()].update(field);
+    }
 
-	public void removeItem(final Item item) {
-		removeFromBoard(item);
-	}
+    @Override
+    public void createInventory(Inventory inventory) {
+        RobotDisplay robotDisplay = robotDisplays.entrySet().parallelStream()
+                .filter(entry -> entry.getKey().getInventory().equals(inventory))
+                .map(Map.Entry::getValue).findAny().orElseGet(null);
+        inventories.put(inventory.getUUID(), robotDisplay);
+        if (robotDisplay != null) {
+            robotDisplay.setInventory(inventory);
+        }
+    }
 
-	private void addToBoard(final Entity entity) {
-		boardFieldDisplays[entity.getX()][entity.getY()].setEntity(entity);
-	}
+    @Override
+    public void deleteInventory(long uuid) {
+        RobotDisplay robotDisplay = inventories.remove(uuid);
+        if (robotDisplay != null) {
+            robotDisplay.setInventory(null);
+        }
+    }
 
-	private void removeFromBoard(final Entity entity) {
-		boardFieldDisplays[entity.getX()][entity.getY()].setEntity(null);
-	}
+    @Override
+    public void updateInventory(long uuid, int slot, Item item) {
+        RobotDisplay robotDisplay = inventories.get(uuid);
+        if (robotDisplay != null) {
+            robotDisplay.updateItem(slot, item);
+        }
+    }
 
-	public void removeRobot(final String robotName) {
-		// TODO (sigmarw, 02.05.2017): implement
-	}
+    @Override
+    public void spawnEntity(Entity entity) {
+        entities.put(entity.getUUID(), entity);
+        boardFieldDisplays[entity.getX()][entity.getY()].setEntity(entity);
+    }
+
+    @Override
+    public void spawnRobot(Robot robot) {
+        RobotDisplay robotDisplay;
+        try {
+            robotDisplay = new RobotDisplay(robot);
+        } catch (IOException e) {
+            log.catching(e);
+            return;
+        }
+        robotDisplays.put(robot, robotDisplay);
+        robotsContainer.getChildren().add(robotDisplay);
+        spawnEntity(robot);
+    }
+
+    @Override
+    public void removeEntity(long uuid) {
+        Entity entity = entities.get(uuid);
+        boardFieldDisplays[entity.getX()][entity.getY()].setEntity(null);
+        entities.remove(uuid);
+        if (entity instanceof Robot) {
+            Robot robot = (Robot) entity;
+            RobotDisplay robotDisplay = robotDisplays.remove(robot);
+            robotsContainer.getChildren().remove(robotDisplay);
+        }
+    }
+
+    @Override
+    public void updateEntity(Entity entity) {
+        //  TODO (sigmarw, 27.05.17): what to do here?
+        entities.put(entity.getUUID(), entity);
+    }
+
+    @Override
+    public void updateLocation(long uuid, int x, int y) {
+        Entity entity = entities.get(uuid);
+        if (entity != null) {
+            boardFieldDisplays[entity.getX()][entity.getY()].setEntity(null);
+            entity.setPosition(x, y);
+            boardFieldDisplays[x][y].setEntity(entity);
+        }
+    }
 
 }

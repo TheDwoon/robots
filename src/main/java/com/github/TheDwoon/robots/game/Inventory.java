@@ -45,4 +45,21 @@ public class Inventory {
 	public int size() {
 		return items.length;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		Inventory inventory = (Inventory) o;
+
+		return uuid == inventory.uuid;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) (uuid ^ (uuid >>> 32));
+	}
 }
