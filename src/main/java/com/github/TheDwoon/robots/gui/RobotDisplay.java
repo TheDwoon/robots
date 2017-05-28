@@ -40,7 +40,7 @@ public final class RobotDisplay extends HBox {
 	}
 
 	public void updateItem(int slot, Item item) {
-		//  TODO (sigmarw, 27.05.17): implement
+		((InventoryFieldDisplay) inventoryContainer.getChildren().get(slot)).setItem(item);
 	}
 
 }
