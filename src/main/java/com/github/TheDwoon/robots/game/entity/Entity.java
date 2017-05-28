@@ -1,37 +1,30 @@
 package com.github.TheDwoon.robots.game.entity;
 
+import com.github.TheDwoon.robots.game.Board;
+import com.github.TheDwoon.robots.server.UUIDGenerator;
+
 public abstract class Entity {
 	/*
 	 * use x, y to make transmitting an entity easier. The client should have the field information
 	 * for each field in a separate representation to restrict updates to entities.
 	 * Fields, the Board in general, should be a nearly static environment.
-	 */
-	private static volatile Long uuidCounter = new Long(1);
-	
+	 */	
 	private final long uuid;
+	private transient Board board;
 	private int x;
 	private int y;
 	
 	
 	public Entity(int x, int y) {
-		this(obtainUUID(), x, y);
+		this(UUIDGenerator.obtainUUID(), x, y);
 	}
 	
 	public Entity(long uuid, int x, int y) {
-		this.uuid = uuid;		
+		this.uuid = uuid;
 		this.x = x;
 		this.y = y;
 	}
 	
-	private static long obtainUUID() {
-		long uuid = 0;
-		synchronized (uuidCounter) {
-			uuid = uuidCounter++;
-		}
-		
-		return uuid;
-	}
-
 	public final long getUUID() {
 		return uuid;
 	}
@@ -57,6 +50,14 @@ public abstract class Entity {
 		setY(y);
 	}
 
+	public final Board getBoard() {
+		return board;
+	}
+	
+	public final void setBoard(Board board) {
+		this.board = board;
+	}
+	
 	public void update() {
 		
 	}
