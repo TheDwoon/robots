@@ -9,6 +9,13 @@ public abstract class LivingEntity extends Entity {
 		super(x, y);		
 		
 		this.maxHealth = maxHealth;
+		health = 0;
+	}
+
+	public LivingEntity(long uuid, int x, int y, int maxHealth, int health) {
+		super(uuid, x, y);
+		this.maxHealth = maxHealth;
+		this.health = health;
 	}
 	
 	public final int getMaxHealth() {

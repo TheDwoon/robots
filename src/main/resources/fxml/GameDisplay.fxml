@@ -12,6 +12,6 @@
             <GridPane fx:id="gameBoard" />
          </children>
       </Pane>
-      <VBox fx:id="robotsContainer" prefWidth="206.0" />
+      <VBox fx:id="robotsContainer" prefWidth="206.0" spacing="3.0" />
    </children>
 </fx:root>

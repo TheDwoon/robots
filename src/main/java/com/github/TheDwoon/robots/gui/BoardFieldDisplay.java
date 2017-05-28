@@ -11,7 +11,7 @@ public class BoardFieldDisplay extends FieldDisplay {
 
 	public BoardFieldDisplay(final Field field, final Entity entity, final DoubleBinding fieldSize)
 		throws IOException {
-		super(lookupTexture(field.getMaterial()), lookupTexture(entity));
+		super(Textures.lookup(field.getMaterial()), Textures.lookup(entity));
 		minWidthProperty().setValue(Region.USE_PREF_SIZE);
 		prefWidthProperty().bind(fieldSize);
 		maxWidthProperty().setValue(Region.USE_PREF_SIZE);
@@ -21,11 +21,11 @@ public class BoardFieldDisplay extends FieldDisplay {
 	}
 
 	public void update(final Field field) {
-		setBackgroundImage(lookupTexture(field.getMaterial()));
+		setBackgroundImage(Textures.lookup(field.getMaterial()));
 	}
 
 	public void setEntity(final Entity entity) {
-		setEntityImage(lookupTexture(entity));
+		setEntityImage(Textures.lookup(entity));
 	}
 
 }

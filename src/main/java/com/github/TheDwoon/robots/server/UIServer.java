@@ -8,7 +8,10 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.game.Inventory;
 import com.github.TheDwoon.robots.game.Material;
+import com.github.TheDwoon.robots.game.entity.*;
+import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
@@ -48,10 +51,15 @@ public class UIServer implements Closeable {
                 // TODO (sigmar, 26.05.2017): insert observer registration here
                 new Thread(() -> {
                     try {
-                        new MapFileParser(boardObserver).parse(getClass().getResourceAsStream("/map/simple.map"));
+                        new MapFileParser(boardObserver)
+                                .parse(getClass().getResourceAsStream("/map/simple.map"));
                     } catch (ParseException e) {
                         log.catching(e);
                     }
+                    entityObserver.spawnRobot(
+                            new Robot(2, 2, new Inventory(UUIDGenerator.obtainUUID(), 12), null));
+                    entityObserver.spawnRobot(
+                            new Robot(2, 2, new Inventory(UUIDGenerator.obtainUUID(), 12), null));
                 }).start();
             }
 

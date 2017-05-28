@@ -42,7 +42,6 @@ public final class GameDisplay extends HBox
 
     private BoardFieldDisplay[][] boardFieldDisplays;
     private Map<Long, Entity> entities;
-    //    private Map<Long, Robot> robots;
     private Map<Long, RobotDisplay> inventories;
     private Map<Robot, RobotDisplay> robotDisplays;
 
@@ -77,7 +76,6 @@ public final class GameDisplay extends HBox
 
         boardFieldDisplays = new BoardFieldDisplay[0][0];
         entities = new HashMap<>();
-        //        robots = new HashMap<>();
         inventories = new HashMap<>();
         robotDisplays = new HashMap<>();
     }
@@ -116,7 +114,11 @@ public final class GameDisplay extends HBox
                 .map(Map.Entry::getValue).findAny().orElseGet(null);
         inventories.put(inventory.getUUID(), robotDisplay);
         if (robotDisplay != null) {
-            robotDisplay.setInventory(inventory);
+            try {
+                robotDisplay.setInventory(inventory);
+            } catch (IOException e) {
+                log.catching(e);
+            }
         }
     }
 
@@ -124,7 +126,11 @@ public final class GameDisplay extends HBox
     public void deleteInventory(long uuid) {
         RobotDisplay robotDisplay = inventories.remove(uuid);
         if (robotDisplay != null) {
-            robotDisplay.setInventory(null);
+            try {
+                robotDisplay.setInventory(null);
+            } catch (IOException e) {
+                log.catching(e);
+            }
         }
     }
 

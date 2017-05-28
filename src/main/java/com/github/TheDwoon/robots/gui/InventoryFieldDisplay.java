@@ -7,10 +7,12 @@ import java.io.IOException;
 public class InventoryFieldDisplay extends FieldDisplay {
 
 	public InventoryFieldDisplay(final Item item) throws IOException {
-		super(lookupInventoryBackgroundTexture(), lookupTexture(item));
+		super(Textures.lookupInventoryBackground(), Textures.lookup(item));
+		setWidth(25);
+		setHeight(25);
 	}
 
 	public void setItem(final Item item) {
-		setEntityImage(lookupTexture(item));
+		setEntityImage(Textures.lookup(item));
 	}
 }

@@ -8,29 +8,35 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 
 import java.io.IOException;
 
 public final class RobotDisplay extends HBox {
 
 	@FXML
-	private ImageView robot;
+	private ImageView robotImage;
 	@FXML
 	private Label robotName;
 	@FXML
-	private GridPane inventory;
+	private TilePane inventoryContainer;
 
 	public RobotDisplay(final Robot robot) throws IOException {
 		FXMLUtils.loadFxRoot(this);
 
-		// TODO (sigmarw, 02.05.2017): obtain robot image
+		robotImage.setImage(Textures.lookup(robot));
 		robotName.setText(Long.toHexString(robot.getUUID()));
-		inventory.setGridLinesVisible(true);
+		setInventory(robot.getInventory());
 	}
 
-	public void setInventory(Inventory inventory) {
-		//  TODO (sigmarw, 27.05.17): implement
-		//  TODO (sigmarw, 27.05.17): null check
+	public void setInventory(Inventory inventory) throws IOException {
+		inventoryContainer.getChildren().clear();
+		if (inventory == null) {
+			return;
+		}
+		for (Item item: inventory.getItems()) {
+			inventoryContainer.getChildren().add(new InventoryFieldDisplay(item));
+		}
 	}
 
 	public void updateItem(int slot, Item item) {
