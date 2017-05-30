@@ -3,14 +3,13 @@ package com.github.TheDwoon.robots.server;
 import java.io.IOException;
 
 import com.github.TheDwoon.robots.game.Board;
-import com.github.TheDwoon.robots.game.Inventory;
 import com.github.TheDwoon.robots.game.InventoryImpl;
 import com.github.TheDwoon.robots.game.entity.Entity;
+import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.entity.RobotImpl;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
-import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.mapfile.MapFileParser;
 import com.github.TheDwoon.robots.mapfile.ParseException;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;

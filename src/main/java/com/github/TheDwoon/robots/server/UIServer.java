@@ -3,23 +3,17 @@ package com.github.TheDwoon.robots.server;
 import java.io.Closeable;
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
-import com.github.TheDwoon.robots.game.Field;
-import com.github.TheDwoon.robots.game.Inventory;
-import com.github.TheDwoon.robots.game.Material;
-import com.github.TheDwoon.robots.game.entity.*;
-import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
-import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
-import com.github.TheDwoon.robots.mapfile.MapFileParser;
-import com.github.TheDwoon.robots.mapfile.ParseException;
+import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.network.KryoRegistry;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class UIServer implements Closeable {
 

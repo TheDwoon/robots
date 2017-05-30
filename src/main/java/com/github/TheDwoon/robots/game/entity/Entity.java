@@ -1,7 +1,5 @@
 package com.github.TheDwoon.robots.game.entity;
 
-import com.github.TheDwoon.robots.game.Board;
-
 /**
  * Created by sigma_000 on 30.05.2017.
  */
@@ -17,10 +15,6 @@ public interface Entity {
     void setY(int y);
 
     void setPosition(int x, int y);
-
-    Board getBoard();
-
-    void setBoard(Board board);
 
     void update();
 

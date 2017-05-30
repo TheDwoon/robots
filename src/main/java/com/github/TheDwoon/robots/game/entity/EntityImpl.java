@@ -1,16 +1,10 @@
 package com.github.TheDwoon.robots.game.entity;
 
-import com.github.TheDwoon.robots.game.Board;
 import com.github.TheDwoon.robots.server.UUIDGenerator;
 
 public abstract class EntityImpl implements Entity {
-	/*
-	 * use x, y to make transmitting an entity easier. The client should have the field information
-	 * for each field in a separate representation to restrict updates to entities.
-	 * Fields, the Board in general, should be a nearly static environment.
-	 */	
+
 	private final long uuid;
-	private transient Board board;
 	private int x;
 	private int y;
 	
@@ -54,16 +48,6 @@ public abstract class EntityImpl implements Entity {
 	public final void setPosition(int x, int y) {
 		setX(x);
 		setY(y);
-	}
-
-	@Override
-	public final Board getBoard() {
-		return board;
-	}
-	
-	@Override
-	public final void setBoard(Board board) {
-		this.board = board;
 	}
 	
 	@Override
