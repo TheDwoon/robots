@@ -2,8 +2,9 @@ package com.github.TheDwoon.robots.game.items.weapons;
 
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.items.Item;
+import com.github.TheDwoon.robots.game.items.ItemImpl;
 
-public abstract class Weapon extends Item {
+public abstract class Weapon extends ItemImpl {
 	public Weapon() {
 		super();
 	}

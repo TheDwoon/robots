@@ -24,5 +24,7 @@ public interface Entity {
 
     void update();
 
-    String getType();
+    default String getType() {
+        return getClass().getSimpleName().replaceAll("Impl$", "");
+    }
 }

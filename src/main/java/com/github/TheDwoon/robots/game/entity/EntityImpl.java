@@ -70,11 +70,6 @@ public abstract class EntityImpl implements Entity {
 	public void update() {
 		
 	}
-	
-	@Override
-	public String getType() {
-		return getClass().getSimpleName();
-	}
 
 	@Override
 	public boolean equals(Object o) {

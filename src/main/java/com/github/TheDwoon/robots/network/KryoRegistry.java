@@ -38,6 +38,6 @@ public class KryoRegistry {
         kryo.addDefaultSerializer(Robot.class, new RobotSerializer());
         kryo.addDefaultSerializer(LivingEntity.class, new LivingEntitySerializer());
         kryo.addDefaultSerializer(Entity.class, new EntitySerializer());
-        kryo.register(Inventory.class, new InventorySerializer());
+        kryo.addDefaultSerializer(Inventory.class, new InventorySerializer());
     }
 }
