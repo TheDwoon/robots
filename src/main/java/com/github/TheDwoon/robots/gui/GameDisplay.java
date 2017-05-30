@@ -171,12 +171,12 @@ public final class GameDisplay extends HBox
             Robot robot = (Robot) entity;
             RobotDisplay robotDisplay = robotDisplays.remove(robot);
             robotsContainer.getChildren().remove(robotDisplay);
+            Textures.removeRobot(robot);
         }
     }
 
     @Override
     public void updateEntity(Entity entity) {
-        //  TODO (sigmarw, 27.05.17): what to do here?
         entities.put(entity.getUUID(), entity);
     }
 
