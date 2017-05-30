@@ -106,6 +106,16 @@ public class ServerRobot implements Robot {
         return robot.getWeapon();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return robot.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return robot.hashCode();
+    }
+
     public Robot getRobot() {
         return robot;
     }

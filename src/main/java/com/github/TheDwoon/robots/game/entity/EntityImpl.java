@@ -80,7 +80,7 @@ public abstract class EntityImpl implements Entity {
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (o == null || Entity.class.isAssignableFrom(o.getClass()))
+		if (o == null || !Entity.class.isAssignableFrom(o.getClass()))
 			return false;
 
 		Entity entity = (Entity) o;
