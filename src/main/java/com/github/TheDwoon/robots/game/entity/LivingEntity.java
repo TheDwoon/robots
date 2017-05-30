@@ -1,45 +1,18 @@
 package com.github.TheDwoon.robots.game.entity;
 
-public abstract class LivingEntity extends Entity {
+/**
+ * Created by sigma_000 on 30.05.2017.
+ */
+public interface LivingEntity extends Entity {
+    int getMaxHealth();
 
-	private final int maxHealth;
-	private int health;
-	
-	public LivingEntity(int x, int y, int maxHealth) {
-		super(x, y);		
-		
-		this.maxHealth = maxHealth;
-		health = 0;
-	}
+    int getHealth();
 
-	public LivingEntity(long uuid, int x, int y, int maxHealth, int health) {
-		super(uuid, x, y);
-		this.maxHealth = maxHealth;
-		this.health = health;
-	}
-	
-	public final int getMaxHealth() {
-		return maxHealth;
-	}
-	
-	public final int getHealth() {
-		return health;
-	}
-	
-	public final void setHealth(int health) {
-		this.health = health;
-	}
-	
-	public final void damage(int damage) {
-		// yes, negative damage is a heal.
-		health = Math.min(health + damage, maxHealth); 
-	}
-	
-	public final boolean isAlive() {
-		return health > 0;
-	}
-	
-	public final boolean isDead() {
-		return !isAlive();
-	}
+    void setHealth(int health);
+
+    void damage(int damage);
+
+    boolean isAlive();
+
+    boolean isDead();
 }
