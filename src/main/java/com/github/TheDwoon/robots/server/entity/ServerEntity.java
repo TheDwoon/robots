@@ -36,7 +36,7 @@ public abstract class ServerEntity implements Entity {
 
 	@Override
 	public void setPosition(int x, int y) {
-		entity.setPosition(x, y);;
+		entity.setPosition(x, y);
 	}
 
 	@Override
