@@ -25,10 +25,12 @@ public class UIServer implements Closeable {
 
     public static final Logger log = LogManager.getLogger();
 
+    private final RobotsServer robotsServer;
     private Server discoveryServer;
     private Server server;
 
-    public UIServer() throws IOException {
+    public UIServer(RobotsServer robotsServer) throws IOException {
+    	this.robotsServer = robotsServer;
         discoveryServer = new Server();
         discoveryServer.start();
         discoveryServer.bind(32017, 32016);
@@ -42,24 +44,19 @@ public class UIServer implements Closeable {
             @Override
             public void connected(final Connection connection) {
                 objectSpace.addConnection(connection);
-                InventoryObserver inventoryObserver =
+                final InventoryObserver inventoryObserver =
                         ObjectSpace.getRemoteObject(connection, 1, InventoryObserver.class);
-                BoardObserver boardObserver =
+                final BoardObserver boardObserver =
                         ObjectSpace.getRemoteObject(connection, 2, BoardObserver.class);
-                EntityObserver entityObserver =
+                final EntityObserver entityObserver =
                         ObjectSpace.getRemoteObject(connection, 3, EntityObserver.class);
-                // TODO (sigmar, 26.05.2017): insert observer registration here
+                
+                UIServer.this.robotsServer.getBoardBroadcaster().registerObserver(boardObserver);
+                UIServer.this.robotsServer.getEntityBroadcaster().registerObserver(entityObserver);
+                UIServer.this.robotsServer.getInventoryBroadcaster().registerObserver(inventoryObserver);
+
                 new Thread(() -> {
-                    try {
-                        new MapFileParser(boardObserver)
-                                .parse(getClass().getResourceAsStream("/map/simple.map"));
-                    } catch (ParseException e) {
-                        log.catching(e);
-                    }
-                    entityObserver.spawnRobot(
-                            new Robot(2, 2, new Inventory(UUIDGenerator.obtainUUID(), 12), null));
-                    entityObserver.spawnRobot(
-                            new Robot(2, 2, new Inventory(UUIDGenerator.obtainUUID(), 12), null));
+                	UIServer.this.robotsServer.transmitAll(boardObserver, entityObserver, inventoryObserver);
                 }).start();
             }
 

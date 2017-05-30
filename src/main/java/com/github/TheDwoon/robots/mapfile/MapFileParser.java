@@ -1,5 +1,6 @@
 package com.github.TheDwoon.robots.mapfile;
 
+import com.github.TheDwoon.robots.game.Board;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Material;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
@@ -33,6 +34,15 @@ public class MapFileParser {
         this.boardObservers.addAll(boardObservers);
     }
 
+    public static Board parseBoard(InputStream in) throws ParseException {
+    	long uuid = UUIDGenerator.obtainUUID();
+    	
+    	Scanner scanner = new Scanner(in);
+    	Parser parser = new Parser(scanner);
+    	
+    	return new Board(uuid, parser.parseFields());    
+    }
+    
     public void addBoardObserver(BoardObserver boardObserver) {
         boardObservers.add(boardObserver);
     }
@@ -62,8 +72,8 @@ public class MapFileParser {
         Field[][] fields = new Parser(scanner).parseFields();
         notifyObserver(uuid, fields);
     }
-
-    private class Parser {
+    
+    private static class Parser {
 
         private int lineCount;
         private Scanner scanner;

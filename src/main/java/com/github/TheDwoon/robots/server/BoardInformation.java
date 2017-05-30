@@ -54,6 +54,14 @@ public class BoardInformation {
 		return info;
 	}
 	
+	public int getPositionX() {
+		return positionX;
+	}
+	
+	public int getPositionY() {
+		return positionY;
+	}
+	
 	public List<Field> getFields() {
 		return fields;
 	}

@@ -12,7 +12,8 @@ public enum Material {
 	GRASS(true),
 	TREE(false),
 	ROCK(false),
-	WATER(false);
+	WATER(false),
+	SPAWN(true);
 	
 	private final boolean visitable;
 	

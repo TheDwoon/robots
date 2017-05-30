@@ -3,11 +3,16 @@ package com.github.TheDwoon.robots.game;
 import java.util.Arrays;
 
 import com.github.TheDwoon.robots.game.items.Item;
+import com.github.TheDwoon.robots.server.UUIDGenerator;
 
 public class Inventory {
 	private final long uuid;
 	private final Item[] items;
 
+	public Inventory(final int size) {
+		this(UUIDGenerator.obtainUUID(), size);
+	}
+	
 	public Inventory(final long uuid, final int size) {
 		this.uuid = uuid;
 		this.items = new Item[size];

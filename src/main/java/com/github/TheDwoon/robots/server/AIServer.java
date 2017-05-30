@@ -14,10 +14,12 @@ import java.io.IOException;
 
 public class AIServer implements Closeable {
 
+	private final RobotsServer robotsServer;
 	private Server discoveryServer;
 	private Server server;
 
-	public AIServer() throws IOException {
+	public AIServer(RobotsServer robotsServer) throws IOException {
+		this.robotsServer = robotsServer;
 		discoveryServer = new Server();
 		discoveryServer.start();
 		discoveryServer.bind(32007, 32006);
