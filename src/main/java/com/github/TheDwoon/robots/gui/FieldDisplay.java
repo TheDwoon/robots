@@ -12,32 +12,21 @@ import java.io.IOException;
 
 public abstract class FieldDisplay extends StackPane {
 
-    @FXML
-    private ImageView background;
-    @FXML
-    private ImageView entity;
-
-    protected FieldDisplay(final Image backgroundImage, final Image entityImage)
+    protected FieldDisplay(final ImageView backgroundImage, final ImageView entityImage)
             throws IOException {
-        FXMLUtils.loadFxRoot(this, FieldDisplay.class);
-        widthProperty().addListener((observable, oldValue, newValue) -> {
-            background.setFitWidth(newValue.doubleValue());
-            entity.setFitWidth(newValue.doubleValue());
-        });
-        heightProperty().addListener((observable, oldValue, newValue) -> {
-            background.setFitHeight(newValue.doubleValue());
-            entity.setFitHeight(newValue.doubleValue());
-        });
-        background.setImage(backgroundImage);
-        entity.setImage(entityImage);
+        Textures.bindSize(this, backgroundImage);
+        Textures.bindSize(this, entityImage);
+        getChildren().setAll(backgroundImage, entityImage);
     }
 
-    protected void setBackgroundImage(final Image backgroundImage) {
-        background.setImage(backgroundImage);
+    protected void setBackgroundImage(final ImageView backgroundImage) {
+        Textures.bindSize(this, backgroundImage);
+        getChildren().set(0, backgroundImage);
     }
 
-    protected void setEntityImage(final Image entityImage) {
-        entity.setImage(entityImage);
+    protected void setEntityImage(final ImageView entityImage) {
+        Textures.bindSize(this, entityImage);
+        getChildren().set(1, entityImage);
     }
 
 }

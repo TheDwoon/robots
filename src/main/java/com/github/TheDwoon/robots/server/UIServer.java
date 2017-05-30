@@ -30,7 +30,7 @@ public class UIServer implements Closeable {
     private Server server;
 
     public UIServer(RobotsServer robotsServer) throws IOException {
-    	this.robotsServer = robotsServer;
+        this.robotsServer = robotsServer;
         discoveryServer = new Server();
         discoveryServer.start();
         discoveryServer.bind(32017, 32016);
@@ -50,14 +50,12 @@ public class UIServer implements Closeable {
                         ObjectSpace.getRemoteObject(connection, 2, BoardObserver.class);
                 final EntityObserver entityObserver =
                         ObjectSpace.getRemoteObject(connection, 3, EntityObserver.class);
-                
-                UIServer.this.robotsServer.getBoardBroadcaster().registerObserver(boardObserver);
-                UIServer.this.robotsServer.getEntityBroadcaster().registerObserver(entityObserver);
-                UIServer.this.robotsServer.getInventoryBroadcaster().registerObserver(inventoryObserver);
 
-                new Thread(() -> {
-                	UIServer.this.robotsServer.transmitAll(boardObserver, entityObserver, inventoryObserver);
-                }).start();
+                robotsServer.getBoardBroadcaster().registerObserver(boardObserver);
+                robotsServer.getEntityBroadcaster().registerObserver(entityObserver);
+                robotsServer.getInventoryBroadcaster().registerObserver(inventoryObserver);
+
+                new Thread(() -> robotsServer.transmitAll(boardObserver, entityObserver, inventoryObserver)).start();
             }
 
             @Override

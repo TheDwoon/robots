@@ -6,8 +6,8 @@ import com.github.TheDwoon.robots.game.items.Item;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.io.IOException;
 public final class RobotDisplay extends HBox {
 
 	@FXML
-	private ImageView robotImage;
+	private StackPane robotImageContainer;
 	@FXML
 	private Label robotName;
 	@FXML
@@ -24,9 +24,14 @@ public final class RobotDisplay extends HBox {
 	public RobotDisplay(final Robot robot) throws IOException {
 		FXMLUtils.loadFxRoot(this);
 
-		robotImage.setImage(Textures.lookup(robot));
+		setRobotImage(Textures.lookup(robot));
 		robotName.setText(Long.toHexString(robot.getUUID()));
 		setInventory(robot.getInventory());
+	}
+
+	public void setRobotImage(ImageView robotImage) {
+		Textures.bindSize(robotImageContainer, robotImage);
+		this.robotImageContainer.getChildren().set(0, robotImage);
 	}
 
 	public void setInventory(Inventory inventory) throws IOException {
