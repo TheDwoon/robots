@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import com.github.TheDwoon.robots.game.Board;
 import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.InventoryImpl;
 import com.github.TheDwoon.robots.game.entity.Entity;
+import com.github.TheDwoon.robots.game.entity.RobotImpl;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
@@ -36,8 +38,8 @@ public final class RobotsServer implements Runnable {
 		}
 		
 		setBoard(board);
-		board.spawnEntity(new Robot(2, 2, new Inventory(12), null));
-		board.spawnEntity(new Robot(10, 2, new Inventory(12), null));
+		board.spawnEntity(new RobotImpl(2, 2, new InventoryImpl(12), null));
+		board.spawnEntity(new RobotImpl(10, 2, new InventoryImpl(12), null));
 	}
 	
 	public static void main(final String[] args) throws IOException {

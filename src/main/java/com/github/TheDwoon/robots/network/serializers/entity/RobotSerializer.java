@@ -7,6 +7,7 @@ import com.esotericsoftware.kryo.io.Output;
 import com.github.TheDwoon.robots.game.Inventory;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.entity.Robot;
+import com.github.TheDwoon.robots.game.entity.RobotImpl;
 import com.github.TheDwoon.robots.game.items.weapons.Weapon;
 
 /**
@@ -34,6 +35,6 @@ public class RobotSerializer extends Serializer<Robot> {
         int health = input.readInt();
         Inventory inventory = (Inventory) kryo.readClassAndObject(input);
         Weapon weapon = (Weapon) kryo.readClassAndObject(input);
-        return new Robot(uuid, x, y, maxHealth, health, inventory, weapon);
+        return new RobotImpl(uuid, x, y, maxHealth, health, inventory, weapon);
     }
 }

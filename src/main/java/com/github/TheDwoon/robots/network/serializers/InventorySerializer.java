@@ -5,6 +5,7 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.InventoryImpl;
 import com.github.TheDwoon.robots.game.items.Item;
 
 /**
@@ -22,6 +23,6 @@ public class InventorySerializer extends Serializer<Inventory> {
     public Inventory read(Kryo kryo, Input input, Class<Inventory> type) {
         long uuid = input.readLong();
         Item[] items = kryo.readObject(input, Item[].class);
-        return new Inventory(uuid, items);
+        return new InventoryImpl(uuid, items);
     }
 }

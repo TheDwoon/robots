@@ -5,6 +5,7 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.github.TheDwoon.robots.game.entity.Entity;
+import com.github.TheDwoon.robots.game.entity.EntityImpl;
 
 /**
  * Created by sigmar on 28.05.17.
@@ -23,6 +24,6 @@ public class EntitySerializer extends Serializer<Entity> {
         long uuid = input.readLong();
         int x = input.readInt();
         int y = input.readInt();
-        return new Entity(uuid, x, y) {};
+        return new EntityImpl(uuid, x, y) {};
     }
 }

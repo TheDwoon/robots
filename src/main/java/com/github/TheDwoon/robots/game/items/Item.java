@@ -2,8 +2,9 @@ package com.github.TheDwoon.robots.game.items;
 
 import com.github.TheDwoon.robots.game.InventoryHolder;
 import com.github.TheDwoon.robots.game.entity.Entity;
+import com.github.TheDwoon.robots.game.entity.EntityImpl;
 
-public abstract class Item extends Entity {
+public abstract class Item extends EntityImpl {
 	public Item() {
 		super(0, 0);
 	}

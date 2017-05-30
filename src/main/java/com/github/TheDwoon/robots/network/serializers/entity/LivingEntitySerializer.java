@@ -6,6 +6,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
+import com.github.TheDwoon.robots.game.entity.LivingEntityImpl;
 
 /**
  * Created by sigmar on 28.05.17.
@@ -28,6 +29,6 @@ public class LivingEntitySerializer extends Serializer<LivingEntity> {
         int y = input.readInt();
         int maxHealth = input.readInt();
         int health = input.readInt();
-        return new LivingEntity(uuid, x, y, maxHealth, health) { };
+        return new LivingEntityImpl(uuid, x, y, maxHealth, health) { };
     }
 }
