@@ -14,6 +14,11 @@ public abstract class ItemImpl extends EntityImpl implements Item {
 	}
 	
 	@Override
+	public void use() {
+		// TODO (danielw, 31.05.2017): implement
+	}
+	
+	@Override
 	public void pickUp(InventoryHolder entity) {
 		// TODO (danielw, 27.04.16): implement
 	}

@@ -3,10 +3,8 @@ package com.github.TheDwoon.robots.server;
 import java.io.IOException;
 
 import com.github.TheDwoon.robots.game.Board;
-import com.github.TheDwoon.robots.game.InventoryImpl;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.Robot;
-import com.github.TheDwoon.robots.game.entity.RobotImpl;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
@@ -16,6 +14,9 @@ import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.server.broadcaster.BoardBroadcaster;
 import com.github.TheDwoon.robots.server.broadcaster.EntityBroadcaster;
 import com.github.TheDwoon.robots.server.broadcaster.InventoryBroadcaster;
+import com.github.TheDwoon.robots.server.entity.ServerBomb;
+import com.github.TheDwoon.robots.server.entity.ServerItem;
+import com.github.TheDwoon.robots.server.entity.ServerRobot;
 
 public final class RobotsServer implements Runnable {
 	private final BoardBroadcaster boardBroadcaster;
@@ -31,15 +32,59 @@ public final class RobotsServer implements Runnable {
 		
 		Board board = null;
 		try {
-			board = MapFileParser.parseBoard(getClass().getResourceAsStream("/map/simple.map"));
+			board = MapFileParser.parseBoard(this, getClass().getResourceAsStream("/map/simple.map"));
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}
 		
 		setBoard(board);
-		board.spawnEntity(new RobotImpl(2, 2, new InventoryImpl(12), null));
-		board.spawnEntity(new RobotImpl(11, 2, new InventoryImpl(12), null));
-		board.spawnEntity(new RobotImpl(13, 8, new InventoryImpl(12), null));
+		
+		final ServerRobot randomRobot = new ServerRobot(this, 2, 2);
+		board.spawnEntity(randomRobot);
+		board.spawnEntity(new ServerRobot(this, 11, 2));
+		board.spawnEntity(new ServerRobot(this, 13, 8));
+		
+		new Thread(() -> {
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+			}
+			
+			ServerItem inventoryItem = null;
+			ServerItem spawnedItem = null;
+			ServerRobot visitor = null;
+			int slot = -1;
+			while (true) {				
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+				}
+				
+				if (inventoryItem == null) {
+					inventoryItem = new ServerBomb(RobotsServer.this);
+					slot = randomRobot.getInventory().addItem(inventoryItem);
+				} else {
+					randomRobot.getInventory().removeItem(slot);
+					inventoryItem = null;
+				}
+				
+				if (spawnedItem == null) {
+					spawnedItem = new ServerBomb(RobotsServer.this);
+					getBoard().spawnEntity(spawnedItem, 5, 5);
+				} else {
+					getBoard().removeEntity(spawnedItem);
+					spawnedItem = null;
+				}
+				
+				if (visitor == null) {
+					visitor = new ServerRobot(RobotsServer.this, 1, 4);
+					getBoard().spawnEntity(visitor);
+				} else {
+					getBoard().removeEntity(visitor);
+					visitor = null;
+				}
+			}
+		}).start();
 	}
 	
 	public static void main(final String[] args) throws IOException {

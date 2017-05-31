@@ -34,15 +34,15 @@ public class InventoryImpl implements Inventory {
 	}
 
 	@Override
-	public boolean addItem(final Item item) {
+	public int addItem(final Item item) {
 		for (int i = 0; i < size(); i++) {
 			if (items[i] == null) {
 				items[i] = item;
-				return true;
+				return i;
 			}
 		}
 
-		return false;
+		return -1;
 	}
 
 	@Override

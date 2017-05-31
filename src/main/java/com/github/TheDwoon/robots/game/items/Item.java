@@ -9,6 +9,8 @@ import com.github.TheDwoon.robots.game.entity.Entity;
 public interface Item extends Entity {
     void pickUp(InventoryHolder entity);
 
+    void use();
+    
     void drop();
 
     default String getType() {

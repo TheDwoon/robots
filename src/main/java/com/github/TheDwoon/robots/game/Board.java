@@ -3,21 +3,26 @@ package com.github.TheDwoon.robots.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.TheDwoon.robots.game.entity.Entity;
+import com.github.TheDwoon.robots.game.entity.Robot;
+import com.github.TheDwoon.robots.server.RobotsServer;
+import com.github.TheDwoon.robots.server.entity.ServerEntity;
+import com.github.TheDwoon.robots.server.entity.ServerRobot;
 
 public class Board {
-	private static final int DEFAULT_WIDTH = 100;
-	private static final int DEFAULT_HEIGHT = 100;
+//	private static final int DEFAULT_WIDTH = 100;
+//	private static final int DEFAULT_HEIGHT = 100;
 	private static final Material DEFAULT_MATERIAL = Material.GRASS;
 	private static final Material DEFAULT_BORDER = Material.VOID;
 		
+	private final RobotsServer server;
 	private final long uuid;
 	private final int width;
 	private final int height;
-	private final List<Entity> entities;
+	private final List<ServerEntity> entities;
 	private final Field[][] fields;
 		
-	public Board(long uuid, final int width, final int height) {
+	public Board(RobotsServer server, long uuid, final int width, final int height) {
+		this.server = server;
 		this.width = width;
 		this.height = height;
 		this.entities = new ArrayList<>(64);
@@ -33,7 +38,8 @@ public class Board {
 		this.uuid = uuid;
 	}
 
-	public Board(long uuid, final Field[][] fields) {
+	public Board(RobotsServer server, long uuid, final Field[][] fields) {
+		this.server = server;
 		this.entities = new ArrayList<>(64);
 		this.fields = fields;
 		this.width = fields.length;
@@ -53,29 +59,37 @@ public class Board {
 		return fields[x][y];
 	}
 	
-	public void spawnEntity(Entity entity, int x, int y) {
+	public void spawnEntity(ServerEntity entity, int x, int y) {
 		if (entity != null) {
 			entity.setPosition(x, y);
-			entities.add(entity);
+			spawnEntity(entity);
 		}
 	}
 	
-	public void spawnEntity(Entity entity) {
+	public void spawnEntity(ServerEntity entity) {
 		if (entity != null) {
 			entities.add(entity);
-		}
+			
+			if (entity instanceof ServerRobot) {
+				getServer().getEntityBroadcaster().spawnRobot(((ServerRobot) entity).getRobot());
+			} else {
+				getServer().getEntityBroadcaster().spawnEntity(entity.getEntity());
+			}
+		}		
 	}
 	
-	public void removeEntity(Entity entity) {
-		if (entity != null)
+	public void removeEntity(ServerEntity entity) {
+		if (entity != null) {
 			entities.remove(entity);
+			getServer().getEntityBroadcaster().removeEntity(entity.getUUID());
+		}
 	}
 		
 	public final long getUUID() {
 		return uuid;
 	}
 	
-	public List<Entity> getEntities() {
+	public List<ServerEntity> getEntities() {
 		return entities;
 	}
 	
@@ -94,4 +108,7 @@ public class Board {
 		return sb.toString();
 	}
 
+	public final RobotsServer getServer() {
+		return server;
+	}
 }

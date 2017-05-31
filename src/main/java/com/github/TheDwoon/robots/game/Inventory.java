@@ -10,7 +10,7 @@ public interface Inventory {
 
     Item[] getItems();
 
-    boolean addItem(Item item);
+    int addItem(Item item);
 
     void removeItem(int slot);
 
