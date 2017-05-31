@@ -14,10 +14,14 @@ import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.network.KryoRegistry;
 
-public final class RobotsClient {
+public final class RobotsClient implements Runnable {
 
 	private static final Logger log = LogManager.getLogger();
 
+	private RobotsClient() {
+		
+	}
+	
 	public static void main(final String[] args) throws IOException {
 		KryoNetLoggerProxy.setAsKryoLogger();
 
@@ -47,6 +51,12 @@ public final class RobotsClient {
 		}
 
 		client.stop();
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

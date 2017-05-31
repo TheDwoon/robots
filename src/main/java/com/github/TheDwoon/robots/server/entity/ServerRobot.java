@@ -3,14 +3,14 @@ package com.github.TheDwoon.robots.server.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.TheDwoon.robots.client.student.AI;
+import com.github.TheDwoon.robots.client.student.AbstractBasicAI;
 import com.github.TheDwoon.robots.game.Board;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.InventoryImpl;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.entity.RobotImpl;
-import com.github.TheDwoon.robots.game.items.weapons.Weapon;
 import com.github.TheDwoon.robots.server.RobotsServer;
 
 /**
@@ -18,10 +18,11 @@ import com.github.TheDwoon.robots.server.RobotsServer;
  */
 public class ServerRobot extends ServerLivingEntity implements Robot {
     private final Robot robot;
-    private AI ai;
+    private final Inventory inventory;
+    private AbstractBasicAI ai;
     
     public ServerRobot(RobotsServer server, int x, int y) {
-    	this(server, new RobotImpl(x, y, new ServerInventory(server), null));
+    	this(server, new RobotImpl(x, y, new InventoryImpl(ServerInventory.DEFAULT_SIZE)));    	
     }
     
     public ServerRobot(RobotsServer server, Robot robot) {
@@ -29,9 +30,11 @@ public class ServerRobot extends ServerLivingEntity implements Robot {
     }
     
     // AI may be null
-    public ServerRobot(RobotsServer server, Robot robot, AI ai) {
+    public ServerRobot(RobotsServer server, Robot robot, AbstractBasicAI ai) {
     	super(server, robot);
     	
+    	// wrapping the robots Inventory with the tracked ServerInventory.
+    	this.inventory = new ServerInventory(server, robot.getInventory());
         this.robot = robot;
         this.ai = ai;
     }
@@ -68,16 +71,13 @@ public class ServerRobot extends ServerLivingEntity implements Robot {
     			visableEntity.add(e.getEntity());
     		}
     	}
+    	
+    	// TODO (danielw, 31.05.2017): add AI calls
     }
     
     @Override
     public Inventory getInventory() {
-        return robot.getInventory();
-    }
-
-    @Override
-    public Weapon getWeapon() {
-        return robot.getWeapon();
+        return inventory;
     }
 
     @Override
@@ -94,11 +94,11 @@ public class ServerRobot extends ServerLivingEntity implements Robot {
         return robot;
     }
     
-    public final AI getAI() {
+    public final AbstractBasicAI getAI() {
 		return ai;
 	}
     
-    public final void setAI(AI ai) {
+    public final void setAI(AbstractBasicAI ai) {
     	this.ai = ai;
     }
 }
