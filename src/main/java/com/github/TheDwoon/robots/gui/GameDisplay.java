@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Math.floor;
 import static java.lang.Math.min;
 
 public final class GameDisplay extends HBox
@@ -61,10 +62,10 @@ public final class GameDisplay extends HBox
 
             @Override
             protected double computeValue() {
-                return min(
+                return floor(min(
                         gameBoardContainer.widthProperty().getValue() / boardFieldDisplays.length,
                         gameBoardContainer.heightProperty().getValue()
-                                / boardFieldDisplays[0].length);
+                                / boardFieldDisplays[0].length));
             }
 
             @Override

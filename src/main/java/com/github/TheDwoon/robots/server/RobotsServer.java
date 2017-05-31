@@ -38,7 +38,7 @@ public final class RobotsServer implements Runnable {
 		
 		setBoard(board);
 		board.spawnEntity(new RobotImpl(2, 2, new InventoryImpl(12), null));
-		board.spawnEntity(new RobotImpl(10, 2, new InventoryImpl(12), null));
+		board.spawnEntity(new RobotImpl(11, 2, new InventoryImpl(12), null));
 		board.spawnEntity(new RobotImpl(13, 8, new InventoryImpl(12), null));
 	}
 	

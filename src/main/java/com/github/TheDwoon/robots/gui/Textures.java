@@ -13,6 +13,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -22,19 +23,25 @@ import java.util.Map;
  */
 public class Textures {
 
+    private static final Map<Material, Image> materialImageCache = new EnumMap<>(Material.class);
+    private static final Map<String, Image> entityImageCache = new HashMap<>();
+    private static Image inventoryBackgroundCache = null;
+
     public static ImageView lookup(final Material material) {
-        return new ImageView(new Image(Textures.class.getResourceAsStream(
-                "/textures/material_" + material.toString().toLowerCase() + ".png")));
+        Image image = materialImageCache.computeIfAbsent(material, m -> new Image(Textures.class.getResourceAsStream(
+                "/textures/material_" + m.toString().toLowerCase() + ".png")));
+        return new ImageView(image);
     }
 
     public static ImageView lookup(final Entity entity) {
         if (entity != null) {
-            ImageView image = new ImageView(new Image(Textures.class.getResourceAsStream(
-                    "/textures/entity_" + entity.getType().toLowerCase() + ".png")));
+            Image image = entityImageCache.computeIfAbsent(entity.getType(), t -> new Image(Textures.class.getResourceAsStream(
+                    "/textures/entity_" + t.toLowerCase() + ".png")));
+            ImageView imageView = new ImageView(image);
             if (entity instanceof Robot) {
-                addColorFilter(image, RobotPaintManager.instance().getPaint((Robot) entity));
+                addColorFilter(imageView, RobotPaintManager.instance().getPaint((Robot) entity));
             }
-            return image;
+            return imageView;
         } else {
             return new ImageView();
         }
@@ -45,29 +52,26 @@ public class Textures {
     }
 
     public static ImageView lookupInventoryBackground() {
-        return new ImageView(new Image(Textures.class.getResourceAsStream("/textures/inventory.png")));
+        if (inventoryBackgroundCache == null) {
+            inventoryBackgroundCache = new Image(Textures.class.getResourceAsStream("/textures/inventory.png"));
+        }
+        return new ImageView(inventoryBackgroundCache);
     }
 
     private static void addColorFilter(ImageView imageView, Paint paint) {
-        ColorAdjust monochrome = new ColorAdjust();
-        monochrome.setSaturation(-1.0);
-
         ImageView clipImage = new ImageView(imageView.getImage());
         clipImage.fitHeightProperty().bind(imageView.fitHeightProperty());
         clipImage.fitWidthProperty().bind(imageView.fitWidthProperty());
         imageView.setClip(clipImage);
-        Blend blush = new Blend(
-                BlendMode.MULTIPLY,
-                monochrome,
-                new ColorInput(
-                        0,
-                        0,
-                        imageView.getImage().getWidth(),
-                        imageView.getImage().getHeight(),
-                        paint
-                )
-        );
-        imageView.setEffect(blush);
+
+        ColorAdjust monochrome = new ColorAdjust();
+        monochrome.setSaturation(-1.0);
+
+        ColorInput colorInput = new ColorInput(0, 0, 0, 0, paint);
+        colorInput.widthProperty().bind(imageView.fitWidthProperty());
+        colorInput.heightProperty().bind(imageView.fitHeightProperty());
+
+        imageView.setEffect(new Blend(BlendMode.MULTIPLY, monochrome, colorInput));
     }
 
     public static void bindSize(Region container, ImageView imageView) {

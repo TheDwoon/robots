@@ -1,19 +1,16 @@
 package com.github.TheDwoon.robots.server;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public final class UUIDGenerator {
-	private static volatile Long uuidCounter = new Long(1);
+	private static volatile AtomicLong uuidCounter = new AtomicLong(1);
 	
 	private UUIDGenerator() {
 		
 	}
 	
 	public static long obtainUUID() {
-		long uuid = 0;
-		synchronized(uuidCounter) {
-			uuid = uuidCounter++;
-		}
-		
-		return uuid;
+		return uuidCounter.getAndIncrement();
 	}
 	
 	public static boolean isValid(long uuid) {
