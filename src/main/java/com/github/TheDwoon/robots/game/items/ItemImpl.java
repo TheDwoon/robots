@@ -1,7 +1,6 @@
 package com.github.TheDwoon.robots.game.items;
 
 import com.github.TheDwoon.robots.game.InventoryHolder;
-import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.EntityImpl;
 
 public abstract class ItemImpl extends EntityImpl implements Item {

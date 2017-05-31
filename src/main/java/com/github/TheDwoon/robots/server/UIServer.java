@@ -23,7 +23,7 @@ public class UIServer implements Closeable {
     private Server discoveryServer;
     private Server server;
 
-    public UIServer(RobotsServer robotsServer) throws IOException {
+    public UIServer(final RobotsServer robotsServer) throws IOException {
         this.robotsServer = robotsServer;
         discoveryServer = new Server();
         discoveryServer.start();

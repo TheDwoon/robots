@@ -13,7 +13,6 @@ import com.github.TheDwoon.robots.server.actions.PlayerAction;
 
 public class AbstractBasicAI implements AI {
 	private Robot robot;
-	private Inventory inventory;
 	private List<Field> fields;
 	private List<Entity> entities;
 	

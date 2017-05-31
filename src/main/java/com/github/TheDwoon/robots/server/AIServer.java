@@ -32,7 +32,7 @@ public class AIServer implements Closeable {
 			@Override
 			public void connected(final Connection connection) {
 				objectSpace.addConnection(connection);
-				
+				AI ai = objectSpace.getRemoteObject(connection, 1, AI.class);
 				// TODO (sigmar, 26.05.2017): insert RemoteRobot instantiation here
 			}
 

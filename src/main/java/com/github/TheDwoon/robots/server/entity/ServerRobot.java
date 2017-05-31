@@ -77,7 +77,7 @@ public class ServerRobot extends ServerLivingEntity implements Robot {
     
     @Override
     public Inventory getInventory() {
-        return inventory;
+        return robot.getInventory();
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.github.TheDwoon.robots.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.server.RobotsServer;
 import com.github.TheDwoon.robots.server.entity.ServerEntity;
 import com.github.TheDwoon.robots.server.entity.ServerRobot;
@@ -69,7 +68,7 @@ public class Board {
 	public void spawnEntity(ServerEntity entity) {
 		if (entity != null) {
 			entities.add(entity);
-			
+						
 			if (entity instanceof ServerRobot) {
 				getServer().getEntityBroadcaster().spawnRobot(((ServerRobot) entity).getRobot());
 			} else {

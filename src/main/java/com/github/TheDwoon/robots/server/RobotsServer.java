@@ -8,6 +8,8 @@ import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
+import com.github.TheDwoon.robots.game.items.BombImpl;
+import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.mapfile.MapFileParser;
 import com.github.TheDwoon.robots.mapfile.ParseException;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
@@ -50,7 +52,7 @@ public final class RobotsServer implements Runnable {
 			} catch (InterruptedException e) {
 			}
 			
-			ServerItem inventoryItem = null;
+			Item inventoryItem = null;
 			ServerItem spawnedItem = null;
 			ServerRobot visitor = null;
 			int slot = -1;
@@ -61,7 +63,7 @@ public final class RobotsServer implements Runnable {
 				}
 				
 				if (inventoryItem == null) {
-					inventoryItem = new ServerBomb(RobotsServer.this);
+					inventoryItem = new BombImpl();
 					slot = randomRobot.getInventory().addItem(inventoryItem);
 				} else {
 					randomRobot.getInventory().removeItem(slot);
