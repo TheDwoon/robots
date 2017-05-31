@@ -12,7 +12,6 @@ public final class TurnLeft implements PlayerAction {
 
 	@Override
 	public void apply(ServerRobot robot) {
-		// TODO Auto-generated method stub
-		
+		robot.turnLeft();
 	}
 }
