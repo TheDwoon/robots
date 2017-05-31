@@ -35,9 +35,9 @@ public class KryoRegistry {
         kryo.register(InventoryObserver.class);
         kryo.register(EntityObserver.class);
         kryo.register(Field.class, new FieldSerializer());
-        kryo.addDefaultSerializer(Robot.class, new RobotSerializer());
-        kryo.addDefaultSerializer(LivingEntity.class, new LivingEntitySerializer());
-        kryo.addDefaultSerializer(Entity.class, new EntitySerializer());
-        kryo.addDefaultSerializer(Inventory.class, new InventorySerializer());
+        kryo.addDefaultSerializer(Robot.class, RobotSerializer.class);
+        kryo.addDefaultSerializer(LivingEntity.class, LivingEntitySerializer.class);
+        kryo.addDefaultSerializer(Entity.class, EntitySerializer.class);
+        kryo.addDefaultSerializer(Inventory.class, InventorySerializer.class);
     }
 }
