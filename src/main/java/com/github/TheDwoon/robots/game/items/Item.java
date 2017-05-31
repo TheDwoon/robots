@@ -12,8 +12,4 @@ public interface Item extends Entity {
     void use();
     
     void drop();
-
-    default String getType() {
-        return getClass().getSimpleName().replaceAll("Impl$", "");
-    }
 }

@@ -112,7 +112,7 @@ public final class GameDisplay extends HBox
     public void createInventory(Inventory inventory) {
         RobotDisplay robotDisplay = robotDisplays.entrySet().parallelStream()
                 .filter(entry -> entry.getKey().getInventory().equals(inventory))
-                .map(Map.Entry::getValue).findAny().orElseGet(null);
+                .map(Map.Entry::getValue).findAny().orElse(null);
         inventories.put(inventory.getUUID(), robotDisplay);
         if (robotDisplay != null) {
             try {
@@ -166,13 +166,16 @@ public final class GameDisplay extends HBox
     @Override
     public void removeEntity(long uuid) {
         Entity entity = entities.get(uuid);
-        boardFieldDisplays[entity.getX()][entity.getY()].setEntity(null);
-        entities.remove(uuid);
-        if (entity instanceof Robot) {
-            Robot robot = (Robot) entity;
-            RobotDisplay robotDisplay = robotDisplays.remove(robot);
-            robotsContainer.getChildren().remove(robotDisplay);
-            Textures.removeRobot(robot);
+        if (entity != null) {
+            boardFieldDisplays[entity.getX()][entity.getY()].setEntity(null);
+            entities.remove(uuid);
+            if (entity instanceof Robot) {
+                Robot robot = (Robot) entity;
+                RobotDisplay robotDisplay = robotDisplays.remove(robot);
+                robotsContainer.getChildren().remove(robotDisplay);
+                Textures.removeRobot(robot);
+
+            }
         }
     }
 
