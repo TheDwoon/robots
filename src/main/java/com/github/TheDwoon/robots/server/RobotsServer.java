@@ -3,8 +3,6 @@ package com.github.TheDwoon.robots.server;
 import java.io.IOException;
 
 import com.github.TheDwoon.robots.game.Board;
-import com.github.TheDwoon.robots.game.entity.Entity;
-import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
@@ -17,6 +15,7 @@ import com.github.TheDwoon.robots.server.broadcaster.BoardBroadcaster;
 import com.github.TheDwoon.robots.server.broadcaster.EntityBroadcaster;
 import com.github.TheDwoon.robots.server.broadcaster.InventoryBroadcaster;
 import com.github.TheDwoon.robots.server.entity.ServerBomb;
+import com.github.TheDwoon.robots.server.entity.ServerEntity;
 import com.github.TheDwoon.robots.server.entity.ServerItem;
 import com.github.TheDwoon.robots.server.entity.ServerRobot;
 
@@ -125,11 +124,11 @@ public final class RobotsServer implements Runnable {
 		}
 		
 		if (eObserver != null && board != null) {
-			for (Entity e : board.getEntities()) {
-				if (e instanceof Robot) {
-					eObserver.spawnRobot((Robot) e);
+			for (ServerEntity e : board.getEntities()) {
+				if (e instanceof ServerRobot) {
+					eObserver.spawnRobot(((ServerRobot) e).getRobot());
 				} else {
-					eObserver.spawnEntity(e);
+					eObserver.spawnEntity(e.getEntity());
 				}
 			}
 		}
