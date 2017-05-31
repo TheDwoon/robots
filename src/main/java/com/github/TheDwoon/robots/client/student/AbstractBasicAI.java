@@ -46,10 +46,4 @@ public class AbstractBasicAI implements AI {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void updateInventory(long uuid, int slot, Item item) {
-		// TODO Auto-generated method stub
-		
-	}
 }
