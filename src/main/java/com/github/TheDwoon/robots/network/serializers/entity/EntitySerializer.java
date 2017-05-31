@@ -1,11 +1,11 @@
 package com.github.TheDwoon.robots.network.serializers.entity;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.KryoException;
 import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.github.TheDwoon.robots.game.entity.Entity;
-import com.github.TheDwoon.robots.game.entity.EntityImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,18 +32,24 @@ public class EntitySerializer<T extends Entity> extends Serializer<T> {
         int x = input.readInt();
         int y = input.readInt();
 
+        return create(type, uuid, x, y);
+    }
+
+    protected final T create(Class<T> type, long uuid, int x, int y) {
         try {
             Constructor<T> constructor = type.getConstructor(long.class, int.class, int.class);
             return constructor.newInstance(uuid, x, y);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            try {
-                Constructor<T> constructor = type.getConstructor();
-                return constructor.newInstance();
-            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e1) {
-                log.debug("Could not find Constructor for class: {}", type.getName());
-                return (T) new EntityImpl(uuid, x, y) {
-                };
-            }
+            return create(type);
+        }
+    }
+
+    protected final T create(Class<T> type) {
+        try {
+            Constructor<T> constructor = type.getConstructor();
+            return constructor.newInstance();
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e1) {
+            throw new KryoException("Could not find Constructor for class: " + type.getName());
         }
     }
 }
