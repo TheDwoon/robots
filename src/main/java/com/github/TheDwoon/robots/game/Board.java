@@ -59,28 +59,34 @@ public class Board {
 	}
 	
 	public void spawnEntity(ServerEntity entity, int x, int y) {
-		if (entity != null) {
-			entity.setPosition(x, y);
-			spawnEntity(entity);
+		synchronized (entities) {
+			if (entity != null) {
+				entity.setPosition(x, y);
+				spawnEntity(entity);
+			}			
 		}
 	}
 	
 	public void spawnEntity(ServerEntity entity) {
-		if (entity != null) {
-			entities.add(entity);
-						
-			if (entity instanceof ServerRobot) {
-				getServer().getEntityBroadcaster().spawnRobot(((ServerRobot) entity).getRobot());
-			} else {
-				getServer().getEntityBroadcaster().spawnEntity(entity.getEntity());
-			}
-		}		
+		synchronized (entities) {
+			if (entity != null) {
+				entities.add(entity);
+				
+				if (entity instanceof ServerRobot) {
+					getServer().getEntityBroadcaster().spawnRobot(((ServerRobot) entity).getRobot());
+				} else {
+					getServer().getEntityBroadcaster().spawnEntity(entity.getEntity());
+				}
+			}			
+		}
 	}
 	
 	public void removeEntity(ServerEntity entity) {
-		if (entity != null) {
-			entities.remove(entity);
-			getServer().getEntityBroadcaster().removeEntity(entity.getUUID());
+		synchronized (entities) {
+			if (entity != null) {
+				entities.remove(entity);
+				getServer().getEntityBroadcaster().removeEntity(entity.getUUID());
+			}			
 		}
 	}
 		
@@ -89,7 +95,7 @@ public class Board {
 	}
 	
 	public List<ServerEntity> getEntities() {
-		return new ArrayList<>(entities);
+		return entities;
 	}
 	
 	@Override

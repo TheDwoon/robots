@@ -1,5 +1,6 @@
 package com.github.TheDwoon.robots.server.actions.movement;
 
+import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
 import com.github.TheDwoon.robots.server.entity.ServerRobot;
 
@@ -12,7 +13,7 @@ public final class DriveForward implements PlayerAction {
 
 	@Override
 	public void apply(ServerRobot robot) {
-		// TODO Auto-generated method stub
+		Facing facing = robot.getFacing();
 		
 	}
 }

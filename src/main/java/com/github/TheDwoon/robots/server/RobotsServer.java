@@ -1,7 +1,11 @@
 package com.github.TheDwoon.robots.server;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
+import com.github.TheDwoon.robots.client.student.RandomDriveAI;
 import com.github.TheDwoon.robots.game.Board;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
@@ -41,6 +45,7 @@ public final class RobotsServer implements Runnable {
 		setBoard(board);
 		
 		final ServerRobot randomRobot = new ServerRobot(this, 2, 2);
+		randomRobot.setAI(new RandomDriveAI());
 		board.spawnEntity(randomRobot);
 		board.spawnEntity(new ServerRobot(this, 11, 2));
 		board.spawnEntity(new ServerRobot(this, 13, 8));
@@ -99,16 +104,31 @@ public final class RobotsServer implements Runnable {
 		KryoNetLoggerProxy.setAsKryoLogger();
 
 		try (AIServer aiServer = new AIServer(this); UIServer uiServer = new UIServer(this)) {
+			Thread.sleep(5000);
 			while (true) {
 				// TODO (danielw, 30.05.2017): maybe a server "shell" here
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					break;
+				
+				List<ServerEntity> entities = board.getEntities();
+				synchronized (entities) {
+					List<ServerEntity> despawnEntities = new LinkedList<>();
+					Iterator<ServerEntity> it = entities.iterator();
+					while (it.hasNext()) {
+						ServerEntity e = it.next();
+						try {
+							e.update();
+						} catch (Exception e1) {
+							despawnEntities.add(e);
+						}
+					}
+					
+					despawnEntities.forEach(e -> board.removeEntity(e));
 				}
+				
+				Thread.sleep(1000);				
 			}
 		} catch (IOException e) {
+			// ignore
+		} catch (InterruptedException e) {
 			// ignore
 		}
 	}
