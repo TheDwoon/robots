@@ -1,8 +1,11 @@
 package com.github.TheDwoon.robots.game.entity;
 
+import com.github.TheDwoon.robots.game.Facing;
+
 public abstract class LivingEntityImpl extends EntityImpl implements LivingEntity {
 
 	private final int maxHealth;
+	private Facing facing = Facing.NORTH;
 	private int health;
 	
 	public LivingEntityImpl(int x, int y, int maxHealth) {
@@ -47,5 +50,15 @@ public abstract class LivingEntityImpl extends EntityImpl implements LivingEntit
 	@Override
 	public final boolean isDead() {
 		return !isAlive();
+	}
+	
+	@Override
+	public Facing getFacing() {
+		return facing;
+	}
+	
+	@Override
+	public void setFacing(Facing facing) {
+		this.facing = facing;
 	}
 }

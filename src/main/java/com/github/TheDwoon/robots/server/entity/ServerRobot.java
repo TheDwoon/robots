@@ -84,7 +84,7 @@ public class ServerRobot extends ServerLivingEntity implements Robot {
         return inventory;
     }
 
-    @Override
+	@Override
     public boolean equals(Object obj) {
         return robot.equals(obj);
     }

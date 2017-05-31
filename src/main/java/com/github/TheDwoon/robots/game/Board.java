@@ -89,7 +89,7 @@ public class Board {
 	}
 	
 	public List<ServerEntity> getEntities() {
-		return entities;
+		return new ArrayList<>(entities);
 	}
 	
 	@Override

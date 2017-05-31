@@ -9,7 +9,7 @@ import com.github.TheDwoon.robots.server.actions.PlayerAction;
 
 public interface AI {
 	// Methods to keep track of the robots state.
-	void updateRobot(Robot entity);
+	void updateRobot(Robot robot);
 	
 	// Keeping track of the vision things.
 	void updateVision(List<Field> fields, List<Entity> entities);
