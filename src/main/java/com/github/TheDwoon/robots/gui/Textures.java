@@ -12,7 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.InputStream;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -23,20 +26,22 @@ import java.util.Map;
  */
 public class Textures {
 
+    public static final Logger log = LogManager.getLogger();
+
     private static final Map<Material, Image> materialImageCache = new EnumMap<>(Material.class);
     private static final Map<String, Image> entityImageCache = new HashMap<>();
     private static Image inventoryBackgroundCache = null;
 
     public static ImageView lookup(final Material material) {
-        Image image = materialImageCache.computeIfAbsent(material, m -> new Image(Textures.class.getResourceAsStream(
-                "/textures/material_" + m.toString().toLowerCase() + ".png")));
+        Image image = materialImageCache.computeIfAbsent(material,
+                m -> new Image(getTextureResource("material_" + m.toString().toLowerCase())));
         return new ImageView(image);
     }
 
     public static ImageView lookup(final Entity entity) {
         if (entity != null) {
-            Image image = entityImageCache.computeIfAbsent(entity.getType(), t -> new Image(Textures.class.getResourceAsStream(
-                    "/textures/entity_" + t.toLowerCase() + ".png")));
+            Image image = entityImageCache.computeIfAbsent(entity.getType(),
+                    t -> new Image(getTextureResource("entity_" + t.toLowerCase())));
             ImageView imageView = new ImageView(image);
             if (entity instanceof Robot) {
                 addColorFilter(imageView, RobotPaintManager.instance().getPaint((Robot) entity));
@@ -53,9 +58,23 @@ public class Textures {
 
     public static ImageView lookupInventoryBackground() {
         if (inventoryBackgroundCache == null) {
-            inventoryBackgroundCache = new Image(Textures.class.getResourceAsStream("/textures/inventory.png"));
+            inventoryBackgroundCache = new Image(getTextureResource("inventory"));
         }
         return new ImageView(inventoryBackgroundCache);
+    }
+
+    private static InputStream getTextureResource(String classifier) {
+        InputStream textureResource = getTextureResourceUnchecked(classifier);
+        if (textureResource == null) {
+            log.error("Could not find texture for {}", classifier);
+            textureResource = getTextureResourceUnchecked("error");
+        }
+        return textureResource;
+    }
+
+    private static InputStream getTextureResourceUnchecked(String classifier) {
+        String name = "/textures/" + classifier + ".png";
+        return Textures.class.getResourceAsStream(name);
     }
 
     private static void addColorFilter(ImageView imageView, Paint paint) {
