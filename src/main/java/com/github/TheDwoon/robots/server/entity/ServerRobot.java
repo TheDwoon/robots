@@ -48,7 +48,7 @@ public class ServerRobot extends ServerLivingEntity implements Robot {
     	}
     	
     	final List<Field> visableFields = new ArrayList<>(16);
-    	final List<Entity> visableEntity = new ArrayList<>(8);
+    	final List<Entity> visableEntities = new ArrayList<>(8);
     	
     	final int posX = robot.getX();
     	final int posY = robot.getY();
@@ -68,16 +68,20 @@ public class ServerRobot extends ServerLivingEntity implements Robot {
     	for (ServerEntity e : board.getEntities()) {
     		if (Math.abs(posX - e.getX()) + Math.abs(posY - e.getY()) <= 2) {
     			// only add data holding entity
-    			visableEntity.add(e.getEntity());
+    			visableEntities.add(e.getEntity());
     		}
     	}
     	
-    	// TODO (danielw, 31.05.2017): add AI calls
+    	ai.updateRobot(getRobot());
+    	ai.updateVision(visableFields, visableEntities);
+    	
+    	// TODO (danielw, 01.06.2017): maybe "think" in another thread.
+    	ai.makeTurn();
     }
     
     @Override
     public Inventory getInventory() {
-        return robot.getInventory();
+        return inventory;
     }
 
     @Override
