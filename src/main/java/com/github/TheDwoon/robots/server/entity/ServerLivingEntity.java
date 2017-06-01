@@ -82,7 +82,7 @@ public class ServerLivingEntity extends ServerEntity implements LivingEntity {
 		Facing facing = Facing.opposite(getFacing());
 		
 		final int nx = Math.min(getServer().getBoard().getWidth() - 1, Math.max(0, getX() + facing.dx));
-		final int ny = Math.min(getServer().getBoard().getHeight() - 1, Math.max(0, getY()) + facing.dy);
+		final int ny = Math.min(getServer().getBoard().getHeight() - 1, Math.max(0, getY() + facing.dy));
 		
 		if (getServer().getBoard().getField(nx, ny).getMaterial().isVisitable()) {
 			setPosition(nx, ny);
