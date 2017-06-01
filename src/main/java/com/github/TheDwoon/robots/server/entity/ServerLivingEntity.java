@@ -60,30 +60,28 @@ public class ServerLivingEntity extends ServerEntity implements LivingEntity {
 	}
 
 	public void turnLeft() {
-		setFacing(Facing.left(getFacing()));
+		setFacing(getFacing().left());
 	}
 	
 	public void turnRight() {
-		setFacing(Facing.right(getFacing()));
+		setFacing(getFacing().right());
 	}
 	
 	public void driveForward() {
 		Facing facing = getFacing();
-		
-		final int nx = Math.min(getServer().getBoard().getWidth() - 1, Math.max(0, getX() + facing.dx));
-		final int ny = Math.min(getServer().getBoard().getHeight() - 1, Math.max(0, getY()) + facing.dy);
-		
-		if (getServer().getBoard().getField(nx, ny).getMaterial().isVisitable()) {
-			setPosition(nx, ny);
-		}
+		drive(facing.dx, facing.dy);
 	}
 	
 	public void driveBackward() {
-		Facing facing = Facing.opposite(getFacing());
-		
-		final int nx = Math.min(getServer().getBoard().getWidth() - 1, Math.max(0, getX() + facing.dx));
-		final int ny = Math.min(getServer().getBoard().getHeight() - 1, Math.max(0, getY() + facing.dy));
-		
+		Facing facing = getFacing();
+		drive(-facing.dx, -facing.dy);
+	}
+
+	private void drive(int dx, int dy) {
+		final int nx = Math.min(getServer().getBoard().getWidth() - 1, Math.max(0, getX() + dx));
+		final int ny = Math.min(getServer().getBoard().getHeight() - 1, Math.max(0, getY() + dy));
+
+		// TODO (sigmarw, 01.06.2017): add collision check with other LivingEntities
 		if (getServer().getBoard().getField(nx, ny).getMaterial().isVisitable()) {
 			setPosition(nx, ny);
 		}

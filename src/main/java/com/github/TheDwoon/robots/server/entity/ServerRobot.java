@@ -76,7 +76,8 @@ public class ServerRobot extends ServerLivingEntity implements Robot {
     	ai.updateVision(visableFields, visableEntities);
     	
     	// TODO (danielw, 01.06.2017): maybe "think" in another thread.
-    	ai.makeTurn().apply(this);;
+		// (sigmarw, 01.06.2017): I think, it's better to do real 'turn based' gameplay with timeouts for each player instead of parallel thinking
+		ai.makeTurn().apply(this);
     }
     
     @Override

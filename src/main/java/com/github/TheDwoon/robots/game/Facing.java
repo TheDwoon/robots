@@ -1,21 +1,21 @@
 package com.github.TheDwoon.robots.game;
 
 public enum Facing {
-	NORTH(0, 1),
+	NORTH(0, -1),
 	WEST(-1, 0),
-	SOUTH(0, -1),
+	SOUTH(0, 1),
 	EAST(1, 0);
 	
 	public final int dx;
 	public final int dy;
-	
-	private Facing(int dx, int dy) {
+
+	Facing(int dx, int dy) {
 		this.dx = dx;
 		this.dy = dy;
 	}
-	
-	public static Facing opposite(Facing facing) {
-		switch (facing) {
+
+	public Facing opposite() {
+		switch (this) {
 		case NORTH:
 			return SOUTH;
 		case WEST:
@@ -29,8 +29,8 @@ public enum Facing {
 		}
 	}
 	
-	public static Facing left(Facing facing) {
-		switch (facing) {
+	public Facing left() {
+		switch (this) {
 		case NORTH:
 			return WEST;
 		case WEST:
@@ -44,8 +44,8 @@ public enum Facing {
 		}
 	}
 	
-	public static Facing right(Facing facing) {
-		switch (facing) {
+	public Facing right() {
+		switch (this) {
 		case NORTH:
 			return EAST;
 		case WEST:

@@ -2,7 +2,9 @@ package com.github.TheDwoon.robots.gui;
 
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.entity.Entity;
+import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import javafx.beans.binding.DoubleBinding;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 
 import java.io.IOException;
@@ -25,7 +27,24 @@ public class BoardFieldDisplay extends FieldDisplay {
 	}
 
 	public void setEntity(final Entity entity) {
-		setEntityImage(Textures.lookup(entity));
+		ImageView entityImage = Textures.lookup(entity);
+		if (entity instanceof LivingEntity) {
+			switch (((LivingEntity) entity).getFacing()) {
+				case NORTH:
+					entityImage.setRotate(180);
+					break;
+				case WEST:
+					entityImage.setRotate(90);
+					break;
+				case SOUTH:
+					entityImage.setRotate(0);
+					break;
+				case EAST:
+					entityImage.setRotate(-90);
+					break;
+			}
+		}
+		setEntityImage(entityImage);
 	}
 
 }

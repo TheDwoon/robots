@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.github.TheDwoon.robots.client.student.RandomDriveAI;
 import com.github.TheDwoon.robots.game.Board;
+import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.Inventory;
 import com.github.TheDwoon.robots.game.InventoryHolder;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
@@ -49,8 +50,12 @@ public final class RobotsServer implements Runnable {
 		final ServerRobot randomRobot = new ServerRobot(this, 2, 2);
 		randomRobot.setAI(new RandomDriveAI());
 		board.spawnEntity(randomRobot);
-		board.spawnEntity(new ServerRobot(this, 11, 2));
-		board.spawnEntity(new ServerRobot(this, 13, 8));
+		ServerRobot robot1 = new ServerRobot(this, 11, 2);
+		robot1.setFacing(Facing.EAST);
+		board.spawnEntity(robot1);
+		ServerRobot robot2 = new ServerRobot(this, 13, 8);
+		robot2.setFacing(Facing.WEST);
+		board.spawnEntity(robot2);
 		
 		new Thread(() -> {
 			try {
