@@ -40,7 +40,7 @@ public class ServerInventory implements Inventory {
     public int addItem(Item item) {
         int slot = inventory.addItem(item);
         
-        if (slot > 0) {
+        if (slot >= 0) {
         	// make sure to transmit a non ServerItem
         	if (item instanceof ServerItem) {
         		getServer().getInventoryBroadcaster().updateInventory(inventory.getUUID(), slot, ((ServerItem) item).getItem());
