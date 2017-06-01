@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.github.TheDwoon.robots.client.student.RandomDriveAI;
 import com.github.TheDwoon.robots.game.Board;
+import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.InventoryHolder;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
@@ -144,17 +146,28 @@ public final class RobotsServer implements Runnable {
 		}
 		
 		if (eObserver != null && board != null) {
-			for (ServerEntity e : board.getEntities()) {
-				if (e instanceof ServerRobot) {
-					eObserver.spawnRobot(((ServerRobot) e).getRobot());
-				} else {
-					eObserver.spawnEntity(e.getEntity());
-				}
+			List<ServerEntity> entities = board.getEntities();
+			synchronized (entities) {
+				for (ServerEntity e : entities) {
+					if (e instanceof ServerRobot) {
+						eObserver.spawnRobot(((ServerRobot) e).getRobot());
+					} else {
+						eObserver.spawnEntity(e.getEntity());
+					}
+				}			
 			}
 		}
 		
 		if (iObserver != null) {
-			// TODO (danielw, 30.05.2017): implement
+			List<ServerEntity> entities = board.getEntities();
+			synchronized (entities) {
+				for (ServerEntity e : entities) {					
+					if (e.getEntity() instanceof InventoryHolder) {
+						Inventory inv = ((InventoryHolder) e.getEntity()).getInventory();
+						iObserver.createInventory(inv);
+					}
+				}
+			}
 		}
 	}
 	
