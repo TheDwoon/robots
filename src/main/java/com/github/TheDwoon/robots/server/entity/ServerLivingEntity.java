@@ -73,7 +73,9 @@ public class ServerLivingEntity extends ServerEntity implements LivingEntity {
 		final int nx = Math.min(getServer().getBoard().getWidth() - 1, Math.max(0, getX() + facing.dx));
 		final int ny = Math.min(getServer().getBoard().getHeight() - 1, Math.max(0, getY()) + facing.dy);
 		
-		setPosition(nx, ny);
+		if (getServer().getBoard().getField(nx, ny).getMaterial().isVisitable()) {
+			setPosition(nx, ny);
+		}
 	}
 	
 	public void driveBackward() {
@@ -82,7 +84,9 @@ public class ServerLivingEntity extends ServerEntity implements LivingEntity {
 		final int nx = Math.min(getServer().getBoard().getWidth() - 1, Math.max(0, getX() + facing.dx));
 		final int ny = Math.min(getServer().getBoard().getHeight() - 1, Math.max(0, getY()) + facing.dy);
 		
-		setPosition(nx, ny);
+		if (getServer().getBoard().getField(nx, ny).getMaterial().isVisitable()) {
+			setPosition(nx, ny);
+		}
 	}
 	
 	private void pushEntityUpdate() {
