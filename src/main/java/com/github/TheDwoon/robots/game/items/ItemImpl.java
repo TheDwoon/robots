@@ -7,9 +7,13 @@ public abstract class ItemImpl extends EntityImpl implements Item {
 	public ItemImpl() {
 		super(0, 0);
 	}
-	
+
 	public ItemImpl(int x, int y) {
 		super(x, y);
+	}
+
+	public ItemImpl(long uuid, int x, int y) {
+		super(uuid, x, y);
 	}
 	
 	@Override

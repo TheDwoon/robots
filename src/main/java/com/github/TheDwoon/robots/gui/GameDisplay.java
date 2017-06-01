@@ -181,6 +181,7 @@ public final class GameDisplay extends HBox
 
     @Override
     public void updateEntity(Entity entity) {
+        updateLocation(entity.getUUID(), entity.getX(), entity.getY());
         entities.put(entity.getUUID(), entity);
     }
 
