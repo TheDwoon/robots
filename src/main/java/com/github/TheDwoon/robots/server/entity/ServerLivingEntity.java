@@ -59,6 +59,36 @@ public class ServerLivingEntity extends ServerEntity implements LivingEntity {
 		pushEntityUpdate();
 	}
 
+	public void turnLeft() {
+		setFacing(Facing.left(getFacing()));
+	}
+	
+	public void turnRight() {
+		setFacing(Facing.right(getFacing()));
+	}
+	
+	public void driveForward() {
+		Facing facing = getFacing();
+		
+		final int nx = Math.min(getServer().getBoard().getWidth() - 1, Math.max(0, getX() + facing.dx));
+		final int ny = Math.min(getServer().getBoard().getHeight() - 1, Math.max(0, getY()) + facing.dy);
+		
+		if (getServer().getBoard().getField(nx, ny).getMaterial().isVisitable()) {
+			setPosition(nx, ny);
+		}
+	}
+	
+	public void driveBackward() {
+		Facing facing = Facing.opposite(getFacing());
+		
+		final int nx = Math.min(getServer().getBoard().getWidth() - 1, Math.max(0, getX() + facing.dx));
+		final int ny = Math.min(getServer().getBoard().getHeight() - 1, Math.max(0, getY() + facing.dy));
+		
+		if (getServer().getBoard().getField(nx, ny).getMaterial().isVisitable()) {
+			setPosition(nx, ny);
+		}
+	}
+	
 	private void pushEntityUpdate() {
 		// TODO (danielw, 31.05.2017): maybe make a explicit HealthUpdate-Method. (Wasting a lot of performance to a little int change)
 		getServer().getEntityBroadcaster().updateEntity(entity);
