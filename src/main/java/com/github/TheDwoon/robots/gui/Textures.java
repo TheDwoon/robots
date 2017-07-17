@@ -52,8 +52,8 @@ public class Textures {
         }
     }
 
-    public static void removeRobot(Robot robot) {
-        RobotPaintManager.instance().releasePaint(robot);
+    public static void removeRobot(long robotUuid) {
+        RobotPaintManager.instance().releasePaint(robotUuid);
     }
 
     public static ImageView lookupInventoryBackground() {
@@ -134,7 +134,7 @@ public class Textures {
                 Color.web("#311B92"), Color.web("#827717"), Color.web("#006064"), Color.web("#BF360C")
         };
 
-        private final Map<Robot, Integer> robotPaintMap;
+        private final Map<Long, Integer> robotPaintMap;
         private final LinkedList<Integer> availablePaints;
 
         private RobotPaintManager() {
@@ -146,7 +146,7 @@ public class Textures {
         }
 
         public Paint getPaint(Robot robot) {
-            Integer paintIndex = robotPaintMap.computeIfAbsent(robot, k -> getNextAvailablePaintIndex());
+            Integer paintIndex = robotPaintMap.computeIfAbsent(robot.getUUID(), k -> getNextAvailablePaintIndex());
             return AVAILABLE_ROBOT_PAINTS[paintIndex];
         }
 
@@ -157,8 +157,8 @@ public class Textures {
             return availablePaints.pollFirst();
         }
 
-        public void releasePaint(Robot robot) {
-            Integer paintIndex = robotPaintMap.get(robot);
+        public void releasePaint(long robotUuid) {
+            Integer paintIndex = robotPaintMap.get(robotUuid);
             if (paintIndex != null) {
                 synchronized (this) {
                     availablePaints.addFirst(paintIndex);

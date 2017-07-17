@@ -1,7 +1,8 @@
 package com.github.TheDwoon.robots.client.student;
 
 import com.github.TheDwoon.robots.game.Field;
-import com.github.TheDwoon.robots.game.entity.Entity;
+import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.AI;
@@ -17,8 +18,10 @@ import java.util.List;
 
 public abstract class AbstractBasicAI implements AI {
     private Robot robot;
+    private Inventory inventory;
     private List<Field> fields;
-    private List<Entity> entities;
+    private List<LivingEntity> entitiesInRange;
+    private List<Item> itemsInRange;
 
     private Field front;
     private Field left;
@@ -28,7 +31,7 @@ public abstract class AbstractBasicAI implements AI {
 
     public AbstractBasicAI() {
         fields = new ArrayList<>();
-        entities = new ArrayList<>();
+        entitiesInRange = new ArrayList<>();
     }
 
     @Override
@@ -37,9 +40,14 @@ public abstract class AbstractBasicAI implements AI {
     }
 
     @Override
-    public final void updateVision(List<Field> fields, List<Entity> entities) {
+    public void updateInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    @Override
+    public final void updateVision(List<Field> fields) {
         this.fields = fields;
-        this.entities = entities;
+        this.entitiesInRange = new ArrayList<>(entitiesInRange);
 
         final int rx = getRobot().getX();
         final int ry = getRobot().getY();
@@ -47,16 +55,23 @@ public abstract class AbstractBasicAI implements AI {
         fields.stream().forEach(field -> {
             final int fx = field.getX();
             final int fy = field.getY();
-            if (rx == fx && ry == fy)
+            if (rx == fx && ry == fy) {
                 beneath = field;
-            else if (rx == fx && ry + 1 == fy)
+            } else if (rx == fx && ry + 1 == fy) {
                 front = field;
-            else if (rx == fx && ry - 1 == fy)
+            } else if (rx == fx && ry - 1 == fy) {
                 back = field;
-            else if (rx + 1 == fx && ry == fy)
+            } else if (rx + 1 == fx && ry == fy) {
                 right = field;
-            else if (rx - 1 == fx && ry == fy)
+            } else if (rx - 1 == fx && ry == fy) {
                 left = field;
+            }
+            if (field.isOccupied()) {
+                entitiesInRange.add(field.getOccupant());
+            }
+            if (field.hasItem()) {
+                itemsInRange.add(field.getItem());
+            }
         });
     }
 
@@ -108,8 +123,12 @@ public abstract class AbstractBasicAI implements AI {
         return fields;
     }
 
-    public final List<Entity> getEntities() {
-        return entities;
+    public List<LivingEntity> getEntitiesInRange() {
+        return entitiesInRange;
+    }
+
+    public List<Item> getItemsInRange() {
+        return itemsInRange;
     }
 
     public final Robot getRobot() {

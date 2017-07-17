@@ -21,12 +21,12 @@ public final class RobotDisplay extends HBox {
 	@FXML
 	private TilePane inventoryContainer;
 
-	public RobotDisplay(final Robot robot) throws IOException {
+	public RobotDisplay(final Robot robot, Inventory inventory) throws IOException {
 		FXMLUtils.loadFxRoot(this);
 
 		setRobotImage(Textures.lookup(robot));
 		robotName.setText(Long.toHexString(robot.getUUID()));
-		setInventory(robot.getInventory());
+		setInventory(inventory);
 	}
 
 	public void setRobotImage(ImageView robotImage) {

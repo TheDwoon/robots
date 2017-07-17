@@ -1,6 +1,5 @@
 package com.github.TheDwoon.robots.game;
 
-import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.items.Item;
 
@@ -35,44 +34,48 @@ public class Field {
         return material;
     }
 
-    public Entity getOccupant() {
+    public final LivingEntity getOccupant() {
         return occupant;
     }
 
-    public void setOccupant(LivingEntity occupant) {
+    public final void setOccupant(LivingEntity occupant) {
         occupant.setX(x);
         occupant.setY(y);
         this.occupant = occupant;
     }
 
-    public LivingEntity removeOccupant() {
+    public final LivingEntity removeOccupant() {
         LivingEntity occupant = this.occupant;
         this.occupant = null;
         return occupant;
     }
 
-    public boolean isOccupied() {
+    public final boolean isOccupied() {
         return occupant != null;
     }
 
-    public Entity getItem() {
+    public final Item getItem() {
         return item;
     }
 
-    public void setItem(Item item) {
+    public final void setItem(Item item) {
         item.setX(x);
         item.setY(y);
         this.item = item;
     }
 
-    public Item removeItem() {
+    public final Item removeItem() {
         Item item = this.item;
         this.item = null;
         return item;
     }
 
-    public boolean hasItem() {
+    public final boolean hasItem() {
         return item != null;
+    }
+
+    public final boolean isVisitable() {
+        return material.isVisitable();
     }
 
     @Override

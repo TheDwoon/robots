@@ -2,8 +2,8 @@ package com.github.TheDwoon.robots.gui;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
+import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
-import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.network.KryoRegistry;
@@ -30,7 +30,7 @@ public class RobotsViewerClient extends Application {
         KryoNetLoggerProxy.setAsKryoLogger();
 
         GameDisplay gameDisplay = new GameDisplay();
-        Object gameDisplayFxThreadAdapter = FxThreadAdapter.create(gameDisplay, BoardObserver.class, EntityObserver.class, InventoryObserver.class);
+        Object gameDisplayFxThreadAdapter = FxThreadAdapter.create(gameDisplay, BoardObserver.class, AiObserver.class, InventoryObserver.class);
 
         client = new Client();
         KryoRegistry.register(client.getKryo());

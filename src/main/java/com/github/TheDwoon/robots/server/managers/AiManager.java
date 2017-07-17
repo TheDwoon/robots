@@ -37,6 +37,10 @@ public class AiManager {
         return controlledRobot;
     }
 
+    public Inventory getControlledInventory() {
+        return controlledInventory;
+    }
+
     public void driveForward() {
         gameManager.robotForward(controlledRobot);
     }

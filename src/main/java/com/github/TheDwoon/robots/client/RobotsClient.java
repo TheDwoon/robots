@@ -2,9 +2,6 @@ package com.github.TheDwoon.robots.client;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
-import com.github.TheDwoon.robots.game.interaction.BoardObserver;
-import com.github.TheDwoon.robots.game.interaction.EntityObserver;
-import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.network.KryoRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -13,21 +10,12 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.InetAddress;
 
-public final class RobotsClient implements Runnable {
+public final class RobotsClient {
 
 	private static final Logger log = LogManager.getLogger();
-
-	private RobotsClient() {
-		
-	}
 	
 	public static void main(final String[] args) throws IOException {
 		KryoNetLoggerProxy.setAsKryoLogger();
-
-		RobotsClient robotsClient = new RobotsClient();
-		InventoryObserver inventoryObserver;
-		BoardObserver boardObserver;
-		EntityObserver entityObserver;
 
 		Client client = new Client();
 		KryoRegistry.register(client.getKryo());
@@ -50,12 +38,6 @@ public final class RobotsClient implements Runnable {
 		}
 
 		client.stop();
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

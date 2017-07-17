@@ -7,8 +7,8 @@ import com.github.TheDwoon.robots.game.Inventory;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.entity.Robot;
+import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
-import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.network.serializers.FieldSerializer;
 import com.github.TheDwoon.robots.network.serializers.InventorySerializer;
@@ -32,8 +32,8 @@ public class KryoRegistry {
         kryo.addDefaultSerializer(Throwable.class, new ThrowableSerializer());
 
         kryo.register(BoardObserver.class);
+        kryo.register(AiObserver.class);
         kryo.register(InventoryObserver.class);
-        kryo.register(EntityObserver.class);
         kryo.register(Field.class, new FieldSerializer());
         kryo.addDefaultSerializer(Robot.class, RobotSerializer.class);
         kryo.addDefaultSerializer(LivingEntity.class, LivingEntitySerializer.class);

@@ -16,17 +16,6 @@ import java.lang.reflect.InvocationTargetException;
 public class RobotSerializer<T extends Robot> extends LivingEntitySerializer<T> {
 
     @Override
-    public void write(Kryo kryo, Output output, T object) {
-        output.writeLong(object.getUUID());
-        output.writeInt(object.getX());
-        output.writeInt(object.getY());
-        output.writeInt(object.getMaxHealth());
-        output.writeInt(object.getHealth());
-        kryo.writeObject(output, object.getFacing());
-        kryo.writeClassAndObject(output, object.getInventory());
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public T read(Kryo kryo, Input input, Class<T> type) {
         long uuid = input.readLong();
@@ -35,20 +24,10 @@ public class RobotSerializer<T extends Robot> extends LivingEntitySerializer<T> 
         int maxHealth = input.readInt();
         int health = input.readInt();
         Facing facing = kryo.readObject(input, Facing.class);
-        Inventory inventory = (Inventory) kryo.readClassAndObject(input);
 
         if (type == Robot.class) {
-            return (T) new Robot(uuid, x, y, maxHealth, health, facing, inventory);
+            return (T) new Robot(uuid, x, y, maxHealth, health, facing);
         }
-        return create(type, uuid, x, y, maxHealth, health, facing, inventory);
-    }
-
-    private T create(Class<T> type, long uuid, int x, int y, int maxHealth, int health, Facing facing, Inventory inventory) {
-        try {
-            Constructor<T> constructor = type.getConstructor(long.class, int.class, int.class, int.class, int.class, Facing.class, Inventory.class);
-            return constructor.newInstance(uuid, x, y, maxHealth, health, facing, inventory);
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            return create(type, uuid, x, y, maxHealth, health, facing);
-        }
+        return create(type, uuid, x, y, maxHealth, health, facing);
     }
 }
