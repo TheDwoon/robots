@@ -32,6 +32,7 @@ public abstract class AbstractBasicAI implements AI {
     public AbstractBasicAI() {
         fields = new ArrayList<>();
         entitiesInRange = new ArrayList<>();
+        itemsInRange = new ArrayList<>();
     }
 
     @Override
@@ -47,7 +48,8 @@ public abstract class AbstractBasicAI implements AI {
     @Override
     public final void updateVision(List<Field> fields) {
         this.fields = fields;
-        this.entitiesInRange = new ArrayList<>(entitiesInRange);
+        entitiesInRange = new ArrayList<>();
+        itemsInRange = new ArrayList<>();
 
         final int rx = getRobot().getX();
         final int ry = getRobot().getY();

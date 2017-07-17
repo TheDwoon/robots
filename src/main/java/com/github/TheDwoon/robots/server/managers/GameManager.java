@@ -105,6 +105,12 @@ public class GameManager {
         notifyObserversDespawn(aiManager.getControlledRobot(), aiManager.getControlledInventory());
     }
 
+    public synchronized void spawnItems(Item... items) {
+        for (Item item: items) {
+            boardManager.spawnItem(item);
+        }
+    }
+
     public void makeTurn() {
         for (AiManager aiManager : aiManagers.values()) {
             aiManager.makeTurn();

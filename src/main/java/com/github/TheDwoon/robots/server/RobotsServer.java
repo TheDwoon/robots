@@ -2,6 +2,7 @@ package com.github.TheDwoon.robots.server;
 
 import com.github.TheDwoon.robots.client.student.RandomDriveAI;
 import com.github.TheDwoon.robots.client.student.RepeatingAI;
+import com.github.TheDwoon.robots.game.items.Bomb;
 import com.github.TheDwoon.robots.mapfile.MapFileParser;
 import com.github.TheDwoon.robots.mapfile.ParseException;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
@@ -27,6 +28,8 @@ public final class RobotsServer implements Runnable {
         }
 
         gameManager = new GameManager(boardManager);
+
+        gameManager.spawnItems(new Bomb(), new Bomb());
 
         gameManager.spawnAi(new RandomDriveAI());
         gameManager.spawnAi(new RepeatingAI(NoAction.INSTANCE));

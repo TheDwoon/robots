@@ -6,6 +6,7 @@ import com.github.TheDwoon.robots.game.Material;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
+import com.github.TheDwoon.robots.game.items.Item;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -18,12 +19,15 @@ public class BoardManager {
     private static final Material DEFAULT_MATERIAL = Material.GRASS;
     private static final Material DEFAULT_BORDER = Material.VOID;
 
+    private static final Random random = new Random();
+
     private final long uuid;
     private final int width;
     private final int height;
     private final Field[][] fields;
 
     private final List<Field> spawnFields;
+    private final List<Field> itemFields;
 
     private final Deque<BoardObserver> observers;
 
@@ -34,10 +38,13 @@ public class BoardManager {
         this.uuid = uuid;
 
         spawnFields = new ArrayList<>();
+        itemFields = new ArrayList<>();
         for (Field[] row : fields) {
             for (Field field : row) {
                 if (field.getMaterial() == Material.SPAWN) {
                     spawnFields.add(field);
+                } else if (field.isVisitable()) {
+                    itemFields.add(field);
                 }
             }
         }
@@ -80,7 +87,8 @@ public class BoardManager {
         for (int i = 0; i < 3; i++) {
             Field field;
             try {
-                field = spawnFields.stream().filter(f -> !f.isOccupied()).findAny().get();
+                Field[] possibleFields = spawnFields.parallelStream().filter(f -> !f.isOccupied()).toArray(Field[]::new);
+                field = possibleFields[random.nextInt(possibleFields.length)];
             } catch (NoSuchElementException e) {
                 return false;
             }
@@ -156,6 +164,39 @@ public class BoardManager {
     public void turnLivingEntity(LivingEntity entity, Facing facing) {
         entity.setFacing(facing);
         notifyObservers(fields[entity.getX()][entity.getY()]);
+    }
+
+    public boolean spawnItem(Item item) {
+        Random random = new Random();
+        for (int i = 0; i < 3; i++) {
+            Field field;
+            try {
+                Field[] possibleFields = itemFields.parallelStream().filter(f -> !f.hasItem()).toArray(Field[]::new);
+                field = possibleFields[random.nextInt(possibleFields.length)];
+            } catch (NoSuchElementException e) {
+                return false;
+            }
+
+            if (spawnItem(item, field)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean spawnItem(Item item, int x, int y) {
+        return spawnItem(item, fields[x][y]);
+    }
+
+    public boolean spawnItem(Item item, Field field) {
+        synchronized (field) {
+            if (field.isOccupied() || !field.isVisitable()) {
+                return false;
+            }
+            field.setItem(item);
+        }
+        notifyObservers(field);
+        return true;
     }
 
     public boolean checkCoordinates(int x, int y) {
