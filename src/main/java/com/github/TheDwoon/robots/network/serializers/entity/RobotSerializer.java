@@ -2,13 +2,8 @@ package com.github.TheDwoon.robots.network.serializers.entity;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
 import com.github.TheDwoon.robots.game.Facing;
-import com.github.TheDwoon.robots.game.Inventory;
 import com.github.TheDwoon.robots.game.entity.Robot;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by sigmar on 28.05.17.

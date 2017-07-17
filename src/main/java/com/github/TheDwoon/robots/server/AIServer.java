@@ -4,7 +4,6 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
-import com.github.TheDwoon.robots.gui.GameDisplay;
 import com.github.TheDwoon.robots.network.KryoRegistry;
 import com.github.TheDwoon.robots.server.managers.GameManager;
 

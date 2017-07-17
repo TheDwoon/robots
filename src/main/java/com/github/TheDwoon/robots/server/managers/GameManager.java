@@ -1,5 +1,6 @@
 package com.github.TheDwoon.robots.server.managers;
 
+import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Inventory;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
@@ -42,27 +43,10 @@ public class GameManager {
         this.aiManagers = new HashMap<>();
 
         observers = new ConcurrentLinkedDeque<>();
-
-        boardManager.addObserver(new BoardObserver() {
-            @Override
-            public void setSize(long uuid, int width, int height) {
-                log.info("setSize(uuid = {}, width = {}, height = {})", uuid, width, height);
-            }
-
-            @Override
-            public void updateFields(long uuid, Field[] fields) {
-                log.info("updateFields(uuid = {}, ...)", uuid);
-                for (Field field : fields) {
-                    log.info("field: x = {}, y = {}, material = {}, occupied = {}, item = {}",
-                            field.getX(), field.getY(), field.getMaterial(), field.isOccupied(), field.hasItem());
-                }
-            }
-        });
     }
 
     public void addObserver(BoardObserver observer) {
         boardManager.addObserver(observer);
-        log.info("BoardObserver");
     }
 
     public void removeObserver(BoardObserver observer) {
@@ -71,7 +55,6 @@ public class GameManager {
 
     public void addObserver(InventoryObserver observer) {
         inventoryManager.addObserver(observer);
-        log.info("InventoryObserver");
     }
 
     public void removeObserver(InventoryObserver observer) {
@@ -82,7 +65,6 @@ public class GameManager {
         oberverExecutor.submit(() -> aiManagers.values().forEach(aiManager ->
                 observer.spawnAi(aiManager.getControlledRobot(), aiManager.getControlledInventory())));
         observers.add(observer);
-        log.info("AiObserver");
     }
 
     public void removeObserver(AiObserver observer) {
@@ -134,19 +116,21 @@ public class GameManager {
     }
 
     public void robotForward(Robot robot) {
-        boardManager.moveLivingEntityRelative(robot, robot.getFacing().dx, robot.getFacing().dy);
+        Facing facing = robot.getFacing();
+        boardManager.moveLivingEntityRelative(robot, facing.dx, facing.dy);
     }
 
     public void robotBackward(Robot robot) {
-        boardManager.moveLivingEntityRelative(robot, robot.getFacing().dx, robot.getFacing().dy);
+        Facing facing = robot.getFacing().opposite();
+        boardManager.moveLivingEntityRelative(robot, facing.dx, facing.dy);
     }
 
     public void robotTurnLeft(Robot robot) {
-        robot.setFacing(robot.getFacing().left());
+        boardManager.turnLivingEntity(robot, robot.getFacing().left());
     }
 
     public void robotTurnRight(Robot robot) {
-        robot.setFacing(robot.getFacing().right());
+        boardManager.turnLivingEntity(robot, robot.getFacing().right());
     }
 
     public void robotUseItem(Robot robot, Item item) {

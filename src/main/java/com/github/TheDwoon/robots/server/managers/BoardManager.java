@@ -1,5 +1,6 @@
 package com.github.TheDwoon.robots.server.managers;
 
+import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Material;
 import com.github.TheDwoon.robots.game.entity.Entity;
@@ -150,6 +151,11 @@ public class BoardManager {
 
     public boolean moveLivingEntityRelative(LivingEntity entity, int relativeX, int relativeY) {
         return moveLivingEntity(entity, entity.getX() + relativeX, entity.getY() + relativeY);
+    }
+
+    public void turnLivingEntity(LivingEntity entity, Facing facing) {
+        entity.setFacing(facing);
+        notifyObservers(fields[entity.getX()][entity.getY()]);
     }
 
     public boolean checkCoordinates(int x, int y) {

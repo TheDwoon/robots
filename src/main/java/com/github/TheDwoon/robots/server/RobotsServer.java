@@ -1,6 +1,5 @@
 package com.github.TheDwoon.robots.server;
 
-import com.esotericsoftware.kryonet.Connection;
 import com.github.TheDwoon.robots.client.student.RandomDriveAI;
 import com.github.TheDwoon.robots.client.student.RepeatingAI;
 import com.github.TheDwoon.robots.mapfile.MapFileParser;
@@ -14,7 +13,6 @@ import com.github.TheDwoon.robots.server.managers.BoardManager;
 import com.github.TheDwoon.robots.server.managers.GameManager;
 
 import java.io.IOException;
-import java.util.Map;
 
 public final class RobotsServer implements Runnable {
 
@@ -55,7 +53,7 @@ public final class RobotsServer implements Runnable {
 
                 gameManager.makeTurn();
 
-                Thread.sleep(500);
+                Thread.sleep(5);
             }
         } catch (IOException | InterruptedException e) {
             // ignore

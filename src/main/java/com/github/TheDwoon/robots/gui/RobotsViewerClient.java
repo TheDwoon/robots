@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.net.InetAddress;
 
 public class RobotsViewerClient extends Application {
@@ -42,17 +43,38 @@ public class RobotsViewerClient extends Application {
 
         client.start();
 
-        InetAddress serverAddress = client.discoverHost(32016, 5000);
-        if (serverAddress == null) {
-            serverAddress = InetAddress.getLoopbackAddress();
-            log.debug("Server discovery failed. Falling back to " + serverAddress.getHostName());
-        }
-        client.connect(5000, serverAddress, 32015);
+
+        tryConnect(32016, 32015);
+
+//        client.addListener(new Listener() {
+//            @Override
+//            public void disconnected(Connection connection) {
+//                new Thread(() -> tryConnect(32016, 32015)).start();
+//            }
+//        });
 
         primaryStage.setScene(new Scene(gameDisplay));
         primaryStage.setTitle("RobotsUI");
         // primaryStage.setFullScreen(true);
         primaryStage.show();
+    }
+
+    private void tryConnect(final int discoveryPort, final int tcpPort) {
+        log.info("tryConnect");
+        boolean connected = false;
+        while (!connected) {
+            try {
+                InetAddress serverAddress = client.discoverHost(discoveryPort, 5000);
+                if (serverAddress == null) {
+                    serverAddress = InetAddress.getLoopbackAddress();
+                    log.debug("Server discovery failed. Falling back to " + serverAddress.getHostName());
+                }
+                client.connect(5000, serverAddress, tcpPort);
+                connected = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
