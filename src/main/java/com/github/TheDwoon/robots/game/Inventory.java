@@ -1,9 +1,9 @@
 package com.github.TheDwoon.robots.game;
 
-import java.util.Arrays;
-
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.UUIDGenerator;
+
+import java.util.Arrays;
 
 public class Inventory {
 	private final long uuid;

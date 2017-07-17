@@ -1,13 +1,8 @@
 package com.github.TheDwoon.robots.client.student;
 
-import java.util.Random;
-
-import com.github.TheDwoon.robots.server.actions.NoAction;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
-import com.github.TheDwoon.robots.server.actions.movement.DriveBackward;
-import com.github.TheDwoon.robots.server.actions.movement.DriveForward;
-import com.github.TheDwoon.robots.server.actions.movement.TurnLeft;
-import com.github.TheDwoon.robots.server.actions.movement.TurnRight;
+
+import java.util.Random;
 
 public class RandomDriveAI extends AbstractBasicAI {
 	private final Random random = new Random();

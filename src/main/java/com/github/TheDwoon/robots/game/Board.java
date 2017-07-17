@@ -1,13 +1,15 @@
 package com.github.TheDwoon.robots.game;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
-import com.github.TheDwoon.robots.server.RobotsServer;
+import com.github.TheDwoon.robots.game.interaction.BoardObserver;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedDeque;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class Board {
     //	private static final int DEFAULT_WIDTH = 100;
@@ -20,26 +22,26 @@ public class Board {
     private final int height;
     private final Field[][] fields;
 
-    public Board(long uuid, final int width, final int height) {
-        this.width = width;
-        this.height = height;
-        this.fields = new Field[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
-                    fields[x][y] = new Field(x, y, DEFAULT_BORDER);
-                else
-                    fields[x][y] = new Field(x, y, DEFAULT_MATERIAL);
-            }
-        }
-        this.uuid = uuid;
-    }
+    private final List<Field> spawnFields;
+
+    private final Deque<BoardObserver> observers;
 
     public Board(long uuid, final Field[][] fields) {
         this.fields = fields;
         this.width = fields.length;
         this.height = fields[0].length;
         this.uuid = uuid;
+
+        spawnFields = new ArrayList<>();
+        for (Field[] row : fields) {
+            for (Field field : row) {
+                if (field.getMaterial() == Material.SPAWN) {
+                    spawnFields.add(field);
+                }
+            }
+        }
+
+        observers = new ConcurrentLinkedDeque<>();
     }
 
     public int getWidth() {
@@ -54,12 +56,49 @@ public class Board {
         return fields[x][y];
     }
 
-    public void spawnLivingEntity(LivingEntity entity, int x, int y) {
-        Field field = fields[x][y];
+    public void addObserver(BoardObserver observer) {
+        observer.setSize(uuid, width, height);
+        observers.add(observer);
+    }
+
+    public void removeObserver(BoardObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers(Field... updatedFields) {
+        observers.forEach(c -> c.updateFields(uuid, updatedFields));
+    }
+
+    public boolean spawnLivingEntity(LivingEntity entity) {
+        Random random = new Random();
+        for (int i = 0; i < 3; i++) {
+            Field field;
+            try {
+                field = spawnFields.stream().filter(f -> !f.isOccupied()).findAny().get();
+            } catch (NoSuchElementException e) {
+                return false;
+            }
+
+            if (spawnLivingEntity(entity, field)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean spawnLivingEntity(LivingEntity entity, int x, int y) {
+        return spawnLivingEntity(entity, fields[x][y]);
+    }
+
+    public boolean spawnLivingEntity(LivingEntity entity, Field field) {
         synchronized (field) {
-            entity.setPosition(x, y);
+            if (field.isOccupied()) {
+                return false;
+            }
             field.setOccupant(entity);
         }
+        notifyObservers(field);
+        return true;
     }
 
     public void removeLivingEntity(LivingEntity entity) {
@@ -67,6 +106,7 @@ public class Board {
         synchronized (field) {
             field.removeOccupant();
         }
+        notifyObservers(field);
     }
 
     public Entity removeLivingEntity(int x, int y) {
@@ -76,6 +116,7 @@ public class Board {
             entity = field.getOccupant();
             field.removeOccupant();
         }
+        notifyObservers(field);
         return entity;
     }
 
@@ -87,17 +128,18 @@ public class Board {
         Field sourceField = fields[entity.getX()][entity.getY()];
         Field targetField = fields[targetX][targetY];
 
-        if (targetField.isOccupied()) {
-            return false;
-        }
-
         Field[] lockOrder = getLockOrder(sourceField, targetField);
         synchronized (lockOrder[0]) {
             synchronized (lockOrder[1]) {
+                if (targetField.isOccupied()) {
+                    return false;
+                }
+
                 sourceField.removeOccupant();
                 targetField.setOccupant(entity);
             }
         }
+        notifyObservers(sourceField, targetField);
         return true;
     }
 
@@ -107,6 +149,23 @@ public class Board {
 
     public boolean checkCoordinates(int x, int y) {
         return (x >= 0 && x < width) && (y >= 0 && y < width);
+    }
+
+    public List<Field> getVisibleFields(int posX, int posY) {
+        final List<Field> visibleFields = new ArrayList<>(16);
+
+        final int xStart = max(0, posX - 2), xEnd = min(posX + 2, width);
+        final int yStart = max(0, posY - 2), yEnd = min(posY + 2, height);
+
+        for (int x = xStart; x < xEnd; x++) {
+            for (int y = yStart; y < yEnd; y++) {
+                if (abs(posX - x) + abs(posY - y) <= 2) {
+                    visibleFields.add(fields[x][y]);
+                }
+            }
+        }
+
+        return visibleFields;
     }
 
     private Field[] getLockOrder(final Field... fields) {

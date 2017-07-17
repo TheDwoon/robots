@@ -4,6 +4,7 @@ import com.github.TheDwoon.robots.game.Inventory;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.AI;
+import com.github.TheDwoon.robots.server.actions.PlayerAction;
 
 /**
  * Created by sigma_000 on 17.07.2017.
@@ -22,6 +23,18 @@ public class AiManager {
         this.controlledInventory = controlledInventory;
 
         this.gameManager = gameManager;
+    }
+
+    public void makeTurn() {
+        ai.updateRobot(controlledRobot);
+        ai.updateInventory(controlledInventory);
+        ai.updateVision(gameManager.getVisibleFields(controlledRobot));
+        PlayerAction action = ai.makeTurn();
+        action.apply(this);
+    }
+
+    public Robot getControlledRobot() {
+        return controlledRobot;
     }
 
     public void driveForward() {

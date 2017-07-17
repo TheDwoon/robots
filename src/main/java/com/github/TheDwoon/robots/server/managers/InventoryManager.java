@@ -18,8 +18,8 @@ public class InventoryManager {
         this.inventories = new HashMap<>();
     }
 
-    public void register(InventoryHolder inventoryHolder) {
-        inventories.put(inventoryHolder, inventoryHolder.getInventory());
+    public void register(InventoryHolder inventoryHolder, Inventory inventory) {
+        inventories.put(inventoryHolder, inventory);
     }
 
     public void unregister(InventoryHolder inventoryHolder) {

@@ -1,10 +1,5 @@
 package com.github.TheDwoon.robots.gui;
 
-import com.github.TheDwoon.robots.game.Material;
-import com.github.TheDwoon.robots.game.entity.Entity;
-import com.github.TheDwoon.robots.game.entity.Robot;
-import javafx.fxml.FXML;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 

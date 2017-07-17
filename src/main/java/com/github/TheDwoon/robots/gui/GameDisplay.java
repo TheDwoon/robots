@@ -28,7 +28,7 @@ import static java.lang.Math.floor;
 import static java.lang.Math.min;
 
 public final class GameDisplay extends HBox
-        implements BoardObserver, EntityObserver, InventoryObserver {
+        implements BoardObserver, InventoryObserver {
 
     private static final Logger log = LogManager.getLogger();
 

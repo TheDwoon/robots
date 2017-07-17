@@ -1,8 +1,5 @@
 package com.github.TheDwoon.robots.client.student;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.Robot;
@@ -14,6 +11,9 @@ import com.github.TheDwoon.robots.server.actions.movement.DriveBackward;
 import com.github.TheDwoon.robots.server.actions.movement.DriveForward;
 import com.github.TheDwoon.robots.server.actions.movement.TurnLeft;
 import com.github.TheDwoon.robots.server.actions.movement.TurnRight;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractBasicAI implements AI {
     private Robot robot;
@@ -60,27 +60,27 @@ public abstract class AbstractBasicAI implements AI {
         });
     }
 
-    public final DriveForward driveForward() {
+    protected final DriveForward driveForward() {
         return DriveForward.INSTANCE;
     }
 
-    public final DriveBackward driveBackward() {
+    protected final DriveBackward driveBackward() {
         return DriveBackward.INSTANCE;
     }
 
-    public final TurnLeft turnLeft() {
+    protected final TurnLeft turnLeft() {
         return TurnLeft.INSTANCE;
     }
 
-    public final TurnRight turnRight() {
+    protected final TurnRight turnRight() {
         return TurnRight.INSTANCE;
     }
 
-    public final UseItem useItem(Item item) {
+    protected final UseItem useItem(Item item) {
         return new UseItem(item);
     }
 
-    public final NoAction noAction() {
+    protected final NoAction noAction() {
         return NoAction.INSTANCE;
     }
 

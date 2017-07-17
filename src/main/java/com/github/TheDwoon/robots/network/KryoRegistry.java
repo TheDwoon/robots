@@ -10,9 +10,9 @@ import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
+import com.github.TheDwoon.robots.network.serializers.FieldSerializer;
 import com.github.TheDwoon.robots.network.serializers.InventorySerializer;
 import com.github.TheDwoon.robots.network.serializers.entity.EntitySerializer;
-import com.github.TheDwoon.robots.network.serializers.FieldSerializer;
 import com.github.TheDwoon.robots.network.serializers.entity.LivingEntitySerializer;
 import com.github.TheDwoon.robots.network.serializers.entity.RobotSerializer;
 
