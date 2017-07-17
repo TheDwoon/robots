@@ -64,4 +64,8 @@ public class AiManager {
     public void pickUpItem() {
         gameManager.robotPickUpItem(controlledRobot);
     }
+
+    public void dropItem(int slot) {
+        gameManager.robotDropItem(controlledRobot, slot);
+    }
 }

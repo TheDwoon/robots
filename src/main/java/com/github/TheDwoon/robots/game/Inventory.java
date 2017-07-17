@@ -42,8 +42,10 @@ public class Inventory {
 		return -1;
 	}
 
-	public void removeItem(int slot) {
+	public Item removeItem(int slot) {
+		Item item = items[slot];
 		items[slot] = null;
+		return item;
 	}
 
 	public Item getItem(int slot) {

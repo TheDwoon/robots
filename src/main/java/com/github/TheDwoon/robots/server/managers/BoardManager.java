@@ -99,7 +99,7 @@ public class BoardManager {
         return spawnLivingEntity(entity, fields[x][y]);
     }
 
-    public boolean spawnLivingEntity(LivingEntity entity, Field field) {
+    private boolean spawnLivingEntity(LivingEntity entity, Field field) {
         synchronized (field) {
             if (field.isOccupied() || !field.isVisitable()) {
                 return false;
@@ -184,9 +184,9 @@ public class BoardManager {
         return spawnItem(item, fields[x][y]);
     }
 
-    public boolean spawnItem(Item item, Field field) {
+    private boolean spawnItem(Item item, Field field) {
         synchronized (field) {
-            if (field.isOccupied() || !field.isVisitable()) {
+            if (field.hasItem()) {
                 return false;
             }
             field.setItem(item);

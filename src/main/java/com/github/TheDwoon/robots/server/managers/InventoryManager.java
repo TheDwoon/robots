@@ -71,4 +71,14 @@ public class InventoryManager {
         }
         notifyObserversUpdate(inventory, slot);
     }
+
+    public Item removeItem(InventoryHolder inventoryHolder, int slot) {
+        Inventory inventory = inventories.get(inventoryHolder);
+        Item item;
+        synchronized (inventory) {
+            item = inventory.removeItem(slot);
+        }
+        notifyObserversUpdate(inventory, slot);
+        return item;
+    }
 }

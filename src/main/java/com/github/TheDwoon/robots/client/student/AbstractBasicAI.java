@@ -7,8 +7,9 @@ import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.AI;
 import com.github.TheDwoon.robots.server.actions.NoAction;
-import com.github.TheDwoon.robots.server.actions.PickUpItem;
-import com.github.TheDwoon.robots.server.actions.UseItem;
+import com.github.TheDwoon.robots.server.actions.item.DropItem;
+import com.github.TheDwoon.robots.server.actions.item.PickUpItem;
+import com.github.TheDwoon.robots.server.actions.item.UseItem;
 import com.github.TheDwoon.robots.server.actions.movement.DriveBackward;
 import com.github.TheDwoon.robots.server.actions.movement.DriveForward;
 import com.github.TheDwoon.robots.server.actions.movement.TurnLeft;
@@ -102,6 +103,10 @@ public abstract class AbstractBasicAI implements AI {
         return PickUpItem.INSTANCE;
     }
 
+    protected final DropItem dropItem(int slot) {
+        return new DropItem(slot);
+    }
+
     protected final NoAction noAction() {
         return NoAction.INSTANCE;
     }
@@ -126,6 +131,14 @@ public abstract class AbstractBasicAI implements AI {
         return beneath;
     }
 
+    public final Robot getRobot() {
+        return robot;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
     public final List<Field> getFields() {
         return fields;
     }
@@ -136,9 +149,5 @@ public abstract class AbstractBasicAI implements AI {
 
     public List<Item> getItemsInRange() {
         return itemsInRange;
-    }
-
-    public final Robot getRobot() {
-        return robot;
     }
 }

@@ -20,10 +20,6 @@ public abstract class Item extends Entity {
 		// TODO (danielw, 31.05.2017): implement
 	}
 	
-	public void pickUp(InventoryHolder entity) {
-		// TODO (danielw, 27.04.16): implement
-	}
-	
 	public void drop() {
 		// TODO (danielw, 27.04.16): implement
 	}

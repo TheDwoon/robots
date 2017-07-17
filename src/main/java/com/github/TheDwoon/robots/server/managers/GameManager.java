@@ -156,4 +156,15 @@ public class GameManager {
             inventoryManager.giveItem(robot, item);
         }
     }
+
+    public void robotDropItem(Robot robot, int slot) {
+        if (boardManager.getField(robot.getX(), robot.getY()).hasItem()) {
+            return;
+        }
+
+        Item item = inventoryManager.removeItem(robot, slot);
+        if (item != null) {
+            boardManager.spawnItem(item, robot.getX(), robot.getY());
+        }
+    }
 }

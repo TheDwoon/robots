@@ -1,5 +1,7 @@
 package com.github.TheDwoon.robots.client.student;
 
+import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
 
 import java.util.Random;
@@ -8,14 +10,27 @@ public class RandomItemCollectorAI extends AbstractBasicAI {
     private final Random random = new Random();
     private final PlayerAction[] movementActions = new PlayerAction[]{driveForward(), driveBackward(), turnLeft(), turnRight()};
 
-    public RandomItemCollectorAI() {
+    private Field lastDropPoint;
 
+    public RandomItemCollectorAI() {
+        lastDropPoint = null;
     }
 
     @Override
     public PlayerAction makeTurn() {
-        if (getBeneath().hasItem()) {
+        Field beneath = getBeneath();
+        if (!beneath.equals(lastDropPoint) && beneath.hasItem()) {
+            lastDropPoint = null;
             return pickUpItem();
+        }
+
+
+        Item[] items = getInventory().getItems();
+        for (int slot = 0; slot < items.length; slot++) {
+            if (items[slot] != null && random.nextDouble() < .005) {
+                lastDropPoint = beneath;
+                return dropItem(slot);
+            }
         }
         return movementActions[random.nextInt(movementActions.length)];
     }
