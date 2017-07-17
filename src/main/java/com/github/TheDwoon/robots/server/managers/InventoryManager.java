@@ -58,4 +58,17 @@ public class InventoryManager {
     public boolean hasItem(InventoryHolder inventoryHolder, Item item) {
         return inventories.get(inventoryHolder).getSlot(item) >= 0;
     }
+
+    public int getFreeSlots(InventoryHolder inventoryHolder) {
+        return inventories.get(inventoryHolder).getFreeSlots();
+    }
+
+    public void giveItem(InventoryHolder inventoryHolder, Item item) {
+        Inventory inventory = inventories.get(inventoryHolder);
+        int slot;
+        synchronized (inventory) {
+            slot = inventory.addItem(item);
+        }
+        notifyObserversUpdate(inventory, slot);
+    }
 }

@@ -3,6 +3,7 @@ package com.github.TheDwoon.robots.server.managers;
 import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.AiObserver;
@@ -106,7 +107,7 @@ public class GameManager {
     }
 
     public synchronized void spawnItems(Item... items) {
-        for (Item item: items) {
+        for (Item item : items) {
             boardManager.spawnItem(item);
         }
     }
@@ -145,6 +146,14 @@ public class GameManager {
         }
     }
 
-    public void robotPickUpItem(Robot controlledRobot) {
+    public void robotPickUpItem(Robot robot) {
+        if (inventoryManager.getFreeSlots(robot) <= 0) {
+            return;
+        }
+
+        Item item = boardManager.removeItem(robot.getX(), robot.getY());
+        if (item != null) {
+            inventoryManager.giveItem(robot, item);
+        }
     }
 }

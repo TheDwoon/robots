@@ -1,6 +1,7 @@
 package com.github.TheDwoon.robots.server;
 
 import com.github.TheDwoon.robots.client.student.RandomDriveAI;
+import com.github.TheDwoon.robots.client.student.RandomItemCollectorAI;
 import com.github.TheDwoon.robots.client.student.RepeatingAI;
 import com.github.TheDwoon.robots.game.items.Bomb;
 import com.github.TheDwoon.robots.mapfile.MapFileParser;
@@ -32,6 +33,7 @@ public final class RobotsServer implements Runnable {
         gameManager.spawnItems(new Bomb(), new Bomb());
 
         gameManager.spawnAi(new RandomDriveAI());
+        gameManager.spawnAi(new RandomItemCollectorAI());
         gameManager.spawnAi(new RepeatingAI(NoAction.INSTANCE));
         gameManager.spawnAi(new RepeatingAI(TurnLeft.INSTANCE));
         gameManager.spawnAi(new RepeatingAI(TurnRight.INSTANCE));
@@ -56,7 +58,7 @@ public final class RobotsServer implements Runnable {
 
                 gameManager.makeTurn();
 
-                Thread.sleep(5);
+                Thread.sleep(50);
             }
         } catch (IOException | InterruptedException e) {
             // ignore

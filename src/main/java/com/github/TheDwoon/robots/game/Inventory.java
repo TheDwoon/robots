@@ -77,4 +77,14 @@ public class Inventory {
 	public int hashCode() {
 		return (int) (uuid ^ (uuid >>> 32));
 	}
+
+    public int getFreeSlots() {
+		int freeSlots = items.length;
+		for (Item item: items) {
+			if (item != null) {
+				freeSlots--;
+			}
+		}
+		return freeSlots;
+    }
 }

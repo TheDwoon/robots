@@ -7,6 +7,7 @@ import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.AI;
 import com.github.TheDwoon.robots.server.actions.NoAction;
+import com.github.TheDwoon.robots.server.actions.PickUpItem;
 import com.github.TheDwoon.robots.server.actions.UseItem;
 import com.github.TheDwoon.robots.server.actions.movement.DriveBackward;
 import com.github.TheDwoon.robots.server.actions.movement.DriveForward;
@@ -95,6 +96,10 @@ public abstract class AbstractBasicAI implements AI {
 
     protected final UseItem useItem(Item item) {
         return new UseItem(item);
+    }
+
+    protected final PickUpItem pickUpItem() {
+        return PickUpItem.INSTANCE;
     }
 
     protected final NoAction noAction() {

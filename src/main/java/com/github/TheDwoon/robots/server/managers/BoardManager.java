@@ -67,7 +67,7 @@ public class BoardManager {
     public void addObserver(BoardObserver observer) {
         GameManager.oberverExecutor.submit(() -> {
             observer.setSize(uuid, width, height);
-            for (Field[] row: fields) {
+            for (Field[] row : fields) {
                 observer.updateFields(uuid, row);
             }
         });
@@ -123,14 +123,15 @@ public class BoardManager {
         notifyObservers(field);
     }
 
-    public Entity removeLivingEntity(int x, int y) {
+    public LivingEntity removeLivingEntity(int x, int y) {
         Field field = fields[x][y];
-        Entity entity;
+        LivingEntity entity;
         synchronized (field) {
-            entity = field.getOccupant();
-            field.removeOccupant();
+            entity = field.removeOccupant();
         }
-        notifyObservers(field);
+        if (entity != null) {
+            notifyObservers(field);
+        }
         return entity;
     }
 
@@ -197,6 +198,26 @@ public class BoardManager {
         }
         notifyObservers(field);
         return true;
+    }
+
+    public void removeItem(Item item) {
+        Field field = fields[item.getX()][item.getY()];
+        synchronized (field) {
+            field.removeItem();
+        }
+        notifyObservers(field);
+    }
+
+    public Item removeItem(int x, int y) {
+        Field field = fields[x][y];
+        Item item;
+        synchronized (field) {
+            item = field.removeItem();
+        }
+        if (item != null) {
+            notifyObservers(field);
+        }
+        return item;
     }
 
     public boolean checkCoordinates(int x, int y) {
