@@ -14,11 +14,6 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import static java.lang.Math.*;
 
 public class BoardManager {
-    //	private static final int DEFAULT_WIDTH = 100;
-//	private static final int DEFAULT_HEIGHT = 100;
-    private static final Material DEFAULT_MATERIAL = Material.GRASS;
-    private static final Material DEFAULT_BORDER = Material.VOID;
-
     private static final Random random = new Random();
 
     private final long uuid;
@@ -79,7 +74,7 @@ public class BoardManager {
     }
 
     private void notifyObservers(Field... updatedFields) {
-        GameManager.oberverExecutor.submit(() -> observers.forEach(o -> o.updateFields(uuid, updatedFields)));
+        observers.forEach(o -> GameManager.oberverExecutor.submit(() -> o.updateFields(uuid, updatedFields)));
     }
 
     public boolean spawnLivingEntity(LivingEntity entity) {

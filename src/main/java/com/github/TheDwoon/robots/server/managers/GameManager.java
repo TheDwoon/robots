@@ -73,11 +73,11 @@ public class GameManager {
     }
 
     private void notifyObserversSpawn(Robot robot, Inventory inventory) {
-        oberverExecutor.submit(() -> observers.forEach(o -> o.spawnAi(robot, inventory)));
+        observers.forEach(o -> oberverExecutor.submit(() -> o.spawnAi(robot, inventory)));
     }
 
     private void notifyObserversDespawn(Robot robot, Inventory inventory) {
-        oberverExecutor.submit(() -> observers.forEach(o -> o.despawnAi(robot.getUUID(), inventory.getUUID())));
+        observers.forEach(o -> oberverExecutor.submit(() -> o.despawnAi(robot.getUUID(), inventory.getUUID())));
     }
 
     public synchronized AiManager spawnAi(AI ai) {

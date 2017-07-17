@@ -34,15 +34,15 @@ public class InventoryManager {
     }
 
     private void notifyObserversCreation(InventoryHolder inventoryHolder, Inventory inventory) {
-        GameManager.oberverExecutor.submit(() -> observers.forEach(o -> o.createInventory(inventoryHolder.getUUID(), inventory)));
+        observers.forEach(o -> GameManager.oberverExecutor.submit(() -> o.createInventory(inventoryHolder.getUUID(), inventory)));
     }
 
     private void notifyObserversDeletion(Inventory inventory) {
-        GameManager.oberverExecutor.submit(() -> observers.forEach(o -> o.deleteInventory(inventory.getUUID())));
+        observers.forEach(o -> GameManager.oberverExecutor.submit(() -> o.deleteInventory(inventory.getUUID())));
     }
 
     private void notifyObserversUpdate(Inventory inventory, int slot) {
-        GameManager.oberverExecutor.submit(() -> observers.forEach(o -> o.updateInventory(inventory.getUUID(), slot, inventory.getItem(slot))));
+        observers.forEach(o -> GameManager.oberverExecutor.submit(() -> o.updateInventory(inventory.getUUID(), slot, inventory.getItem(slot))));
     }
 
     public void register(InventoryHolder inventoryHolder, Inventory inventory) {
