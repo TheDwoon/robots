@@ -11,7 +11,7 @@ import com.github.TheDwoon.robots.server.actions.movement.TurnRight;
 
 public class RandomDriveAI extends AbstractBasicAI {
 	private final Random random = new Random();
-	private final PlayerAction[] options = new PlayerAction[] {DriveForward.INSTANCE, DriveBackward.INSTANCE, TurnLeft.INSTANCE, TurnRight.INSTANCE, NoAction.INSTANCE};
+	private final PlayerAction[] options = new PlayerAction[] {driveForward(), driveBackward(), turnLeft(), turnRight(), noAction()};
 	
 	public RandomDriveAI() {
 		

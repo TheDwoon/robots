@@ -8,6 +8,7 @@ import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.AI;
+import com.github.TheDwoon.robots.server.actions.NoAction;
 import com.github.TheDwoon.robots.server.actions.UseItem;
 import com.github.TheDwoon.robots.server.actions.movement.DriveBackward;
 import com.github.TheDwoon.robots.server.actions.movement.DriveForward;
@@ -59,15 +60,15 @@ public abstract class AbstractBasicAI implements AI {
         });
     }
 
-    public final DriveBackward driveBackward() {
-        return DriveBackward.INSTANCE;
-    }
-
     public final DriveForward driveForward() {
         return DriveForward.INSTANCE;
     }
 
-    public final TurnLeft trunLeft() {
+    public final DriveBackward driveBackward() {
+        return DriveBackward.INSTANCE;
+    }
+
+    public final TurnLeft turnLeft() {
         return TurnLeft.INSTANCE;
     }
 
@@ -77,6 +78,10 @@ public abstract class AbstractBasicAI implements AI {
 
     public final UseItem useItem(Item item) {
         return new UseItem(item);
+    }
+
+    public final NoAction noAction() {
+        return NoAction.INSTANCE;
     }
 
     public final Field getFront() {
