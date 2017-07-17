@@ -156,8 +156,8 @@ public class MapFileParser {
     private void notifyObserver(long uuid, Field[][] fields) {
         for (BoardObserver boardObserver : boardObservers) {
             boardObserver.setSize(uuid, fields.length, fields[0].length);
-            for (Field[] column : fields) {
-                boardObserver.updateFields(uuid, column);
+            for (Field[] row : fields) {
+                boardObserver.updateFields(uuid, row);
             }
         }
     }

@@ -20,6 +20,16 @@ public class Field {
         this.material = Objects.requireNonNull(material);
 
         this.occupant = null;
+        this.item = null;
+    }
+
+    public Field(final int x, final int y, Material material, LivingEntity occupant, Item item) {
+        this.x = x;
+        this.y = y;
+        this.material = Objects.requireNonNull(material);
+
+        this.occupant = occupant;
+        this.item = item;
     }
 
     public final int getX() {

@@ -6,6 +6,8 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Material;
+import com.github.TheDwoon.robots.game.entity.LivingEntity;
+import com.github.TheDwoon.robots.game.items.Item;
 
 public class FieldSerializer extends Serializer<Field> {
 
@@ -13,15 +15,19 @@ public class FieldSerializer extends Serializer<Field> {
 	public void write(final Kryo kryo, final Output output, final Field object) {
 		output.writeInt(object.getX());
 		output.writeInt(object.getY());
-		kryo.writeClassAndObject(output, object.getMaterial());
+		kryo.writeObject(output, object.getMaterial());
+		kryo.writeClassAndObject(output, object.getOccupant());
+		kryo.writeClassAndObject(output, object.getItem());
 	}
 
 	@Override
 	public Field read(final Kryo kryo, final Input input, final Class<Field> type) {
 		int x = input.readInt();
 		int y = input.readInt();
-		Material material = (Material) kryo.readClassAndObject(input);
+		Material material = kryo.readObject(input, Material.class);
+		LivingEntity occupant = (LivingEntity) kryo.readClassAndObject(input);
+		Item item = (Item) kryo.readClassAndObject(input);
 		
-		return new Field(x, y, material);
+		return new Field(x, y, material, occupant, item);
 	}
 }

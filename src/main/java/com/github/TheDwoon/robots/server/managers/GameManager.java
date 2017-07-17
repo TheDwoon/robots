@@ -9,6 +9,8 @@ import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.AI;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Deque;
 import java.util.HashMap;
@@ -22,6 +24,8 @@ import java.util.concurrent.Executors;
  * Created by sigma_000 on 17.07.2017.
  */
 public class GameManager {
+
+    private static final Logger log = LogManager.getLogger();
 
     public static ExecutorService oberverExecutor = Executors.newFixedThreadPool(4);
 
@@ -38,10 +42,27 @@ public class GameManager {
         this.aiManagers = new HashMap<>();
 
         observers = new ConcurrentLinkedDeque<>();
+
+        boardManager.addObserver(new BoardObserver() {
+            @Override
+            public void setSize(long uuid, int width, int height) {
+                log.info("setSize(uuid = {}, width = {}, height = {})", uuid, width, height);
+            }
+
+            @Override
+            public void updateFields(long uuid, Field[] fields) {
+                log.info("updateFields(uuid = {}, ...)", uuid);
+                for (Field field : fields) {
+                    log.info("field: x = {}, y = {}, material = {}, occupied = {}, item = {}",
+                            field.getX(), field.getY(), field.getMaterial(), field.isOccupied(), field.hasItem());
+                }
+            }
+        });
     }
 
     public void addObserver(BoardObserver observer) {
         boardManager.addObserver(observer);
+        log.info("BoardObserver");
     }
 
     public void removeObserver(BoardObserver observer) {
@@ -50,6 +71,7 @@ public class GameManager {
 
     public void addObserver(InventoryObserver observer) {
         inventoryManager.addObserver(observer);
+        log.info("InventoryObserver");
     }
 
     public void removeObserver(InventoryObserver observer) {
@@ -60,6 +82,7 @@ public class GameManager {
         oberverExecutor.submit(() -> aiManagers.values().forEach(aiManager ->
                 observer.spawnAi(aiManager.getControlledRobot(), aiManager.getControlledInventory())));
         observers.add(observer);
+        log.info("AiObserver");
     }
 
     public void removeObserver(AiObserver observer) {

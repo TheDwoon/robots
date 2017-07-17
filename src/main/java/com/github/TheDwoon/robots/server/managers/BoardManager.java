@@ -57,7 +57,12 @@ public class BoardManager {
     }
 
     public void addObserver(BoardObserver observer) {
-        GameManager.oberverExecutor.submit(() -> observer.setSize(uuid, width, height));
+        GameManager.oberverExecutor.submit(() -> {
+            observer.setSize(uuid, width, height);
+            for (Field[] row: fields) {
+                observer.updateFields(uuid, row);
+            }
+        });
         observers.add(observer);
     }
 
@@ -148,7 +153,7 @@ public class BoardManager {
     }
 
     public boolean checkCoordinates(int x, int y) {
-        return (x >= 0 && x < width) && (y >= 0 && y < width);
+        return (x >= 0 && x < width) && (y >= 0 && y < height);
     }
 
     public List<Field> getVisibleFields(int posX, int posY) {
