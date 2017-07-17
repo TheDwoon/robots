@@ -3,13 +3,29 @@ package com.github.TheDwoon.robots.game.items;
 import com.github.TheDwoon.robots.game.InventoryHolder;
 import com.github.TheDwoon.robots.game.entity.Entity;
 
-/**
- * Created by sigma_000 on 30.05.2017.
- */
-public interface Item extends Entity {
-    void pickUp(InventoryHolder entity);
+public abstract class Item extends Entity {
+	public Item() {
+		super(0, 0);
+	}
 
-    void use();
-    
-    void drop();
+	public Item(int x, int y) {
+		super(x, y);
+	}
+
+	public Item(long uuid, int x, int y) {
+		super(uuid, x, y);
+	}
+	
+	public void use() {
+		// TODO (danielw, 31.05.2017): implement
+	}
+	
+	public void pickUp(InventoryHolder entity) {
+		// TODO (danielw, 27.04.16): implement
+	}
+	
+	public void drop() {
+		// TODO (danielw, 27.04.16): implement
+	}
+
 }

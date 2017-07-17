@@ -1,16 +1,22 @@
 package com.github.TheDwoon.robots.mapfile;
 
-import com.github.TheDwoon.robots.game.Board;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Material;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.server.RobotsServer;
+import com.github.TheDwoon.robots.server.ServerBoard;
 import com.github.TheDwoon.robots.server.UUIDGenerator;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.*;
 
 /**
  * Created by sigmar on 28.05.17.
@@ -35,13 +41,13 @@ public class MapFileParser {
         this.boardObservers.addAll(boardObservers);
     }
 
-    public static Board parseBoard(RobotsServer server, InputStream in) throws ParseException {
+    public static ServerBoard parseBoard(RobotsServer server, InputStream in) throws ParseException {
     	long uuid = UUIDGenerator.obtainUUID();
     	
     	Scanner scanner = new Scanner(in);
     	Parser parser = new Parser(scanner);
     	
-    	return new Board(server, uuid, parser.parseFields());    
+    	return new ServerBoard(server, uuid, parser.parseFields());    
     }
     
     public void addBoardObserver(BoardObserver boardObserver) {

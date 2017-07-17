@@ -1,24 +1,66 @@
 package com.github.TheDwoon.robots.game.entity;
 
-/**
- * Created by sigma_000 on 30.05.2017.
- */
-public interface Entity {
-    long getUUID();
+import com.github.TheDwoon.robots.server.UUIDGenerator;
 
-    int getX();
+public abstract class Entity {
 
-    void setX(int x);
+	private final long uuid;
+	private int x;
+	private int y;
+	
+	
+	public Entity(int x, int y) {
+		this(UUIDGenerator.obtainUUID(), x, y);
+	}
+	
+	public Entity(long uuid, int x, int y) {
+		this.uuid = uuid;
+		this.x = x;
+		this.y = y;
+	}
+	
+	public final long getUUID() {
+		return uuid;
+	}
+	
+	public final int getX() {
+		return x;
+	}
 
-    int getY();
+	public final void setX(int x) {
+		this.x = x;
+	}
 
-    void setY(int y);
+	public final int getY() {
+		return y;
+	}
 
-    void setPosition(int x, int y);
+	public final void setY(int y) {
+		this.y = y;
+	}
 
-    void update();
+	public final void setPosition(int x, int y) {
+		setX(x);
+		setY(y);
+	}
+	
+	public void update() {
+		
+	}
+	
+	public String getType() {
+		return getClass().getSimpleName();
+	}
 
-    default String getType() {
-        return getClass().getSimpleName().replaceAll("Impl$", "");
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || !Entity.class.isAssignableFrom(o.getClass()))
+			return false;
+
+		Entity entity = (Entity) o;
+
+		return uuid == entity.getUUID();
+	}
 }

@@ -6,15 +6,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.github.TheDwoon.robots.client.student.RandomDriveAI;
-import com.github.TheDwoon.robots.game.Board;
 import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.Inventory;
 import com.github.TheDwoon.robots.game.InventoryHolder;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
-import com.github.TheDwoon.robots.game.items.BombImpl;
-import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.mapfile.MapFileParser;
 import com.github.TheDwoon.robots.mapfile.ParseException;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
@@ -31,14 +28,14 @@ public final class RobotsServer implements Runnable {
 	private final EntityBroadcaster entityBroadcaster;
 	private final InventoryBroadcaster inventoryBroadcaster;
 	
-	private Board board;
+	private ServerBoard board;
 	
 	private RobotsServer() {
 		boardBroadcaster = new BoardBroadcaster();
 		entityBroadcaster = new EntityBroadcaster();
 		inventoryBroadcaster = new InventoryBroadcaster();
 		
-		Board board = null;
+		ServerBoard board = null;
 		try {
 			board = MapFileParser.parseBoard(this, getClass().getResourceAsStream("/map/simple.map"));
 		} catch (ParseException e) {
@@ -63,7 +60,7 @@ public final class RobotsServer implements Runnable {
 			} catch (InterruptedException e) {
 			}
 			
-			Item inventoryItem = null;
+			ServerItem inventoryItem = null;
 			ServerItem spawnedItem = null;
 			ServerRobot visitor = null;
 			int slot = -1;
@@ -74,7 +71,7 @@ public final class RobotsServer implements Runnable {
 				}
 				
 				if (inventoryItem == null) {
-					inventoryItem = new BombImpl();
+					inventoryItem = new ServerBomb(RobotsServer.this);
 					slot = randomRobot.getInventory().addItem(inventoryItem);
 				} else {
 					randomRobot.getInventory().removeItem(slot);
@@ -176,11 +173,11 @@ public final class RobotsServer implements Runnable {
 		}
 	}
 	
-	public Board getBoard() {
+	public ServerBoard getBoard() {
 		return board;
 	}
 	
-	public void setBoard(Board board) {
+	public void setBoard(ServerBoard board) {
 		if (this.board == board || board == null)
 			return;
 		

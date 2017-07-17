@@ -4,7 +4,7 @@ import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.server.RobotsServer;
 
-public class ServerLivingEntity extends ServerEntity implements LivingEntity {
+public class ServerLivingEntity extends ServerEntity {
 	private final LivingEntity entity;
 	
 	public ServerLivingEntity(RobotsServer server, LivingEntity entity) {
@@ -13,23 +13,19 @@ public class ServerLivingEntity extends ServerEntity implements LivingEntity {
 		this.entity = entity;
 	}
 	
-	@Override
 	public int getMaxHealth() {
 		return entity.getMaxHealth();
 	}
 
-	@Override
 	public int getHealth() {
 		return entity.getHealth();
 	}
 
-	@Override
 	public void setHealth(int health) {
 		entity.setHealth(health);
 		pushEntityUpdate();
 	}
 
-	@Override
 	public void damage(int damage) {
 		entity.damage(damage);
 		
@@ -38,22 +34,18 @@ public class ServerLivingEntity extends ServerEntity implements LivingEntity {
 		}
 	}
 
-	@Override
 	public boolean isAlive() {
 		return entity.isAlive();
 	}
 
-	@Override
 	public boolean isDead() {
 		return entity.isDead();
 	}
 	
-	@Override
 	public Facing getFacing() {
 		return entity.getFacing();
 	}
 	
-	@Override
 	public void setFacing(Facing facing) {
 		entity.setFacing(facing);
 		pushEntityUpdate();

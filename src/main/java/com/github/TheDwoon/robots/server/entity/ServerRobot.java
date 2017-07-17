@@ -4,25 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.TheDwoon.robots.client.student.AbstractBasicAI;
-import com.github.TheDwoon.robots.game.Board;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Inventory;
-import com.github.TheDwoon.robots.game.InventoryImpl;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.Robot;
-import com.github.TheDwoon.robots.game.entity.RobotImpl;
 import com.github.TheDwoon.robots.server.RobotsServer;
+import com.github.TheDwoon.robots.server.ServerBoard;
 
 /**
  * Created by sigma_000 on 30.05.2017.
  */
-public class ServerRobot extends ServerLivingEntity implements Robot {
+public class ServerRobot extends ServerLivingEntity {
     private final Robot robot;
-    private final Inventory inventory;
+    private final ServerInventory inventory;
     private AbstractBasicAI ai;
     
     public ServerRobot(RobotsServer server, int x, int y) {
-    	this(server, new RobotImpl(x, y, new InventoryImpl(ServerInventory.DEFAULT_SIZE)));    	
+    	this(server, new Robot(x, y, new Inventory(ServerInventory.DEFAULT_SIZE)));    	
     }
     
     public ServerRobot(RobotsServer server, Robot robot) {
@@ -52,7 +50,7 @@ public class ServerRobot extends ServerLivingEntity implements Robot {
     	
     	final int posX = robot.getX();
     	final int posY = robot.getY();
-    	final Board board = getServer().getBoard();
+    	final ServerBoard board = getServer().getBoard();
     	
     	final int xStart = Math.max(0, posX - 2), xEnd = Math.min(posX + 2, board.getWidth());
     	final int yStart = Math.max(0, posY - 2), yEnd = Math.min(posY + 2, board.getHeight()); 
@@ -80,19 +78,8 @@ public class ServerRobot extends ServerLivingEntity implements Robot {
 		ai.makeTurn().apply(this);
     }
     
-    @Override
-    public Inventory getInventory() {
+    public ServerInventory getInventory() {
         return inventory;
-    }
-
-	@Override
-    public boolean equals(Object obj) {
-        return robot.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return robot.hashCode();
     }
 
     public final Robot getRobot() {

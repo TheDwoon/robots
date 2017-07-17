@@ -6,7 +6,7 @@ import com.esotericsoftware.kryo.io.Output;
 import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.Inventory;
 import com.github.TheDwoon.robots.game.entity.Robot;
-import com.github.TheDwoon.robots.game.entity.RobotImpl;
+import com.github.TheDwoon.robots.game.entity.Robot;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -38,8 +38,8 @@ public class RobotSerializer<T extends Robot> extends LivingEntitySerializer<T> 
         Facing facing = kryo.readObject(input, Facing.class);
         Inventory inventory = (Inventory) kryo.readClassAndObject(input);
 
-        if (type == RobotImpl.class) {
-            return (T) new RobotImpl(uuid, x, y, maxHealth, health, facing, inventory);
+        if (type == Robot.class) {
+            return (T) new Robot(uuid, x, y, maxHealth, health, facing, inventory);
         }
         return create(type, uuid, x, y, maxHealth, health, facing, inventory);
     }

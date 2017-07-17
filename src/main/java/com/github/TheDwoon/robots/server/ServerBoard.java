@@ -1,14 +1,14 @@
-package com.github.TheDwoon.robots.game;
+package com.github.TheDwoon.robots.server;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.TheDwoon.robots.game.entity.Entity;
-import com.github.TheDwoon.robots.server.RobotsServer;
+import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.game.Material;
 import com.github.TheDwoon.robots.server.entity.ServerEntity;
 import com.github.TheDwoon.robots.server.entity.ServerRobot;
 
-public class Board {
+public class ServerBoard {
 //	private static final int DEFAULT_WIDTH = 100;
 //	private static final int DEFAULT_HEIGHT = 100;
 	private static final Material DEFAULT_MATERIAL = Material.GRASS;
@@ -18,10 +18,10 @@ public class Board {
 	private final long uuid;
 	private final int width;
 	private final int height;
-	private final List<Entity> entities;
+	private final List<ServerEntity> entities;
 	private final Field[][] fields;
 		
-	public Board(RobotsServer server, long uuid, final int width, final int height) {
+	public ServerBoard(RobotsServer server, long uuid, final int width, final int height) {
 		this.server = server;
 		this.width = width;
 		this.height = height;
@@ -38,7 +38,7 @@ public class Board {
 		this.uuid = uuid;
 	}
 
-	public Board(RobotsServer server, long uuid, final Field[][] fields) {
+	public ServerBoard(RobotsServer server, long uuid, final Field[][] fields) {
 		this.server = server;
 		this.entities = new ArrayList<>(64);
 		this.fields = fields;
@@ -58,11 +58,47 @@ public class Board {
 	public Field getField(int x, int y) {
 		return fields[x][y];
 	}
-			
+	
+	public void spawnEntity(ServerEntity entity, int x, int y) {
+		synchronized (entities) {
+			if (entity != null) {
+				entity.setPosition(x, y);
+				spawnEntity(entity);
+			}			
+		}
+	}
+	
+	public void spawnEntity(ServerEntity entity) {
+		synchronized (entities) {
+			if (entity != null) {
+				entities.add(entity);
+				
+				if (entity instanceof ServerRobot) {
+					getServer().getEntityBroadcaster().spawnRobot(((ServerRobot) entity).getRobot());
+				} else {
+					getServer().getEntityBroadcaster().spawnEntity(entity.getEntity());
+				}
+			}			
+		}
+	}
+	
+	public void removeEntity(ServerEntity entity) {
+		synchronized (entities) {
+			if (entity != null) {
+				entities.remove(entity);
+				getServer().getEntityBroadcaster().removeEntity(entity.getUUID());
+			}			
+		}
+	}
+		
 	public final long getUUID() {
 		return uuid;
 	}
-		
+	
+	public List<ServerEntity> getEntities() {
+		return entities;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
