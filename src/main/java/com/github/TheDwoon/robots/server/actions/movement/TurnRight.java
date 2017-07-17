@@ -1,7 +1,7 @@
 package com.github.TheDwoon.robots.server.actions.movement;
 
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
-import com.github.TheDwoon.robots.server.entity.ServerRobot;
+import com.github.TheDwoon.robots.server.managers.AiManager;
 
 public final class TurnRight implements PlayerAction {
 	public static final TurnRight INSTANCE = new TurnRight();
@@ -11,7 +11,7 @@ public final class TurnRight implements PlayerAction {
 	}
 
 	@Override
-	public void apply(ServerRobot robot) {
-		robot.turnRight();
+	public void apply(AiManager aiManager) {
+		aiManager.turnRight();
 	}
 }

@@ -6,7 +6,6 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.github.TheDwoon.robots.game.Inventory;
-import com.github.TheDwoon.robots.game.InventoryImpl;
 import com.github.TheDwoon.robots.game.items.Item;
 
 import java.lang.reflect.Constructor;
@@ -29,8 +28,8 @@ public class InventorySerializer<T extends Inventory> extends Serializer<T> {
         long uuid = input.readLong();
         Item[] items = kryo.readObject(input, Item[].class);
 
-        if (type == InventoryImpl.class) {
-            return (T) new InventoryImpl(uuid, items);
+        if (type == Inventory.class) {
+            return (T) new Inventory(uuid, items);
         }
         try {
             Constructor<T> constructor = type.getConstructor(long.class, Item[].class);

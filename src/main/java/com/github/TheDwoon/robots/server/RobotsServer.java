@@ -13,7 +13,7 @@ import com.github.TheDwoon.robots.game.InventoryHolder;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.EntityObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
-import com.github.TheDwoon.robots.game.items.BombImpl;
+import com.github.TheDwoon.robots.game.items.Bomb;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.mapfile.MapFileParser;
 import com.github.TheDwoon.robots.mapfile.ParseException;
@@ -74,7 +74,7 @@ public final class RobotsServer implements Runnable {
 				}
 				
 				if (inventoryItem == null) {
-					inventoryItem = new BombImpl();
+					inventoryItem = new Bomb();
 					slot = randomRobot.getInventory().addItem(inventoryItem);
 				} else {
 					randomRobot.getInventory().removeItem(slot);

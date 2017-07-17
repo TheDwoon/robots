@@ -2,23 +2,57 @@ package com.github.TheDwoon.robots.game.entity;
 
 import com.github.TheDwoon.robots.game.Facing;
 
-/**
- * Created by sigma_000 on 30.05.2017.
- */
-public interface LivingEntity extends Entity {
-	Facing getFacing();
-	
-	void setFacing(Facing facing);
-	
-    int getMaxHealth();
+public abstract class LivingEntity extends Entity {
 
-    int getHealth();
+    private final int maxHealth;
+    private int health;
+    private Facing facing;
 
-    void setHealth(int health);
+    public LivingEntity(int x, int y, int maxHealth) {
+        super(x, y);
 
-    void damage(int damage);
+        this.maxHealth = maxHealth;
+        health = 0;
+        facing = Facing.NORTH;
+    }
 
-    boolean isAlive();
+    public LivingEntity(long uuid, int x, int y, int maxHealth, int health, Facing facing) {
+        super(uuid, x, y);
+        this.maxHealth = maxHealth;
+        this.health = health;
+        this.facing = facing;
+    }
 
-    boolean isDead();
+    public final int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public final int getHealth() {
+        return health;
+    }
+
+    public final void setHealth(int health) {
+        this.health = health;
+    }
+
+    public final void damage(int damage) {
+        // yes, negative damage is a heal.
+        health = Math.min(health + damage, maxHealth);
+    }
+
+    public final boolean isAlive() {
+        return health > 0;
+    }
+
+    public final boolean isDead() {
+        return !isAlive();
+    }
+
+    public Facing getFacing() {
+        return facing;
+    }
+
+    public void setFacing(Facing facing) {
+        this.facing = facing;
+    }
 }
