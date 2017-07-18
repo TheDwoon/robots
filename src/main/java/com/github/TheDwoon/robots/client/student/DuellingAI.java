@@ -39,7 +39,7 @@ public class DuellingAI extends AbstractBasicAI {
             return pickUpItem();
         }
 
-        // sight enemy
+        // spy for enemy
         int gunSlot = getInventory().getFirstMatchingSlot(item -> item instanceof Gun);
         if (gunSlot >= 0) {
             Gun gun = (Gun) getInventory().getItem(gunSlot);
@@ -65,6 +65,8 @@ public class DuellingAI extends AbstractBasicAI {
                 return useItem(gunSlot);
             }
         }
+
+        // move forward
         return driveForward();
     }
 }
