@@ -72,7 +72,7 @@ public class RobotsViewerClient extends Application {
                 client.connect(5000, serverAddress, tcpPort);
                 connected = true;
             } catch (IOException e) {
-                e.printStackTrace();
+                log.catching(e);
             }
         }
     }

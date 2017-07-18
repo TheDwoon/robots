@@ -59,6 +59,13 @@ public class BoardManager {
         return fields[x][y];
     }
 
+    public Field getFieldChecked(int x, int y) {
+        if (!checkCoordinates(x, y)) {
+            return null;
+        }
+        return fields[x][y];
+    }
+
     public void addObserver(BoardObserver observer) {
         GameManager.oberverExecutor.submit(() -> {
             observer.setSize(uuid, width, height);
@@ -160,6 +167,23 @@ public class BoardManager {
     public void turnLivingEntity(LivingEntity entity, Facing facing) {
         entity.setFacing(facing);
         notifyObservers(fields[entity.getX()][entity.getY()]);
+    }
+
+    public void damageLivingEntity(int x, int y, int damage) {
+        Field field = fields[x][y];
+        synchronized (field) {
+            if (!field.isOccupied()) {
+                return;
+            }
+
+            LivingEntity occupant = field.getOccupant();
+            occupant.damage(damage);
+            if (occupant.isDead()) {
+                field.removeOccupant();
+                // TODO (sigmarw, 18.07.2017): notify ai on death or respawn
+            }
+        }
+        notifyObservers(field);
     }
 
     public boolean spawnItem(Item item) {

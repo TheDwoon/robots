@@ -1,0 +1,15 @@
+15x7
+VOID:v
+GRASS:g
+TREE:t
+ROCK:r
+WATER:w
+SPAWN:s
+
+g g g g g g g t g g g g g g g
+g g g g g g g g g g g g g g g
+g g g g g g g g g g g g g g g
+g g g s g g g g g g g s g g g
+g g g g g g g g g g g g g g g
+g g g g g g g g g g g g g g g
+g g g g g g g t g g g g g g g

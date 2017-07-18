@@ -1,8 +1,12 @@
 package com.github.TheDwoon.robots.game.entity;
 
 import com.github.TheDwoon.robots.game.Facing;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class LivingEntity extends Entity {
+
+    private static final Logger log = LogManager.getLogger();
 
     private final int maxHealth;
     private int health;
@@ -12,7 +16,7 @@ public abstract class LivingEntity extends Entity {
         super(x, y);
 
         this.maxHealth = maxHealth;
-        health = 0;
+        health = maxHealth;
         facing = Facing.NORTH;
     }
 
@@ -37,7 +41,8 @@ public abstract class LivingEntity extends Entity {
 
     public final void damage(int damage) {
         // yes, negative damage is a heal.
-        health = Math.min(health + damage, maxHealth);
+        health = Math.min(health - damage, maxHealth);
+        log.info("Robot #{} has now {}/{} lifes", getUUID(), health, maxHealth);
     }
 
     public final boolean isAlive() {

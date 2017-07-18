@@ -5,11 +5,15 @@ import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.AI;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Created by sigma_000 on 17.07.2017.
  */
 public class AiManager {
+
+    public static final Logger log = LogManager.getLogger();
 
     private final AI ai;
     private final Robot controlledRobot;
@@ -26,11 +30,15 @@ public class AiManager {
     }
 
     public void makeTurn() {
-        ai.updateRobot(controlledRobot);
-        ai.updateInventory(controlledInventory);
-        ai.updateVision(gameManager.getVisibleFields(controlledRobot));
-        PlayerAction action = ai.makeTurn();
-        action.apply(this);
+        try {
+            ai.updateRobot(controlledRobot);
+            ai.updateInventory(controlledInventory);
+            ai.updateVision(gameManager.getVisibleFields(controlledRobot));
+            PlayerAction action = ai.makeTurn();
+            action.apply(this);
+        } catch (Throwable t) {
+            log.catching(t);
+        }
     }
 
     public Robot getControlledRobot() {
@@ -57,8 +65,8 @@ public class AiManager {
         gameManager.robotTurnRight(controlledRobot);
     }
 
-    public void useItem(Item item) {
-        gameManager.robotUseItem(controlledRobot, item);
+    public void useItem(int slot) {
+        gameManager.robotUseItem(controlledRobot, slot);
     }
 
     public void pickUpItem() {

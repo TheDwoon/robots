@@ -95,8 +95,8 @@ public abstract class AbstractBasicAI implements AI {
         return TurnRight.INSTANCE;
     }
 
-    protected final UseItem useItem(Item item) {
-        return new UseItem(item);
+    protected final UseItem useItem(int slot) {
+        return new UseItem(slot);
     }
 
     protected final PickUpItem pickUpItem() {

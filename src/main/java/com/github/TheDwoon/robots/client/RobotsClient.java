@@ -34,7 +34,7 @@ public final class RobotsClient {
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			log.catching(e);
 		}
 
 		client.stop();

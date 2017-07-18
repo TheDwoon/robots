@@ -14,6 +14,8 @@ import com.github.TheDwoon.robots.server.AI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -112,6 +114,20 @@ public class GameManager {
         }
     }
 
+    public synchronized void spawnItemsPlaced(Item... items) {
+        for (Item item : items) {
+            boardManager.spawnItem(item, item.getX(), item.getY());
+        }
+    }
+
+    public synchronized void spawnItems(Class<? extends Item> clazz, int count) throws NoSuchMethodException,
+            IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<? extends Item> constructor = clazz.getConstructor();
+        for (int i = 0; i < count; i++) {
+            boardManager.spawnItem(constructor.newInstance());
+        }
+    }
+
     public void makeTurn() {
         for (AiManager aiManager : aiManagers.values()) {
             aiManager.makeTurn();
@@ -140,10 +156,13 @@ public class GameManager {
         boardManager.turnLivingEntity(robot, robot.getFacing().right());
     }
 
-    public void robotUseItem(Robot robot, Item item) {
-        if (inventoryManager.hasItem(robot, item)) {
-            // TODO (sigmarw, 17.07.2017): define how this is applied
+    public void robotUseItem(Robot robot, int slot) {
+        Item item = inventoryManager.removeItem(robot, slot);
+        if (item == null) {
+            return;
         }
+
+        item.use(robot, this, boardManager, inventoryManager);
     }
 
     public void robotPickUpItem(Robot robot) {

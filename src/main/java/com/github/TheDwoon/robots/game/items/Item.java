@@ -2,10 +2,15 @@ package com.github.TheDwoon.robots.game.items;
 
 import com.github.TheDwoon.robots.game.InventoryHolder;
 import com.github.TheDwoon.robots.game.entity.Entity;
+import com.github.TheDwoon.robots.game.entity.Robot;
+import com.github.TheDwoon.robots.game.interaction.BoardObserver;
+import com.github.TheDwoon.robots.server.managers.BoardManager;
+import com.github.TheDwoon.robots.server.managers.GameManager;
+import com.github.TheDwoon.robots.server.managers.InventoryManager;
 
 public abstract class Item extends Entity {
 	public Item() {
-		super(0, 0);
+		super(-1, -1);
 	}
 
 	public Item(int x, int y) {
@@ -16,12 +21,6 @@ public abstract class Item extends Entity {
 		super(uuid, x, y);
 	}
 	
-	public void use() {
-		// TODO (danielw, 31.05.2017): implement
-	}
-	
-	public void drop() {
-		// TODO (danielw, 27.04.16): implement
-	}
+	public abstract void use(Robot robot, GameManager gameManager, BoardManager boardManager, InventoryManager inventoryManager);
 
 }

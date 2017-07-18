@@ -6,15 +6,15 @@ import com.github.TheDwoon.robots.server.managers.AiManager;
 
 public class UseItem implements PlayerAction {
 
-	private Item item;
+	private int slot;
 
-	public UseItem(Item item) {
-		this.item = item;
+	public UseItem(int slot) {
+		this.slot = slot;
 	}
 
 	@Override
 	public void apply(AiManager aiManager) {
-		aiManager.useItem(item);
+		aiManager.useItem(slot);
 	}
 	
 }

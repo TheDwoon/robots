@@ -4,6 +4,7 @@ import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.UUIDGenerator;
 
 import java.util.Arrays;
+import java.util.function.Predicate;
 
 public class Inventory {
 	private final long uuid;
@@ -65,6 +66,25 @@ public class Inventory {
 		return items.length;
 	}
 
+	public int getFreeSlots() {
+		int freeSlots = items.length;
+		for (Item item: items) {
+			if (item != null) {
+				freeSlots--;
+			}
+		}
+		return freeSlots;
+	}
+
+	public int getFirstMatchingSlot(Predicate<Item> predicate) {
+		for (int i = 0; i < items.length; i++) {
+			if (predicate.test(items[i])) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -79,14 +99,4 @@ public class Inventory {
 	public int hashCode() {
 		return (int) (uuid ^ (uuid >>> 32));
 	}
-
-    public int getFreeSlots() {
-		int freeSlots = items.length;
-		for (Item item: items) {
-			if (item != null) {
-				freeSlots--;
-			}
-		}
-		return freeSlots;
-    }
 }
