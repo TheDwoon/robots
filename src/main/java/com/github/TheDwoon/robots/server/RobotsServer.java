@@ -64,7 +64,7 @@ public final class RobotsServer implements Runnable {
 	}
 
 	private GameManager loadGame(final String mapName) {
-		BoardManager boardManager = null;
+		BoardManager boardManager;
 		try {
 			boardManager = MapFileParser
 					.parseBoard(getClass().getResourceAsStream("/map/" + mapName + ".map"));
