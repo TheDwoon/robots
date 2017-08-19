@@ -91,6 +91,22 @@
 							</archive>
 						</configuration>
 					</execution>
+					<execution>
+						<id>server</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+						<configuration>
+							<finalName>${project.name}-gui</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<archive>
+								<manifest>
+									<mainClass>${project.groupId}.${project.artifactId}.gui.RobotsViewerClient</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</execution>
 				</executions>
 				<configuration>
 					<descriptorRefs>
