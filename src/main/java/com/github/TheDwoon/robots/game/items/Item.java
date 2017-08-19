@@ -1,9 +1,7 @@
 package com.github.TheDwoon.robots.game.items;
 
-import com.github.TheDwoon.robots.game.InventoryHolder;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.Robot;
-import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.server.managers.BoardManager;
 import com.github.TheDwoon.robots.server.managers.GameManager;
 import com.github.TheDwoon.robots.server.managers.InventoryManager;

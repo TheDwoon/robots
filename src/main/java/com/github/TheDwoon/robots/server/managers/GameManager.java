@@ -1,19 +1,5 @@
 package com.github.TheDwoon.robots.server.managers;
 
-import com.github.TheDwoon.robots.game.Facing;
-import com.github.TheDwoon.robots.game.Field;
-import com.github.TheDwoon.robots.game.Inventory;
-import com.github.TheDwoon.robots.game.entity.Entity;
-import com.github.TheDwoon.robots.game.entity.LivingEntity;
-import com.github.TheDwoon.robots.game.entity.Robot;
-import com.github.TheDwoon.robots.game.interaction.AiObserver;
-import com.github.TheDwoon.robots.game.interaction.BoardObserver;
-import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
-import com.github.TheDwoon.robots.game.items.Item;
-import com.github.TheDwoon.robots.server.AI;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Deque;
@@ -24,13 +10,21 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.github.TheDwoon.robots.game.Facing;
+import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.entity.LivingEntity;
+import com.github.TheDwoon.robots.game.entity.Robot;
+import com.github.TheDwoon.robots.game.interaction.AiObserver;
+import com.github.TheDwoon.robots.game.interaction.BoardObserver;
+import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
+import com.github.TheDwoon.robots.game.items.Item;
+import com.github.TheDwoon.robots.server.AI;
+
 /**
  * Created by sigma_000 on 17.07.2017.
  */
 public class GameManager {
-
-    private static final Logger log = LogManager.getLogger();
-
     public static ExecutorService oberverExecutor = Executors.newFixedThreadPool(4);
 
     private final BoardManager boardManager;
@@ -84,7 +78,9 @@ public class GameManager {
 
     public synchronized AiManager spawnAi(AI ai) {
         Robot controlledRobot = new Robot();
-        boardManager.spawnLivingEntity(controlledRobot);
+        if (!boardManager.spawnLivingEntity(controlledRobot)) {
+        	throw new RuntimeException("you broke it");
+        }
 
         Inventory controlledInventory = new Inventory(12);
         inventoryManager.register(controlledRobot, controlledInventory);
@@ -120,6 +116,13 @@ public class GameManager {
         }
     }
 
+    public synchronized void spawnItem(Class<? extends Item> clazz, int x, int y) throws NoSuchMethodException, 
+    		InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    	Constructor<? extends Item> constructor = clazz.getConstructor();
+    	Item item = constructor.newInstance();
+    	boardManager.spawnItem(item, x, y);
+    }
+    
     public synchronized void spawnItems(Class<? extends Item> clazz, int count) throws NoSuchMethodException,
             IllegalAccessException, InvocationTargetException, InstantiationException {
         Constructor<? extends Item> constructor = clazz.getConstructor();

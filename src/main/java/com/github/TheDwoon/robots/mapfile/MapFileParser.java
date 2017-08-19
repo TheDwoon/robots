@@ -3,12 +3,14 @@ package com.github.TheDwoon.robots.mapfile;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Material;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
+import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.UUIDGenerator;
 import com.github.TheDwoon.robots.server.managers.BoardManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -105,7 +107,7 @@ public class MapFileParser {
                 materialAliases.put(material.name(), material);
                 materialAliases.put(material.name().toLowerCase(), material);
             }
-            for (String line = readLine().trim(); !line.isEmpty(); line = readLine().trim()) {
+            for (String line = readLine(); !line.isEmpty(); line = readLine()) {
                 String[] aliasSplit = line.split("\\s*[:=]\\s*");
                 materialAliases.put(aliasSplit[1], materialAliases.get(aliasSplit[0]));
             }
@@ -136,6 +138,57 @@ public class MapFileParser {
                     }
                     fields[x][y] = new Field(x, y, material);
                 }
+            }
+            
+            // read items
+            if (scanner.hasNextLine()) {
+	            for (String line = readLine(); !line.isEmpty(); line = readLine()) {
+	            	String[] itemLineSplit = line.split(" ");
+	            	try {
+						Class<?> clazz = Class.forName(itemLineSplit[0]);
+						int x = Integer.parseInt(itemLineSplit[1]);
+						int y = Integer.parseInt(itemLineSplit[2]);
+						
+						Class<? extends Item> itemClazz = clazz.asSubclass(Item.class);
+						Item item = itemClazz.getConstructor().newInstance();
+						
+						if (x < 0 || x >= width) {
+							throw new ParseException(lineCount, "x out of bounds");
+						}
+						if (y < 0 || y >= height) {
+							throw new ParseException(lineCount, "y out of bounds");
+						}
+						
+						fields[x][y].setItem(item);
+					} catch (ClassNotFoundException e) {
+						throw new ParseException(lineCount, 
+								"class for item not found: " + itemLineSplit[0]);
+					} catch (NumberFormatException e) {
+						throw new ParseException(lineCount, 
+								"x or y parameter is not an int");
+					} catch (InstantiationException e) {
+						throw new ParseException(lineCount, 
+								"no default constructor for item");
+					} catch (IllegalAccessException e) {
+						throw new ParseException(lineCount, 
+								e.getMessage());
+					} catch (IllegalArgumentException e) {
+						throw new ParseException(lineCount, 
+								e.getMessage());
+					} catch (InvocationTargetException e) {
+						throw new ParseException(lineCount, 
+								e.getMessage());
+					} catch (NoSuchMethodException e) {
+						throw new ParseException(lineCount, 
+								e.getMessage());
+					} catch (SecurityException e) {
+						throw new ParseException(lineCount, 
+								e.getMessage());
+					}   
+	            	
+	            	if (!scanner.hasNextLine())
+	            		break;
+	            }
             }
 
             return fields;
