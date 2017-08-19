@@ -4,11 +4,10 @@ import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.items.Gun;
-import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,17 +18,24 @@ public class DuellingAI extends AbstractBasicAI {
 	private int lastX;
 	private int lastY;
 
+	private LinkedList<PlayerAction> actionQueue;
+
 	public DuellingAI(Facing facing) {
 		this.facing = facing;
 		lastX = -1;
 		lastY = -1;
+		actionQueue = new LinkedList<>();
 	}
 
 	@Override
 	public PlayerAction makeTurn() {
+		if (!actionQueue.isEmpty()) {
+			return actionQueue.pollFirst();
+		}
+
 		// turn to opponent
 		Facing currentFacing = getRobot().getFacing();
-		if (currentFacing != this.facing) {
+		if (lastX == -1 && lastY == -1 && currentFacing != this.facing) {
 			if (currentFacing.left() == facing) {
 				return turnLeft();
 			} else {
@@ -48,7 +54,7 @@ public class DuellingAI extends AbstractBasicAI {
 		if (gunSlot >= 0) {
 			Gun gun = (Gun) getInventory().getItem(gunSlot);
 			Stream<Field> fieldStream = getFields().stream();
-			switch (this.facing) {
+			switch (currentFacing) {
 			case NORTH:
 				fieldStream = fieldStream.filter(field -> field.getX() == getRobot().getX()
 						&& field.getY() > getRobot().getY());
@@ -74,7 +80,9 @@ public class DuellingAI extends AbstractBasicAI {
 			}
 
 			if (beneath.getX() == lastX && beneath.getY() == lastY) {
-				return useItem(gunSlot);
+				actionQueue.addLast(turnLeft());
+				actionQueue.addLast(driveForward());
+				return turnLeft();
 			}
 		}
 

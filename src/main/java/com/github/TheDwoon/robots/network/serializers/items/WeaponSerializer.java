@@ -1,11 +1,8 @@
 package com.github.TheDwoon.robots.network.serializers.items;
 
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.KryoException;
-import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.github.TheDwoon.robots.game.items.Gun;
 import com.github.TheDwoon.robots.game.items.Weapon;
 import com.github.TheDwoon.robots.network.serializers.entity.EntitySerializer;
 

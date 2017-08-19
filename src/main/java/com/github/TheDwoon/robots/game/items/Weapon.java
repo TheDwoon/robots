@@ -1,14 +1,5 @@
 package com.github.TheDwoon.robots.game.items;
 
-import com.github.TheDwoon.robots.game.Facing;
-import com.github.TheDwoon.robots.game.Field;
-import com.github.TheDwoon.robots.game.entity.Robot;
-import com.github.TheDwoon.robots.server.managers.BoardManager;
-import com.github.TheDwoon.robots.server.managers.GameManager;
-import com.github.TheDwoon.robots.server.managers.InventoryManager;
-
-import static java.lang.Math.round;
-
 /**
  * Created by sigma_000 on 18.07.2017.
  */

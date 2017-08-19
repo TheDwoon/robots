@@ -4,9 +4,6 @@ import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.UUIDGenerator;
 
 import java.util.Arrays;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Predicate;
 
 public class Inventory {

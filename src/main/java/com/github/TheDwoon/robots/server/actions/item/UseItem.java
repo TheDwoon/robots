@@ -1,6 +1,5 @@
 package com.github.TheDwoon.robots.server.actions.item;
 
-import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
 import com.github.TheDwoon.robots.server.managers.AiManager;
 

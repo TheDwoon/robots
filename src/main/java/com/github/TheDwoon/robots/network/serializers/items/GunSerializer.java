@@ -4,8 +4,6 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.github.TheDwoon.robots.game.items.Gun;
-import com.github.TheDwoon.robots.game.items.Weapon;
-import com.github.TheDwoon.robots.network.serializers.entity.EntitySerializer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

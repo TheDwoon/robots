@@ -4,7 +4,6 @@ import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.server.managers.BoardManager;
-import com.github.TheDwoon.robots.server.managers.GameManager;
 import com.github.TheDwoon.robots.server.managers.InventoryManager;
 
 import static java.lang.Math.round;
@@ -38,8 +37,7 @@ public class Gun extends Weapon {
 	}
 
 	@Override
-	public void use(Robot robot, GameManager gameManager, BoardManager boardManager,
-			InventoryManager inventoryManager) {
+	public void use(Robot robot, BoardManager boardManager, InventoryManager inventoryManager) {
 		if (roundsLeft <= 0) {
 			return;
 		}

@@ -3,7 +3,6 @@ package com.github.TheDwoon.robots.game.items;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.server.managers.BoardManager;
-import com.github.TheDwoon.robots.server.managers.GameManager;
 import com.github.TheDwoon.robots.server.managers.InventoryManager;
 
 public abstract class Item extends Entity {
@@ -19,7 +18,7 @@ public abstract class Item extends Entity {
 		super(uuid, x, y);
 	}
 
-	public abstract void use(Robot robot, GameManager gameManager, BoardManager boardManager,
+	public abstract void use(Robot robot, BoardManager boardManager,
 			InventoryManager inventoryManager);
 
 	public boolean isReusable() {

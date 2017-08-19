@@ -5,8 +5,6 @@ import com.github.TheDwoon.robots.server.game_loader.GameLoader;
 import com.github.TheDwoon.robots.server.game_loader.SimpleTestLoader;
 import com.github.TheDwoon.robots.server.game_loader.WeaponTestLoader;
 import com.github.TheDwoon.robots.server.managers.GameManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 

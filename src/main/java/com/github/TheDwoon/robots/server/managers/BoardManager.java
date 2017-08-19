@@ -1,18 +1,5 @@
 package com.github.TheDwoon.robots.server.managers;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedDeque;
-
 import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Material;
@@ -28,6 +15,8 @@ import static java.lang.Math.min;
 
 public class BoardManager {
 
+	private Random random;
+
 	private final long uuid;
 	private final int width;
 	private final int height;
@@ -39,6 +28,8 @@ public class BoardManager {
 	private final Deque<BoardObserver> observers;
 
 	public BoardManager(long uuid, final Field[][] fields) {
+		this.random = new Random();
+
 		this.fields = fields;
 		this.width = fields.length;
 		this.height = fields[0].length;
@@ -102,7 +93,6 @@ public class BoardManager {
 	}
 
 	public boolean spawnLivingEntity(LivingEntity entity) {
-		Random random = new Random();
 		for (int i = 0; i < 3; i++) {
 			Field field;
 			try {
@@ -207,7 +197,6 @@ public class BoardManager {
 	}
 
 	public boolean spawnItem(Item item) {
-		Random random = new Random();
 		for (int i = 0; i < 3; i++) {
 			Field field;
 			try {

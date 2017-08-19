@@ -1,6 +1,5 @@
 package com.github.TheDwoon.robots.gui;
 
-import com.github.TheDwoon.robots.game.entity.Entity;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,9 +40,6 @@ public class FxThreadAdapter implements InvocationHandler {
 			return method.invoke(instance, args);
 		}
 
-		// TODO (sigmarw, 01. Jun 2017): debug, remove me
-		// log.info("calling {}, arguments: {}", method.getName(), debugToString(args));
-
 		if (method.getReturnType().equals(Void.TYPE)) {
 			Platform.runLater(() -> {
 				try {
@@ -57,36 +53,6 @@ public class FxThreadAdapter implements InvocationHandler {
 			FutureTask<Object> task = new FutureTask<>(() -> method.invoke(instance, args));
 			Platform.runLater(task);
 			return task.get();
-		}
-	}
-
-	// TODO (sigmarw, 01. Jun 2017): debug, remove me
-	private static String debugToString(Object[] a) {
-		if (a == null)
-			return "null";
-
-		int iMax = a.length - 1;
-		if (iMax == -1)
-			return "[]";
-
-		StringBuilder b = new StringBuilder();
-		b.append('[');
-		for (int i = 0; ; i++) {
-			b.append(debugToString(a[i]));
-			if (i == iMax)
-				return b.append(']').toString();
-			b.append(", ");
-		}
-	}
-
-	// TODO (sigmarw, 01. Jun 2017): debug, remove me
-	private static String debugToString(Object o) {
-		if (o instanceof Entity) {
-			Entity e = (Entity) o;
-			return o.getClass().getName() + ':' + e.getUUID() + '[' + e.getX() + '|' + e.getY()
-					+ ']';
-		} else {
-			return String.valueOf(o);
 		}
 	}
 }

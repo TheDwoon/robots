@@ -1,25 +1,21 @@
 package com.github.TheDwoon.robots.server.managers;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import com.github.TheDwoon.robots.game.Facing;
-import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Inventory;
-import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.AI;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by sigma_000 on 17.07.2017.
@@ -87,7 +83,8 @@ public class GameManager {
 		Inventory controlledInventory = new Inventory(12);
 		inventoryManager.register(controlledRobot, controlledInventory);
 
-		AiManager aiManager = new AiManager(ai, controlledRobot, controlledInventory, this);
+		AiManager aiManager = new AiManager(ai, controlledRobot, controlledInventory, boardManager,
+				inventoryManager);
 		aiManagers.put(ai, aiManager);
 
 		notifyObserversSpawn(controlledRobot, controlledInventory);
@@ -138,55 +135,6 @@ public class GameManager {
 	public void makeTurn() {
 		for (AiManager aiManager : aiManagers.values()) {
 			aiManager.makeTurn();
-		}
-	}
-
-	public List<Field> getVisibleFields(LivingEntity entity) {
-		return boardManager.getVisibleFields(entity.getX(), entity.getY());
-	}
-
-	public void robotForward(Robot robot) {
-		Facing facing = robot.getFacing();
-		boardManager.moveLivingEntityRelative(robot, facing.dx, facing.dy);
-	}
-
-	public void robotBackward(Robot robot) {
-		Facing facing = robot.getFacing().opposite();
-		boardManager.moveLivingEntityRelative(robot, facing.dx, facing.dy);
-	}
-
-	public void robotTurnLeft(Robot robot) {
-		boardManager.turnLivingEntity(robot, robot.getFacing().left());
-	}
-
-	public void robotTurnRight(Robot robot) {
-		boardManager.turnLivingEntity(robot, robot.getFacing().right());
-	}
-
-	public void robotUseItem(Robot robot, int slot) {
-		inventoryManager.useItem(robot, slot,
-				item -> item.use(robot, this, boardManager, inventoryManager));
-	}
-
-	public void robotPickUpItem(Robot robot) {
-		if (inventoryManager.getFreeSlots(robot) <= 0) {
-			return;
-		}
-
-		Item item = boardManager.removeItem(robot.getX(), robot.getY());
-		if (item != null) {
-			inventoryManager.giveItem(robot, item);
-		}
-	}
-
-	public void robotDropItem(Robot robot, int slot) {
-		if (boardManager.getField(robot.getX(), robot.getY()).hasItem()) {
-			return;
-		}
-
-		Item item = inventoryManager.removeItem(robot, slot);
-		if (item != null) {
-			boardManager.spawnItem(item, robot.getX(), robot.getY());
 		}
 	}
 }

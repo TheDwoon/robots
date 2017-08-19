@@ -8,7 +8,6 @@ import com.github.TheDwoon.robots.server.AIServer;
 import com.github.TheDwoon.robots.server.RobotsServer;
 import com.github.TheDwoon.robots.server.managers.GameManager;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -60,7 +59,7 @@ public class RobotsCombinedServerView extends Application {
 
 				gameManager.makeTurn();
 
-				Thread.sleep(500);
+				Thread.sleep(50);
 			}
 		} catch (IOException | InterruptedException e) {
 			// ignore
