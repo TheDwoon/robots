@@ -2,8 +2,10 @@ package com.github.TheDwoon.robots.client;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
+import com.github.TheDwoon.robots.client.student.RandomItemCollectorAI;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.network.KryoRegistry;
+import com.github.TheDwoon.robots.server.AI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,6 +15,8 @@ import java.net.InetAddress;
 public final class RobotsClient {
 
 	private static final Logger log = LogManager.getLogger();
+
+	private static final AI MY_AI = new RandomItemCollectorAI();
 	
 	public static void main(final String[] args) throws IOException {
 		KryoNetLoggerProxy.setAsKryoLogger();
@@ -20,6 +24,7 @@ public final class RobotsClient {
 		Client client = new Client();
 		KryoRegistry.register(client.getKryo());
 		ObjectSpace objectSpace = new ObjectSpace();
+		objectSpace.register(1, MY_AI);
 		objectSpace.addConnection(client);
 
 		client.start();

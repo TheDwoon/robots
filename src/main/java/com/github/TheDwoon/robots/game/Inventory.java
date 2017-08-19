@@ -4,9 +4,13 @@ import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.UUIDGenerator;
 
 import java.util.Arrays;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Predicate;
 
 public class Inventory {
+
 	private final long uuid;
 	private final Item[] items;
 
@@ -32,7 +36,8 @@ public class Inventory {
 		return Arrays.copyOf(items, items.length);
 	}
 
-	public int addItem(final Item item) {
+	public synchronized int addItem(final Item item) {
+
 		for (int i = 0; i < size(); i++) {
 			if (items[i] == null) {
 				items[i] = item;
@@ -43,7 +48,7 @@ public class Inventory {
 		return -1;
 	}
 
-	public Item removeItem(int slot) {
+	public synchronized Item removeItem(int slot) {
 		Item item = items[slot];
 		items[slot] = null;
 		return item;
@@ -53,7 +58,7 @@ public class Inventory {
 		return items[slot];
 	}
 
-	public int getSlot(Item item) {
+	public synchronized int getSlot(Item item) {
 		for (int slot = 0; slot < items.length; slot++) {
 			if (item.equals(items[slot])) {
 				return slot;
@@ -66,7 +71,7 @@ public class Inventory {
 		return items.length;
 	}
 
-	public int getFreeSlots() {
+	public synchronized int getFreeSlots() {
 		int freeSlots = items.length;
 		for (Item item: items) {
 			if (item != null) {
@@ -76,7 +81,7 @@ public class Inventory {
 		return freeSlots;
 	}
 
-	public int getFirstMatchingSlot(Predicate<Item> predicate) {
+	public synchronized int getFirstMatchingSlot(Predicate<Item> predicate) {
 		for (int i = 0; i < items.length; i++) {
 			if (predicate.test(items[i])) {
 				return i;

@@ -30,11 +30,11 @@ public final class RobotsServer implements Runnable {
 
 	private GameManager gameManager;
 
-	private RobotsServer() {
-		loadSimpleGame();
+	public RobotsServer() {
+		loadWeaponTest();
 	}
 
-	private void loadSimpleGame() {
+	public void loadSimpleGame() {
 		gameManager = loadGame("simple");
 
 		try {
@@ -58,6 +58,10 @@ public final class RobotsServer implements Runnable {
 
 		gameManager.spawnItemsPlaced(
 				IntStream.rangeClosed(4, 10).mapToObj(i -> new Gun(i, 3)).toArray(Item[]::new));
+		gameManager.spawnItemsPlaced(
+				IntStream.rangeClosed(0, 2).mapToObj(i -> new Gun(i, 3)).toArray(Item[]::new));
+		gameManager.spawnItemsPlaced(
+				IntStream.rangeClosed(12, 14).mapToObj(i -> new Gun(i, 3)).toArray(Item[]::new));
 
 		gameManager.spawnAi(new DuellingAI(Facing.EAST));
 		gameManager.spawnAi(new DuellingAI(Facing.WEST));
@@ -97,5 +101,9 @@ public final class RobotsServer implements Runnable {
 		} catch (IOException | InterruptedException e) {
 			// ignore
 		}
+	}
+
+	public GameManager getGameManager() {
+		return gameManager;
 	}
 }

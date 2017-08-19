@@ -67,7 +67,7 @@ public class BoardManager {
 	}
 
 	public void addObserver(BoardObserver observer) {
-		GameManager.oberverExecutor.submit(() -> {
+		GameManager.observerExecutor.submit(() -> {
 			observer.setSize(uuid, width, height);
 			for (Field[] row : fields) {
 				observer.updateFields(uuid, row);
@@ -82,7 +82,7 @@ public class BoardManager {
 
 	private void notifyObservers(Field... updatedFields) {
 		observers.forEach(
-				o -> GameManager.oberverExecutor.submit(() -> o.updateFields(uuid, updatedFields)));
+				o -> GameManager.observerExecutor.submit(() -> o.updateFields(uuid, updatedFields)));
 	}
 
 	public boolean spawnLivingEntity(LivingEntity entity) {

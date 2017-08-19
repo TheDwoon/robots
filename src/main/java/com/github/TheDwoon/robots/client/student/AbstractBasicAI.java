@@ -43,7 +43,7 @@ public abstract class AbstractBasicAI implements AI {
     }
 
     @Override
-    public void updateInventory(Inventory inventory) {
+    public final void updateInventory(Inventory inventory) {
         this.inventory = inventory;
     }
 
@@ -111,43 +111,43 @@ public abstract class AbstractBasicAI implements AI {
         return NoAction.INSTANCE;
     }
 
-    public final Field getFront() {
+    protected final Field getFront() {
         return front;
     }
 
-    public final Field getLeft() {
+    protected final Field getLeft() {
         return left;
     }
 
-    public final Field getRight() {
+    protected final Field getRight() {
         return right;
     }
 
-    public final Field getBack() {
+    protected final Field getBack() {
         return back;
     }
 
-    public final Field getBeneath() {
+    protected final Field getBeneath() {
         return beneath;
     }
 
-    public final Robot getRobot() {
+    protected final Robot getRobot() {
         return robot;
     }
 
-    public Inventory getInventory() {
+    protected final Inventory getInventory() {
         return inventory;
     }
 
-    public final List<Field> getFields() {
+    protected final List<Field> getFields() {
         return fields;
     }
 
-    public List<LivingEntity> getEntitiesInRange() {
+    protected final List<LivingEntity> getEntitiesInRange() {
         return entitiesInRange;
     }
 
-    public List<Item> getItemsInRange() {
+    protected final List<Item> getItemsInRange() {
         return itemsInRange;
     }
 }

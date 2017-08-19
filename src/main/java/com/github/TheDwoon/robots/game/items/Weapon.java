@@ -14,40 +14,40 @@ import static java.lang.Math.round;
  */
 public abstract class Weapon extends Item {
 
-    private final int range;
-    private final int damage;
-    private final double piercingLoss;
+	private final int range;
+	private final int damage;
+	private final double piercingLoss;
 
-    public Weapon(int range, int damage, double piercingLoss) {
-        super();
-        this.range = range;
-        this.damage = damage;
-        this.piercingLoss = piercingLoss;
-    }
+	public Weapon(int range, int damage, double piercingLoss) {
+		super();
+		this.range = range;
+		this.damage = damage;
+		this.piercingLoss = piercingLoss;
+	}
 
-    public Weapon(int x, int y, int range, int damage, double piercingLoss) {
-        super(x, y);
-        this.range = range;
-        this.damage = damage;
-        this.piercingLoss = piercingLoss;
-    }
+	public Weapon(int x, int y, int range, int damage, double piercingLoss) {
+		super(x, y);
+		this.range = range;
+		this.damage = damage;
+		this.piercingLoss = piercingLoss;
+	}
 
-    public Weapon(long uuid, int x, int y, int range, int damage, double piercingLoss) {
-        super(uuid, x, y);
-        this.range = range;
-        this.damage = damage;
-        this.piercingLoss = piercingLoss;
-    }
+	public Weapon(long uuid, int x, int y, int range, int damage, double piercingLoss) {
+		super(uuid, x, y);
+		this.range = range;
+		this.damage = damage;
+		this.piercingLoss = piercingLoss;
+	}
 
-    public int getRange() {
-        return range;
-    }
+	public int getRange() {
+		return range;
+	}
 
-    public int getDamage() {
-        return damage;
-    }
+	public int getDamage() {
+		return damage;
+	}
 
-    public double getPiercingLoss() {
-        return piercingLoss;
-    }
+	public double getPiercingLoss() {
+		return piercingLoss;
+	}
 }
