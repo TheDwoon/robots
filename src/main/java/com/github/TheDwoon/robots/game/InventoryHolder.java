@@ -1,5 +1,3 @@
 package com.github.TheDwoon.robots.game;
 
-public interface InventoryHolder {
-    long getUUID();
-}
+public interface InventoryHolder extends UniquelyIdentifiable {}

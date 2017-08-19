@@ -1,8 +1,9 @@
 package com.github.TheDwoon.robots.game.entity;
 
+import com.github.TheDwoon.robots.game.UniquelyIdentifiable;
 import com.github.TheDwoon.robots.server.UUIDGenerator;
 
-public abstract class Entity {
+public abstract class Entity implements UniquelyIdentifiable {
 
 	private final long uuid;
 	private int x;
@@ -18,7 +19,8 @@ public abstract class Entity {
 		this.x = x;
 		this.y = y;
 	}
-	
+
+	@Override
 	public final long getUUID() {
 		return uuid;
 	}
