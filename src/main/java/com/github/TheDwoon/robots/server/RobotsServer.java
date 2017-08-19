@@ -1,5 +1,12 @@
 package com.github.TheDwoon.robots.server;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.stream.IntStream;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.github.TheDwoon.robots.client.student.DuellingAI;
 import com.github.TheDwoon.robots.client.student.RandomDriveAI;
 import com.github.TheDwoon.robots.client.student.RandomItemCollectorAI;
@@ -17,12 +24,6 @@ import com.github.TheDwoon.robots.server.actions.movement.TurnLeft;
 import com.github.TheDwoon.robots.server.actions.movement.TurnRight;
 import com.github.TheDwoon.robots.server.managers.BoardManager;
 import com.github.TheDwoon.robots.server.managers.GameManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.stream.IntStream;
 
 public final class RobotsServer implements Runnable {
 
@@ -30,12 +31,13 @@ public final class RobotsServer implements Runnable {
 
 	private GameManager gameManager;
 
-	public RobotsServer() {
-		loadWeaponTest();
+	private RobotsServer(Level level) {
+		gameManager = level.gameLoader.loadGame(level.mapName);
+//		populateMap();
 	}
 
-	public void loadSimpleGame() {
-		gameManager = loadGame("simple");
+	public void populateMap() {
+//		gameManager = loadGame("simple");
 
 		try {
 			gameManager.spawnItems(Bomb.class, 6);
@@ -80,7 +82,18 @@ public final class RobotsServer implements Runnable {
 	}
 
 	public static void main(final String[] args) throws IOException {
-		RobotsServer server = new RobotsServer();
+		if (args.length != 1) {
+			System.out.println("server <levelname>");
+			System.exit(0);
+		}
+
+		Level level = Level.valueOf(args[0].toUpperCase());
+		if (level == null) {
+			System.out.println("Unkown level");
+			System.exit(0);
+		}
+
+		RobotsServer server = new RobotsServer(level);
 		server.run();
 		System.out.println("EXIT");
 	}
@@ -100,6 +113,24 @@ public final class RobotsServer implements Runnable {
 			}
 		} catch (IOException | InterruptedException e) {
 			// ignore
+		}
+	}
+
+	public static enum Level {
+		GRASS(GameLoaders::loadDefault, "grass"),
+		SIMPLE_TEST(GameLoaders::loadDefault, "simple"),
+		WEAPON_TEST(GameLoaders::loadDefault, "weapon_test"),
+		BASIC_MOVEMENT(GameLoaders::loadDefault, "simple"),
+		OBSTACLE_COURSE(GameLoaders::loadDefault, "simple"),
+		MAZE(GameLoaders::loadDefault, "simple"),
+		BATTLE_ROYAL(null, "simple");
+
+		public final GameLoader gameLoader;
+		public final String mapName;
+
+		private Level(GameLoader loader, String mapName) {
+			this.gameLoader = loader;
+			this.mapName = mapName;
 		}
 	}
 

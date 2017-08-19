@@ -1,5 +1,18 @@
 package com.github.TheDwoon.robots.server.managers;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedDeque;
+
 import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Material;
@@ -14,12 +27,12 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public class BoardManager {
-	private static final Random random = new Random();
 
-	private final long uuid;
-	private final int width;
-	private final int height;
-	private final Field[][] fields;
+
+    private final long uuid;
+    private final int width;
+    private final int height;
+    private final Field[][] fields;
 
 	private final List<Field> spawnFields;
 	private final List<Field> itemFields;
@@ -43,6 +56,10 @@ public class BoardManager {
 				}
 			}
 		}
+
+        // no spawn fields -> all visitable fields get spawnfields
+        if (spawnFields.isEmpty())
+        	spawnFields.addAll(itemFields);
 
 		observers = new ConcurrentLinkedDeque<>();
 	}
@@ -85,17 +102,17 @@ public class BoardManager {
 				o -> GameManager.observerExecutor.submit(() -> o.updateFields(uuid, updatedFields)));
 	}
 
-	public boolean spawnLivingEntity(LivingEntity entity) {
-		Random random = new Random();
-		for (int i = 0; i < 3; i++) {
-			Field field;
-			try {
-				Field[] possibleFields = spawnFields.parallelStream().filter(f -> !f.isOccupied())
-						.toArray(Field[]::new);
-				field = possibleFields[random.nextInt(possibleFields.length)];
-			} catch (NoSuchElementException e) {
-				return false;
-			}
+    public boolean spawnLivingEntity(LivingEntity entity) {
+        Random random = new Random();
+        for (int i = 0; i < 3; i++) {
+            Field field;
+            try {
+                Field[] possibleFields = spawnFields.parallelStream().filter(f -> !f.isOccupied()).toArray(Field[]::new);
+                if (possibleFields.length == 0)
+                	return false;field = possibleFields[random.nextInt(possibleFields.length)];
+            } catch (NoSuchElementException e) {
+                return false;
+            }
 
 			if (spawnLivingEntity(entity, field)) {
 				return true;
