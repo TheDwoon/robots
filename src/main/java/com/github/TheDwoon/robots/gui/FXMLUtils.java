@@ -19,12 +19,12 @@ public class FXMLUtils {
 	}
 
 	public static <T extends Node> T loadFxRoot(final T root, final Class<? extends Node> rootClass)
-		throws IOException {
+			throws IOException {
 		return loadFxRoot(root, getFxmlFilename(rootClass));
 	}
 
 	public static <T extends Node> T loadFxRoot(final T root, final String fxml)
-		throws IOException {
+			throws IOException {
 		FXMLLoader loader = new FXMLLoader(root.getClass().getResource(fxml), getResourceBundle());
 		loader.setRoot(root);
 		loader.setController(root);
@@ -36,14 +36,14 @@ public class FXMLUtils {
 	}
 
 	public static <T extends Node> T loadFxController(final Object controller,
-		final Class<?> controllerClass) throws IOException {
+			final Class<?> controllerClass) throws IOException {
 		return loadFxController(controller, getFxmlFilename(controllerClass));
 	}
 
 	public static <T extends Node> T loadFxController(final Object controller, final String fxml)
-		throws IOException {
+			throws IOException {
 		FXMLLoader loader =
-			new FXMLLoader(controller.getClass().getResource(fxml), getResourceBundle());
+				new FXMLLoader(controller.getClass().getResource(fxml), getResourceBundle());
 		loader.setController(controller);
 		return loader.load();
 	}

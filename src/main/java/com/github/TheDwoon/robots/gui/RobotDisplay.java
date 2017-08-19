@@ -14,12 +14,9 @@ import java.io.IOException;
 
 public final class RobotDisplay extends HBox {
 
-	@FXML
-	private StackPane robotImageContainer;
-	@FXML
-	private Label robotName;
-	@FXML
-	private TilePane inventoryContainer;
+	@FXML private StackPane robotImageContainer;
+	@FXML private Label robotName;
+	@FXML private TilePane inventoryContainer;
 
 	public RobotDisplay(final Robot robot, Inventory inventory) throws IOException {
 		FXMLUtils.loadFxRoot(this);
@@ -39,7 +36,7 @@ public final class RobotDisplay extends HBox {
 		if (inventory == null) {
 			return;
 		}
-		for (Item item: inventory.getItems()) {
+		for (Item item : inventory.getItems()) {
 			inventoryContainer.getChildren().add(new InventoryFieldDisplay(item));
 		}
 	}

@@ -26,9 +26,7 @@ import com.github.TheDwoon.robots.server.AI;
  */
 public class GameManager {
 
-
-
-    public static ExecutorService observerExecutor = Executors.newFixedThreadPool(4);
+	public static ExecutorService observerExecutor = Executors.newFixedThreadPool(4);
 
 	private final BoardManager boardManager;
 
@@ -80,11 +78,11 @@ public class GameManager {
 				.submit(() -> o.despawnAi(robot.getUUID(), inventory.getUUID())));
 	}
 
-    public synchronized AiManager spawnAi(AI ai) {
-        Robot controlledRobot = new Robot();
-        if (!boardManager.spawnLivingEntity(controlledRobot)) {
-        	throw new RuntimeException("you broke it");
-        }
+	public synchronized AiManager spawnAi(AI ai) {
+		Robot controlledRobot = new Robot();
+		if (!boardManager.spawnLivingEntity(controlledRobot)) {
+			throw new RuntimeException("you broke it");
+		}
 
 		Inventory controlledInventory = new Inventory(12);
 		inventoryManager.register(controlledRobot, controlledInventory);
@@ -120,18 +118,22 @@ public class GameManager {
 		}
 	}
 
-    public synchronized void spawnItem(Class<? extends Item> clazz, int x, int y) throws NoSuchMethodException,
-    		InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    	Constructor<? extends Item> constructor = clazz.getConstructor();
-    	Item item = constructor.newInstance();
-    	boardManager.spawnItem(item, x, y);
-    }public synchronized void spawnItems(Class<? extends Item> clazz, int count) throws NoSuchMethodException,
-            IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<? extends Item> constructor = clazz.getConstructor();
-        for (int i = 0; i < count; i++) {
-            boardManager.spawnItem(constructor.newInstance());
-        }
-    }
+	public synchronized void spawnItem(Class<? extends Item> clazz, int x, int y)
+			throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException {
+		Constructor<? extends Item> constructor = clazz.getConstructor();
+		Item item = constructor.newInstance();
+		boardManager.spawnItem(item, x, y);
+	}
+
+	public synchronized void spawnItems(Class<? extends Item> clazz, int count)
+			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
+			InstantiationException {
+		Constructor<? extends Item> constructor = clazz.getConstructor();
+		for (int i = 0; i < count; i++) {
+			boardManager.spawnItem(constructor.newInstance());
+		}
+	}
 
 	public void makeTurn() {
 		for (AiManager aiManager : aiManagers.values()) {

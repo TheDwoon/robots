@@ -8,12 +8,11 @@ import com.github.TheDwoon.robots.server.actions.PlayerAction;
 import java.util.List;
 
 public interface AI {
-    void updateRobot(Robot robot);
+	void updateRobot(Robot robot);
 
-    void updateInventory(Inventory inventory);
+	void updateInventory(Inventory inventory);
 
-    void updateVision(List<Field> fields);
+	void updateVision(List<Field> fields);
 
-
-    PlayerAction makeTurn();
+	PlayerAction makeTurn();
 }

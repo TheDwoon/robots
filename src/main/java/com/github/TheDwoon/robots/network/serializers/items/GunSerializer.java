@@ -15,7 +15,8 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class GunSerializer<T extends Gun> extends WeaponSerializer<T> {
 
-	@Override public void write(Kryo kryo, Output output, T object) {
+	@Override
+	public void write(Kryo kryo, Output output, T object) {
 		output.writeLong(object.getUUID());
 		output.writeInt(object.getX());
 		output.writeInt(object.getY());
@@ -25,7 +26,8 @@ public class GunSerializer<T extends Gun> extends WeaponSerializer<T> {
 		output.writeInt(object.getRoundsLeft());
 	}
 
-	@Override public T read(Kryo kryo, Input input, Class<T> type) {
+	@Override
+	public T read(Kryo kryo, Input input, Class<T> type) {
 		long uuid = input.readLong();
 		int x = input.readInt();
 		int y = input.readInt();

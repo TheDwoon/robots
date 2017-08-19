@@ -8,12 +8,11 @@ public abstract class Entity implements UniquelyIdentifiable {
 	private final long uuid;
 	private int x;
 	private int y;
-	
-	
+
 	public Entity(int x, int y) {
 		this(UUIDGenerator.obtainUUID(), x, y);
 	}
-	
+
 	public Entity(long uuid, int x, int y) {
 		this.uuid = uuid;
 		this.x = x;
@@ -24,7 +23,7 @@ public abstract class Entity implements UniquelyIdentifiable {
 	public final long getUUID() {
 		return uuid;
 	}
-	
+
 	public final int getX() {
 		return x;
 	}
@@ -52,8 +51,10 @@ public abstract class Entity implements UniquelyIdentifiable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		Entity entity = (Entity) o;
 

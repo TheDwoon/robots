@@ -22,8 +22,9 @@ public class RobotsCombinedServerView extends Application {
 
 	private Thread robotsServerThread;
 
-	@Override public void start(final Stage primaryStage) throws Exception {
-		RobotsServer robotsServer = new RobotsServer();
+	@Override
+	public void start(final Stage primaryStage) throws Exception {
+		RobotsServer robotsServer = new RobotsServer(RobotsServer.Level.WEAPON_TEST);
 		GameManager gameManager = robotsServer.getGameManager();
 		robotsServerThread = new Thread(() -> runServer(gameManager), "robotsServer");
 		robotsServerThread.start();
@@ -43,7 +44,8 @@ public class RobotsCombinedServerView extends Application {
 		primaryStage.show();
 	}
 
-	@Override public void stop() throws Exception {
+	@Override
+	public void stop() throws Exception {
 		robotsServerThread.interrupt();
 	}
 

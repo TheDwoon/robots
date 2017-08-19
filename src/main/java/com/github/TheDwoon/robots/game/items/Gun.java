@@ -31,12 +31,14 @@ public class Gun extends Weapon {
 		roundsLeft = DEFAULT_ROUNDS;
 	}
 
-	public Gun(long uuid, int x, int y, int range, int damage, double piercingLoss, int roundsLeft) {
+	public Gun(long uuid, int x, int y, int range, int damage, double piercingLoss,
+			int roundsLeft) {
 		super(uuid, x, y, range, damage, piercingLoss);
 		this.roundsLeft = roundsLeft;
 	}
 
-	@Override public void use(Robot robot, GameManager gameManager, BoardManager boardManager,
+	@Override
+	public void use(Robot robot, GameManager gameManager, BoardManager boardManager,
 			InventoryManager inventoryManager) {
 		if (roundsLeft <= 0) {
 			return;
@@ -68,7 +70,8 @@ public class Gun extends Weapon {
 		}
 	}
 
-	@Override public boolean isReusable() {
+	@Override
+	public boolean isReusable() {
 		return roundsLeft > 0;
 	}
 

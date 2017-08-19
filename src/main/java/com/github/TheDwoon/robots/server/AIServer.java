@@ -14,52 +14,52 @@ import java.util.Map;
 
 public class AIServer implements Closeable {
 
-    private Server discoveryServer;
-    private Server server;
+	private Server discoveryServer;
+	private Server server;
 
-    private Map<Connection, AI> clients;
+	private Map<Connection, AI> clients;
 
-    public AIServer(GameManager gameManager) throws IOException {
-        discoveryServer = new Server();
-        discoveryServer.start();
-        discoveryServer.bind(32007, 32006);
+	public AIServer(GameManager gameManager) throws IOException {
+		discoveryServer = new Server();
+		discoveryServer.start();
+		discoveryServer.bind(32007, 32006);
 
-        server = new Server();
-        KryoRegistry.register(server.getKryo());
-        ObjectSpace objectSpace = new ObjectSpace();
+		server = new Server();
+		KryoRegistry.register(server.getKryo());
+		ObjectSpace objectSpace = new ObjectSpace();
 
-        clients = new HashMap<>();
+		clients = new HashMap<>();
 
-        server.addListener(new Listener() {
-            @Override
-            public void connected(final Connection connection) {
-                objectSpace.addConnection(connection);
-                AI ai = objectSpace.getRemoteObject(connection, 1, AI.class);
+		server.addListener(new Listener() {
+			@Override
+			public void connected(final Connection connection) {
+				objectSpace.addConnection(connection);
+				AI ai = objectSpace.getRemoteObject(connection, 1, AI.class);
 
-                synchronized (clients) {
-                    gameManager.spawnAi(ai);
-                    clients.put(connection, ai);
-                }
-            }
+				synchronized (clients) {
+					gameManager.spawnAi(ai);
+					clients.put(connection, ai);
+				}
+			}
 
-            @Override
-            public void disconnected(final Connection connection) {
-                objectSpace.removeConnection(connection);
+			@Override
+			public void disconnected(final Connection connection) {
+				objectSpace.removeConnection(connection);
 
-                synchronized (clients) {
-                    AI ai = clients.remove(connection);
-                    gameManager.despawnAi(ai);
-                }
-            }
-        });
-        server.start();
-        server.bind(32005);
-    }
+				synchronized (clients) {
+					AI ai = clients.remove(connection);
+					gameManager.despawnAi(ai);
+				}
+			}
+		});
+		server.start();
+		server.bind(32005);
+	}
 
-    @Override
-    public void close() throws IOException {
-        discoveryServer.stop();
-        server.stop();
-    }
+	@Override
+	public void close() throws IOException {
+		discoveryServer.stop();
+		server.stop();
+	}
 
 }

@@ -22,28 +22,28 @@ import com.github.TheDwoon.robots.network.serializers.items.WeaponSerializer;
 
 public class KryoRegistry {
 
-    /**
-     * Utility class
-     */
-    private KryoRegistry() {
-    }
+	/**
+	 * Utility class
+	 */
+	private KryoRegistry() {
+	}
 
-    public static final void register(final Kryo kryo) {
-        ObjectSpace.registerClasses(kryo);
+	public static final void register(final Kryo kryo) {
+		ObjectSpace.registerClasses(kryo);
 
-        kryo.setRegistrationRequired(false);
+		kryo.setRegistrationRequired(false);
 
-        kryo.addDefaultSerializer(Throwable.class, new ThrowableSerializer());
+		kryo.addDefaultSerializer(Throwable.class, new ThrowableSerializer());
 
-        kryo.register(BoardObserver.class);
-        kryo.register(AiObserver.class);
-        kryo.register(InventoryObserver.class);
-        kryo.register(Field.class, new FieldSerializer());
-        kryo.addDefaultSerializer(Robot.class, RobotSerializer.class);
-        kryo.addDefaultSerializer(LivingEntity.class, LivingEntitySerializer.class);
-        kryo.addDefaultSerializer(Entity.class, EntitySerializer.class);
-        kryo.addDefaultSerializer(Inventory.class, InventorySerializer.class);
-        kryo.addDefaultSerializer(Weapon.class, WeaponSerializer.class);
-        kryo.addDefaultSerializer(Gun.class, GunSerializer.class);
-    }
+		kryo.register(BoardObserver.class);
+		kryo.register(AiObserver.class);
+		kryo.register(InventoryObserver.class);
+		kryo.register(Field.class, new FieldSerializer());
+		kryo.addDefaultSerializer(Robot.class, RobotSerializer.class);
+		kryo.addDefaultSerializer(LivingEntity.class, LivingEntitySerializer.class);
+		kryo.addDefaultSerializer(Entity.class, EntitySerializer.class);
+		kryo.addDefaultSerializer(Inventory.class, InventorySerializer.class);
+		kryo.addDefaultSerializer(Weapon.class, WeaponSerializer.class);
+		kryo.addDefaultSerializer(Gun.class, GunSerializer.class);
+	}
 }

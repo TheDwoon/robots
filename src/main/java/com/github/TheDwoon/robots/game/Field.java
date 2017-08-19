@@ -81,7 +81,8 @@ public class Field {
 		return material.isVisitable();
 	}
 
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		return String.format("[(%d,%d)/%s]", x, y, material.name());
 	}
 

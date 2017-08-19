@@ -16,31 +16,31 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class InventorySerializer<T extends Inventory> extends Serializer<T> {
 
-    @Override
-    public void write(Kryo kryo, Output output, T object) {
-        output.writeLong(object.getUUID());
-        kryo.writeObject(output, object.getItems());
-    }
+	@Override
+	public void write(Kryo kryo, Output output, T object) {
+		output.writeLong(object.getUUID());
+		kryo.writeObject(output, object.getItems());
+	}
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public T read(Kryo kryo, Input input, Class<T> type) {
-        long uuid = input.readLong();
-        Item[] items = kryo.readObject(input, Item[].class);
+	@Override
+	@SuppressWarnings("unchecked")
+	public T read(Kryo kryo, Input input, Class<T> type) {
+		long uuid = input.readLong();
+		Item[] items = kryo.readObject(input, Item[].class);
 
-        if (type == Inventory.class) {
-            return (T) new Inventory(uuid, items);
-        }
-        try {
-            Constructor<T> constructor = type.getConstructor(long.class, Item[].class);
-            return constructor.newInstance(uuid, items);
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            try {
-                Constructor<T> constructor = type.getConstructor();
-                return constructor.newInstance();
-            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e1) {
-                throw new KryoException("Could not find Constructor for class: " + type.getName());
-            }
-        }
-    }
+		if (type == Inventory.class) {
+			return (T) new Inventory(uuid, items);
+		}
+		try {
+			Constructor<T> constructor = type.getConstructor(long.class, Item[].class);
+			return constructor.newInstance(uuid, items);
+		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+			try {
+				Constructor<T> constructor = type.getConstructor();
+				return constructor.newInstance();
+			} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e1) {
+				throw new KryoException("Could not find Constructor for class: " + type.getName());
+			}
+		}
+	}
 }

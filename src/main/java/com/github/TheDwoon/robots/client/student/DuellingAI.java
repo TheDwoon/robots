@@ -25,7 +25,8 @@ public class DuellingAI extends AbstractBasicAI {
 		lastY = -1;
 	}
 
-	@Override public PlayerAction makeTurn() {
+	@Override
+	public PlayerAction makeTurn() {
 		// turn to opponent
 		Facing currentFacing = getRobot().getFacing();
 		if (currentFacing != this.facing) {

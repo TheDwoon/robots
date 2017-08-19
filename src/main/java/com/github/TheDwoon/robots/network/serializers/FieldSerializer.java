@@ -27,7 +27,7 @@ public class FieldSerializer extends Serializer<Field> {
 		Material material = kryo.readObject(input, Material.class);
 		LivingEntity occupant = (LivingEntity) kryo.readClassAndObject(input);
 		Item item = (Item) kryo.readClassAndObject(input);
-		
+
 		return new Field(x, y, material, occupant, item);
 	}
 }

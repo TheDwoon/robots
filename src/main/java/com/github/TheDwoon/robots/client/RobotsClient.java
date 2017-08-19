@@ -17,7 +17,7 @@ public final class RobotsClient {
 	private static final Logger log = LogManager.getLogger();
 
 	private static final AI MY_AI = new RandomItemCollectorAI();
-	
+
 	public static void main(final String[] args) throws IOException {
 		KryoNetLoggerProxy.setAsKryoLogger();
 

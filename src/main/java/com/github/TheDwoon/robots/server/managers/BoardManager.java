@@ -28,11 +28,10 @@ import static java.lang.Math.min;
 
 public class BoardManager {
 
-
-    private final long uuid;
-    private final int width;
-    private final int height;
-    private final Field[][] fields;
+	private final long uuid;
+	private final int width;
+	private final int height;
+	private final Field[][] fields;
 
 	private final List<Field> spawnFields;
 	private final List<Field> itemFields;
@@ -57,9 +56,9 @@ public class BoardManager {
 			}
 		}
 
-        // no spawn fields -> all visitable fields get spawnfields
-        if (spawnFields.isEmpty())
-        	spawnFields.addAll(itemFields);
+		// no spawn fields -> all visitable fields get spawnfields
+		if (spawnFields.isEmpty())
+			spawnFields.addAll(itemFields);
 
 		observers = new ConcurrentLinkedDeque<>();
 	}
@@ -98,21 +97,23 @@ public class BoardManager {
 	}
 
 	private void notifyObservers(Field... updatedFields) {
-		observers.forEach(
-				o -> GameManager.observerExecutor.submit(() -> o.updateFields(uuid, updatedFields)));
+		observers.forEach(o -> GameManager.observerExecutor
+				.submit(() -> o.updateFields(uuid, updatedFields)));
 	}
 
-    public boolean spawnLivingEntity(LivingEntity entity) {
-        Random random = new Random();
-        for (int i = 0; i < 3; i++) {
-            Field field;
-            try {
-                Field[] possibleFields = spawnFields.parallelStream().filter(f -> !f.isOccupied()).toArray(Field[]::new);
-                if (possibleFields.length == 0)
-                	return false;field = possibleFields[random.nextInt(possibleFields.length)];
-            } catch (NoSuchElementException e) {
-                return false;
-            }
+	public boolean spawnLivingEntity(LivingEntity entity) {
+		Random random = new Random();
+		for (int i = 0; i < 3; i++) {
+			Field field;
+			try {
+				Field[] possibleFields = spawnFields.parallelStream().filter(f -> !f.isOccupied())
+						.toArray(Field[]::new);
+				if (possibleFields.length == 0)
+					return false;
+				field = possibleFields[random.nextInt(possibleFields.length)];
+			} catch (NoSuchElementException e) {
+				return false;
+			}
 
 			if (spawnLivingEntity(entity, field)) {
 				return true;
@@ -285,7 +286,8 @@ public class BoardManager {
 		return uuid;
 	}
 
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (Field[] row : fields) {
 			for (int y = 0; y < row.length; y++) {

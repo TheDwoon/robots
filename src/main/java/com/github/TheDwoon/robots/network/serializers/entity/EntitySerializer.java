@@ -17,39 +17,39 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class EntitySerializer<T extends Entity> extends Serializer<T> {
 
-    public static final Logger log = LogManager.getLogger();
+	public static final Logger log = LogManager.getLogger();
 
-    @Override
-    public void write(Kryo kryo, Output output, T object) {
-        output.writeLong(object.getUUID());
-        output.writeInt(object.getX());
-        output.writeInt(object.getY());
-    }
+	@Override
+	public void write(Kryo kryo, Output output, T object) {
+		output.writeLong(object.getUUID());
+		output.writeInt(object.getX());
+		output.writeInt(object.getY());
+	}
 
-    @Override
-    public T read(Kryo kryo, Input input, Class<T> type) {
-        long uuid = input.readLong();
-        int x = input.readInt();
-        int y = input.readInt();
+	@Override
+	public T read(Kryo kryo, Input input, Class<T> type) {
+		long uuid = input.readLong();
+		int x = input.readInt();
+		int y = input.readInt();
 
-        return create(type, uuid, x, y);
-    }
+		return create(type, uuid, x, y);
+	}
 
-    protected final T create(Class<T> type, long uuid, int x, int y) {
-        try {
-            Constructor<T> constructor = type.getConstructor(long.class, int.class, int.class);
-            return constructor.newInstance(uuid, x, y);
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            return create(type);
-        }
-    }
+	protected final T create(Class<T> type, long uuid, int x, int y) {
+		try {
+			Constructor<T> constructor = type.getConstructor(long.class, int.class, int.class);
+			return constructor.newInstance(uuid, x, y);
+		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+			return create(type);
+		}
+	}
 
-    protected final T create(Class<T> type) {
-        try {
-            Constructor<T> constructor = type.getConstructor();
-            return constructor.newInstance();
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e1) {
-            throw new KryoException("Could not find Constructor for class: " + type.getName());
-        }
-    }
+	protected final T create(Class<T> type) {
+		try {
+			Constructor<T> constructor = type.getConstructor();
+			return constructor.newInstance();
+		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e1) {
+			throw new KryoException("Could not find Constructor for class: " + type.getName());
+		}
+	}
 }

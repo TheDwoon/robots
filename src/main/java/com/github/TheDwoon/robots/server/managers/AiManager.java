@@ -13,67 +13,68 @@ import org.apache.logging.log4j.Logger;
  */
 public class AiManager {
 
-    public static final Logger log = LogManager.getLogger();
+	public static final Logger log = LogManager.getLogger();
 
-    private final AI ai;
-    private final Robot controlledRobot;
-    private final Inventory controlledInventory;
+	private final AI ai;
+	private final Robot controlledRobot;
+	private final Inventory controlledInventory;
 
-    private final GameManager gameManager;
+	private final GameManager gameManager;
 
-    public AiManager(AI ai, Robot controlledRobot, Inventory controlledInventory, GameManager gameManager) {
-        this.ai = ai;
-        this.controlledRobot = controlledRobot;
-        this.controlledInventory = controlledInventory;
+	public AiManager(AI ai, Robot controlledRobot, Inventory controlledInventory,
+			GameManager gameManager) {
+		this.ai = ai;
+		this.controlledRobot = controlledRobot;
+		this.controlledInventory = controlledInventory;
 
-        this.gameManager = gameManager;
-    }
+		this.gameManager = gameManager;
+	}
 
-    public void makeTurn() {
-        try {
-            ai.updateRobot(controlledRobot);
-            ai.updateInventory(controlledInventory);
-            ai.updateVision(gameManager.getVisibleFields(controlledRobot));
-            PlayerAction action = ai.makeTurn();
-            action.apply(this);
-        } catch (Throwable t) {
-            log.catching(t);
-        }
-    }
+	public void makeTurn() {
+		try {
+			ai.updateRobot(controlledRobot);
+			ai.updateInventory(controlledInventory);
+			ai.updateVision(gameManager.getVisibleFields(controlledRobot));
+			PlayerAction action = ai.makeTurn();
+			action.apply(this);
+		} catch (Throwable t) {
+			log.catching(t);
+		}
+	}
 
-    public Robot getControlledRobot() {
-        return controlledRobot;
-    }
+	public Robot getControlledRobot() {
+		return controlledRobot;
+	}
 
-    public Inventory getControlledInventory() {
-        return controlledInventory;
-    }
+	public Inventory getControlledInventory() {
+		return controlledInventory;
+	}
 
-    public void driveForward() {
-        gameManager.robotForward(controlledRobot);
-    }
+	public void driveForward() {
+		gameManager.robotForward(controlledRobot);
+	}
 
-    public void driveBackward() {
-        gameManager.robotBackward(controlledRobot);
-    }
+	public void driveBackward() {
+		gameManager.robotBackward(controlledRobot);
+	}
 
-    public void turnLeft() {
-        gameManager.robotTurnLeft(controlledRobot);
-    }
+	public void turnLeft() {
+		gameManager.robotTurnLeft(controlledRobot);
+	}
 
-    public void turnRight() {
-        gameManager.robotTurnRight(controlledRobot);
-    }
+	public void turnRight() {
+		gameManager.robotTurnRight(controlledRobot);
+	}
 
-    public void useItem(int slot) {
-        gameManager.robotUseItem(controlledRobot, slot);
-    }
+	public void useItem(int slot) {
+		gameManager.robotUseItem(controlledRobot, slot);
+	}
 
-    public void pickUpItem() {
-        gameManager.robotPickUpItem(controlledRobot);
-    }
+	public void pickUpItem() {
+		gameManager.robotPickUpItem(controlledRobot);
+	}
 
-    public void dropItem(int slot) {
-        gameManager.robotDropItem(controlledRobot, slot);
-    }
+	public void dropItem(int slot) {
+		gameManager.robotDropItem(controlledRobot, slot);
+	}
 }

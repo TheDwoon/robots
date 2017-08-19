@@ -5,9 +5,9 @@ import com.github.TheDwoon.robots.server.managers.AiManager;
 
 public final class TurnRight implements PlayerAction {
 	public static final TurnRight INSTANCE = new TurnRight();
-	
+
 	public TurnRight() {
-		
+
 	}
 
 	@Override

@@ -16,5 +16,5 @@ public class UseItem implements PlayerAction {
 	public void apply(AiManager aiManager) {
 		aiManager.useItem(slot);
 	}
-	
+
 }

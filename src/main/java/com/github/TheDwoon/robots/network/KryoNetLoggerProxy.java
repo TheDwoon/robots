@@ -15,7 +15,7 @@ public final class KryoNetLoggerProxy extends com.esotericsoftware.minlog.Log.Lo
 
 	@Override
 	public void log(final int level, final String category, final String message,
-		final Throwable ex) {
+			final Throwable ex) {
 
 		Logger logger;
 		if (category != null) {

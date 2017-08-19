@@ -21,82 +21,84 @@ import java.util.concurrent.Executors;
 
 public class UIServer implements Closeable {
 
-    public static final Logger log = LogManager.getLogger();
+	public static final Logger log = LogManager.getLogger();
 
-    private static ExecutorService registrationExecutor = Executors.newSingleThreadExecutor();
+	private static ExecutorService registrationExecutor = Executors.newSingleThreadExecutor();
 
-    private Server discoveryServer;
-    private Server server;
+	private Server discoveryServer;
+	private Server server;
 
-    private Map<Connection, Client> clients;
+	private Map<Connection, Client> clients;
 
-    public UIServer(final GameManager gameManager) throws IOException {
-        discoveryServer = new Server();
-        discoveryServer.start();
-        discoveryServer.bind(32017, 32016);
+	public UIServer(final GameManager gameManager) throws IOException {
+		discoveryServer = new Server();
+		discoveryServer.start();
+		discoveryServer.bind(32017, 32016);
 
-        server = new Server();
-        KryoRegistry.register(server.getKryo());
-        ObjectSpace objectSpace = new ObjectSpace();
+		server = new Server();
+		KryoRegistry.register(server.getKryo());
+		ObjectSpace objectSpace = new ObjectSpace();
 
-        clients = new HashMap<>();
+		clients = new HashMap<>();
 
-        server.addListener(new Listener() {
+		server.addListener(new Listener() {
 
-            @Override
-            public void connected(final Connection connection) {
-                objectSpace.addConnection(connection);
-                final BoardObserver boardObserver =
-                        ObjectSpace.getRemoteObject(connection, 1, BoardObserver.class);
-                final AiObserver aiObserver =
-                        ObjectSpace.getRemoteObject(connection, 2, AiObserver.class);
-                final InventoryObserver inventoryObserver =
-                        ObjectSpace.getRemoteObject(connection, 3, InventoryObserver.class);
+			@Override
+			public void connected(final Connection connection) {
+				objectSpace.addConnection(connection);
+				final BoardObserver boardObserver =
+						ObjectSpace.getRemoteObject(connection, 1, BoardObserver.class);
+				final AiObserver aiObserver =
+						ObjectSpace.getRemoteObject(connection, 2, AiObserver.class);
+				final InventoryObserver inventoryObserver =
+						ObjectSpace.getRemoteObject(connection, 3, InventoryObserver.class);
 
-                synchronized (clients) {
-                    registrationExecutor.submit(() -> {
-                        gameManager.addObserver(boardObserver);
-                        gameManager.addObserver(aiObserver);
-                        gameManager.addObserver(inventoryObserver);
-                    });
-                    clients.put(connection, new Client(boardObserver, aiObserver, inventoryObserver));
-                }
-            }
+				synchronized (clients) {
+					registrationExecutor.submit(() -> {
+						gameManager.addObserver(boardObserver);
+						gameManager.addObserver(aiObserver);
+						gameManager.addObserver(inventoryObserver);
+					});
+					clients.put(connection,
+							new Client(boardObserver, aiObserver, inventoryObserver));
+				}
+			}
 
-            @Override
-            public void disconnected(final Connection connection) {
-                objectSpace.removeConnection(connection);
+			@Override
+			public void disconnected(final Connection connection) {
+				objectSpace.removeConnection(connection);
 
-                synchronized (clients) {
-                    Client client = clients.remove(connection);
-                    registrationExecutor.submit(() -> {
-                        gameManager.removeObserver(client.boardObserver);
-                        gameManager.removeObserver(client.aiObserver);
-                        gameManager.removeObserver(client.inventoryObserver);
-                    });
-                }
-            }
-        });
-        server.start();
-        server.bind(32015);
-    }
+				synchronized (clients) {
+					Client client = clients.remove(connection);
+					registrationExecutor.submit(() -> {
+						gameManager.removeObserver(client.boardObserver);
+						gameManager.removeObserver(client.aiObserver);
+						gameManager.removeObserver(client.inventoryObserver);
+					});
+				}
+			}
+		});
+		server.start();
+		server.bind(32015);
+	}
 
-    @Override
-    public void close() throws IOException {
-        discoveryServer.stop();
-        server.stop();
-    }
+	@Override
+	public void close() throws IOException {
+		discoveryServer.stop();
+		server.stop();
+	}
 
-    private final class Client {
-        public final BoardObserver boardObserver;
-        public final AiObserver aiObserver;
-        public final InventoryObserver inventoryObserver;
+	private final class Client {
+		public final BoardObserver boardObserver;
+		public final AiObserver aiObserver;
+		public final InventoryObserver inventoryObserver;
 
-        public Client(BoardObserver boardObserver, AiObserver aiObserver, InventoryObserver inventoryObserver) {
-            this.boardObserver = boardObserver;
-            this.aiObserver = aiObserver;
-            this.inventoryObserver = inventoryObserver;
-        }
-    }
+		public Client(BoardObserver boardObserver, AiObserver aiObserver,
+				InventoryObserver inventoryObserver) {
+			this.boardObserver = boardObserver;
+			this.aiObserver = aiObserver;
+			this.inventoryObserver = inventoryObserver;
+		}
+	}
 
 }

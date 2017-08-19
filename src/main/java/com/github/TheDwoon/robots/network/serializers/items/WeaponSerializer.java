@@ -17,34 +17,37 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class WeaponSerializer<T extends Weapon> extends EntitySerializer<T> {
 
-    @Override
-    public void write(Kryo kryo, Output output, T object) {
-        output.writeLong(object.getUUID());
-        output.writeInt(object.getX());
-        output.writeInt(object.getY());
-        output.writeInt(object.getRange());
-        output.writeInt(object.getDamage());
-        output.writeDouble(object.getPiercingLoss());
-    }
+	@Override
+	public void write(Kryo kryo, Output output, T object) {
+		output.writeLong(object.getUUID());
+		output.writeInt(object.getX());
+		output.writeInt(object.getY());
+		output.writeInt(object.getRange());
+		output.writeInt(object.getDamage());
+		output.writeDouble(object.getPiercingLoss());
+	}
 
-    @Override
-    public T read(Kryo kryo, Input input, Class<T> type) {
-        long uuid = input.readLong();
-        int x = input.readInt();
-        int y = input.readInt();
-        int range = input.readInt();
-        int damage = input.readInt();
-        double piercingLoss = input.readDouble();
+	@Override
+	public T read(Kryo kryo, Input input, Class<T> type) {
+		long uuid = input.readLong();
+		int x = input.readInt();
+		int y = input.readInt();
+		int range = input.readInt();
+		int damage = input.readInt();
+		double piercingLoss = input.readDouble();
 
-        return create(type, uuid, x, y, range, damage, piercingLoss);
-    }
+		return create(type, uuid, x, y, range, damage, piercingLoss);
+	}
 
-    protected final T create(Class<T> type, long uuid, int x, int y, int range, int damage, double piercingLoss) {
-        try {
-            Constructor<T> constructor = type.getConstructor(long.class, int.class, int.class, int.class, int.class, double.class);
-            return constructor.newInstance(uuid, x, y, range, damage, piercingLoss);
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            return create(type, uuid, x, y);
-        }
-    }
+	protected final T create(Class<T> type, long uuid, int x, int y, int range, int damage,
+			double piercingLoss) {
+		try {
+			Constructor<T> constructor =
+					type.getConstructor(long.class, int.class, int.class, int.class, int.class,
+							double.class);
+			return constructor.newInstance(uuid, x, y, range, damage, piercingLoss);
+		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+			return create(type, uuid, x, y);
+		}
+	}
 }

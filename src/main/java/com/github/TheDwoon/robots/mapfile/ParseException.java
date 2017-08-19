@@ -5,15 +5,15 @@ package com.github.TheDwoon.robots.mapfile;
  */
 public class ParseException extends Exception {
 
-    public ParseException(int line, String message) {
-        super(formatMessage(line, message));
-    }
+	public ParseException(int line, String message) {
+		super(formatMessage(line, message));
+	}
 
-    public ParseException(int line, String message, Throwable cause) {
-        super(formatMessage(line, message), cause);
-    }
+	public ParseException(int line, String message, Throwable cause) {
+		super(formatMessage(line, message), cause);
+	}
 
-    private static String formatMessage(int line, String message) {
-        return "[" + line + "] " + message;
-    }
+	private static String formatMessage(int line, String message) {
+		return "[" + line + "] " + message;
+	}
 }

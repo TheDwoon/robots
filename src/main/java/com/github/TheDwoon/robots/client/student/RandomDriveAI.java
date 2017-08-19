@@ -6,14 +6,16 @@ import java.util.Random;
 
 public class RandomDriveAI extends AbstractBasicAI {
 	private final Random random = new Random();
-	private final PlayerAction[] options = new PlayerAction[] {driveForward(), driveBackward(), turnLeft(), turnRight(), noAction()};
-	
+	private final PlayerAction[] options =
+			new PlayerAction[] { driveForward(), driveBackward(), turnLeft(), turnRight(),
+					noAction() };
+
 	public RandomDriveAI() {
-		
+
 	}
-	
+
 	@Override
 	public PlayerAction makeTurn() {
-		 return options[random.nextInt(options.length)];
+		return options[random.nextInt(options.length)];
 	}
 }

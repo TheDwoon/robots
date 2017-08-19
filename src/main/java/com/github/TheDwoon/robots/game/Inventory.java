@@ -17,16 +17,16 @@ public class Inventory {
 	public Inventory(final int size) {
 		this(UUIDGenerator.obtainUUID(), size);
 	}
-	
+
 	public Inventory(final long uuid, final int size) {
 		this.uuid = uuid;
 		this.items = new Item[size];
 	}
 
 	public Inventory(final long uuid, final Item[] items) {
-	    this.uuid = uuid;
-	    this.items = items;
-    }
+		this.uuid = uuid;
+		this.items = items;
+	}
 
 	public final long getUUID() {
 		return uuid;
@@ -73,7 +73,7 @@ public class Inventory {
 
 	public synchronized int getFreeSlots() {
 		int freeSlots = items.length;
-		for (Item item: items) {
+		for (Item item : items) {
 			if (item != null) {
 				freeSlots--;
 			}
@@ -92,8 +92,10 @@ public class Inventory {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
 		Inventory inventory = (Inventory) o;
 
