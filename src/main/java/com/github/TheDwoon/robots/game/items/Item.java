@@ -23,4 +23,8 @@ public abstract class Item extends Entity {
 	
 	public abstract void use(Robot robot, GameManager gameManager, BoardManager boardManager, InventoryManager inventoryManager);
 
+	public boolean isReusable() {
+		return false;
+	}
+
 }

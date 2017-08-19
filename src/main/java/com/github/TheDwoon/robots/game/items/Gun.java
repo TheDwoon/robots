@@ -51,4 +51,8 @@ public class Gun extends Weapon {
             }
         }
     }
+
+    @Override public boolean isReusable() {
+        return super.isReusable();
+    }
 }
