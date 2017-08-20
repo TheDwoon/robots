@@ -1,12 +1,12 @@
 package com.github.TheDwoon.robots.server;
 
+import java.io.IOException;
+
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.server.game_loader.GameLoader;
 import com.github.TheDwoon.robots.server.game_loader.SimpleTestLoader;
 import com.github.TheDwoon.robots.server.game_loader.WeaponTestLoader;
 import com.github.TheDwoon.robots.server.managers.GameManager;
-
-import java.io.IOException;
 
 public final class RobotsServer implements Runnable {
 
@@ -56,7 +56,7 @@ public final class RobotsServer implements Runnable {
 		GRASS(GameLoader::loadFromFile, "grass"), SIMPLE_TEST(new SimpleTestLoader(),
 				"simple"), WEAPON_TEST(new WeaponTestLoader(), "weapon_test"), BASIC_MOVEMENT(
 				GameLoader::loadFromFile, "simple"), OBSTACLE_COURSE(GameLoader::loadFromFile,
-				"simple"), MAZE(GameLoader::loadFromFile, "simple"), BATTLE_ROYAL(null, "simple");
+				"simple"), MAZE(GameLoader::loadFromFile, "maze"), BATTLE_ROYAL(null, "simple");
 
 		public final GameLoader gameLoader;
 		public final String mapName;
