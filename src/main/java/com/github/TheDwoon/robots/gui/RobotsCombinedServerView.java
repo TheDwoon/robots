@@ -1,5 +1,7 @@
 package com.github.TheDwoon.robots.gui;
 
+import java.io.IOException;
+
 import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
@@ -7,11 +9,10 @@ import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.server.AIServer;
 import com.github.TheDwoon.robots.server.RobotsServer;
 import com.github.TheDwoon.robots.server.managers.GameManager;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class RobotsCombinedServerView extends Application {
 
@@ -23,7 +24,7 @@ public class RobotsCombinedServerView extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
-		RobotsServer robotsServer = new RobotsServer(RobotsServer.Level.WEAPON_TEST);
+		RobotsServer robotsServer = new RobotsServer(RobotsServer.Level.MAZE_BIG);
 		GameManager gameManager = robotsServer.getGameManager();
 		robotsServerThread = new Thread(() -> runServer(gameManager), "robotsServer");
 		robotsServerThread.start();
@@ -64,5 +65,8 @@ public class RobotsCombinedServerView extends Application {
 		} catch (IOException | InterruptedException e) {
 			// ignore
 		}
+		
+		// TODO (danielw, 21.8.17): graceful shutdown
+		System.exit(0);
 	}
 }

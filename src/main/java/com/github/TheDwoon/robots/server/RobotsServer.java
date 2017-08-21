@@ -56,7 +56,8 @@ public final class RobotsServer implements Runnable {
 		GRASS(GameLoader::loadFromFile, "grass"), SIMPLE_TEST(new SimpleTestLoader(),
 				"simple"), WEAPON_TEST(new WeaponTestLoader(), "weapon_test"), BASIC_MOVEMENT(
 				GameLoader::loadFromFile, "simple"), OBSTACLE_COURSE(GameLoader::loadFromFile,
-				"simple"), MAZE(GameLoader::loadFromFile, "maze"), BATTLE_ROYAL(null, "simple");
+				"simple"), MAZE(GameLoader::loadFromFile, "maze"),
+				MAZE_BIG(GameLoader::loadFromFile, "maze_big"), BATTLE_ROYAL(null, "simple");
 
 		public final GameLoader gameLoader;
 		public final String mapName;
