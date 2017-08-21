@@ -37,8 +37,8 @@ t g t t g t t g t t g g g g g g g t t t t t t t g t t t t t t g t t g t t g g g 
 t s t t g g g g t t t t t t t t g g g g g g g g g t g g g g g g g g g t t g t t t t t s t 
 t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t
 
-com.github.TheDwoon.robots.game.items.Gun 22 15
-com.github.TheDwoon.robots.game.items.Gun 4 4
-com.github.TheDwoon.robots.game.items.Gun 40 25
-com.github.TheDwoon.robots.game.items.Gun 5 25
-com.github.TheDwoon.robots.game.items.Gun 40 5
+com.github.TheDwoon.robots.game.items.Star 22 15
+com.github.TheDwoon.robots.game.items.Star 4 4
+com.github.TheDwoon.robots.game.items.Star 41 25
+com.github.TheDwoon.robots.game.items.Star 5 24
+com.github.TheDwoon.robots.game.items.Star 40 5
