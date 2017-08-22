@@ -1,4 +1,4 @@
-package com.github.TheDwoon.robots.game;
+package com.github.TheDwoon.robots.game.field;
 
 public enum Facing {
 	NORTH(0, -1), WEST(-1, 0), SOUTH(0, 1), EAST(1, 0);

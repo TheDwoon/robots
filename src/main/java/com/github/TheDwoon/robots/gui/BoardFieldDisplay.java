@@ -1,6 +1,6 @@
 package com.github.TheDwoon.robots.gui;
 
-import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.game.field.Field;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import javafx.beans.binding.DoubleBinding;

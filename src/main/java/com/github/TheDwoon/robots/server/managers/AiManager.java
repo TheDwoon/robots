@@ -1,10 +1,10 @@
 package com.github.TheDwoon.robots.server.managers;
 
-import com.github.TheDwoon.robots.game.Facing;
-import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.field.Facing;
+import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
-import com.github.TheDwoon.robots.server.AI;
+import com.github.TheDwoon.robots.game.AI;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,7 +47,9 @@ public class AiManager {
 					boardManager.getVisibleFields(controlledRobot.getX(), controlledRobot.getY()));
 			if (controlledRobot.isAlive()) {
 				PlayerAction action = ai.makeTurn();
-				action.apply(this);
+				if (action != null) {
+					action.apply(this);
+				}
 			} else {
 				if (respawnCounter < 0) {
 					// just got killed

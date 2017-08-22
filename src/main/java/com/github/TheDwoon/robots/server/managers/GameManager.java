@@ -1,12 +1,12 @@
 package com.github.TheDwoon.robots.server.managers;
 
-import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.game.items.Item;
-import com.github.TheDwoon.robots.server.AI;
+import com.github.TheDwoon.robots.game.AI;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

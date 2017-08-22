@@ -1,7 +1,7 @@
 package com.github.TheDwoon.robots.client.student;
 
-import com.github.TheDwoon.robots.game.Facing;
-import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.game.field.Facing;
+import com.github.TheDwoon.robots.game.field.Field;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.items.Gun;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;

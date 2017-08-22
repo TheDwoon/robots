@@ -1,7 +1,7 @@
 package com.github.TheDwoon.robots.mapfile;
 
-import com.github.TheDwoon.robots.game.Field;
-import com.github.TheDwoon.robots.game.Material;
+import com.github.TheDwoon.robots.game.field.Field;
+import com.github.TheDwoon.robots.game.field.Material;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.UUIDGenerator;

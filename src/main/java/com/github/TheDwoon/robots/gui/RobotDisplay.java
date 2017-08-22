@@ -1,6 +1,6 @@
 package com.github.TheDwoon.robots.gui;
 
-import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
 import javafx.fxml.FXML;

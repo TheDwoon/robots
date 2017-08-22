@@ -1,8 +1,8 @@
 package com.github.TheDwoon.robots.gui;
 
-import com.github.TheDwoon.robots.game.Field;
-import com.github.TheDwoon.robots.game.Inventory;
-import com.github.TheDwoon.robots.game.Material;
+import com.github.TheDwoon.robots.game.field.Field;
+import com.github.TheDwoon.robots.game.items.Inventory;
+import com.github.TheDwoon.robots.game.field.Material;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;

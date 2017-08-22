@@ -2,8 +2,8 @@ package com.github.TheDwoon.robots.network;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
-import com.github.TheDwoon.robots.game.Field;
-import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.field.Field;
+import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.entity.Robot;
@@ -19,7 +19,7 @@ import com.github.TheDwoon.robots.network.serializers.entity.LivingEntitySeriali
 import com.github.TheDwoon.robots.network.serializers.entity.RobotSerializer;
 import com.github.TheDwoon.robots.network.serializers.items.GunSerializer;
 import com.github.TheDwoon.robots.network.serializers.items.WeaponSerializer;
-import com.github.TheDwoon.robots.server.AI;
+import com.github.TheDwoon.robots.game.AI;
 
 public class KryoRegistry {
 

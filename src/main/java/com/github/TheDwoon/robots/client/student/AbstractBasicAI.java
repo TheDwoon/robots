@@ -1,11 +1,11 @@
 package com.github.TheDwoon.robots.client.student;
 
-import com.github.TheDwoon.robots.game.Field;
-import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.field.Field;
+import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
-import com.github.TheDwoon.robots.server.AI;
+import com.github.TheDwoon.robots.game.AI;
 import com.github.TheDwoon.robots.server.actions.NoAction;
 import com.github.TheDwoon.robots.server.actions.item.DropItem;
 import com.github.TheDwoon.robots.server.actions.item.PickUpItem;

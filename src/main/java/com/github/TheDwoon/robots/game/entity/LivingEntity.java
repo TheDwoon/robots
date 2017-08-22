@@ -1,6 +1,6 @@
 package com.github.TheDwoon.robots.game.entity;
 
-import com.github.TheDwoon.robots.game.Facing;
+import com.github.TheDwoon.robots.game.field.Facing;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

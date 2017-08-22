@@ -1,4 +1,4 @@
-package com.github.TheDwoon.robots.game;
+package com.github.TheDwoon.robots.game.field;
 
 /**
  * This enum represents the materials known to the game.
