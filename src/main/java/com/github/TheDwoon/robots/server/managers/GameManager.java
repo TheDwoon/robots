@@ -56,8 +56,13 @@ public class GameManager {
 	}
 
 	public void addObserver(AiObserver observer) {
-		observerExecutor.submit(() -> aiManagers.values().forEach(aiManager -> observer
-				.spawnAi(aiManager.getControlledRobot(), aiManager.getControlledInventory())));
+		observerExecutor.submit(() -> {
+			synchronized (aiManagers) {
+				aiManagers.values().forEach(
+						aiManager -> observer.spawnAi(aiManager.getControlledRobot(),
+								aiManager.getControlledInventory()));
+			}
+		});
 		observers.add(observer);
 	}
 
@@ -83,14 +88,19 @@ public class GameManager {
 
 		AiManager aiManager = new AiManager(ai, controlledRobot, controlledInventory, boardManager,
 				inventoryManager);
-		aiManagers.put(ai, aiManager);
+		synchronized (aiManagers) {
+			aiManagers.put(ai, aiManager);
+		}
 
 		notifyObserversSpawn(controlledRobot, controlledInventory);
 		return aiManager;
 	}
 
 	public synchronized void despawnAi(AI ai) {
-		AiManager aiManager = aiManagers.remove(ai);
+		AiManager aiManager;
+		synchronized (aiManagers) {
+			aiManager = aiManagers.remove(ai);
+		}
 		if (aiManager == null) {
 			return;
 		}
@@ -131,9 +141,11 @@ public class GameManager {
 	}
 
 	public void makeTurn() {
-		for (AiManager aiManager : aiManagers.values()) {
-			aiManager.makeTurn();
+		synchronized (aiManagers) {
+			for (AiManager aiManager : aiManagers.values()) {
+				aiManager.makeTurn();
+			}
+			// TODO (sigmarw, 22.08.2017): check win condition
 		}
-		// TODO (sigmarw, 22.08.2017): check win condition
 	}
 }

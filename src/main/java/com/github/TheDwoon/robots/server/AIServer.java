@@ -4,20 +4,26 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
+import com.github.TheDwoon.robots.game.Field;
+import com.github.TheDwoon.robots.game.Inventory;
+import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.network.KryoRegistry;
+import com.github.TheDwoon.robots.server.actions.PlayerAction;
 import com.github.TheDwoon.robots.server.managers.GameManager;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AIServer implements Closeable {
 
-	private Server discoveryServer;
-	private Server server;
+	private final Server discoveryServer;
+	private final Server server;
 
-	private Map<Connection, AI> clients;
+	private final Map<Connection, AI> clients;
 
 	public AIServer(GameManager gameManager) throws IOException {
 		discoveryServer = new Server();
@@ -34,7 +40,7 @@ public class AIServer implements Closeable {
 			@Override
 			public void connected(final Connection connection) {
 				objectSpace.addConnection(connection);
-				AI ai = objectSpace.getRemoteObject(connection, 1, AI.class);
+				AI ai = new NetworkAI(ObjectSpace.getRemoteObject(connection, 1, AI.class));
 
 				synchronized (clients) {
 					gameManager.spawnAi(ai);
@@ -60,6 +66,61 @@ public class AIServer implements Closeable {
 	public void close() throws IOException {
 		discoveryServer.stop();
 		server.stop();
+	}
+
+	public static final class NetworkAI implements AI {
+		private static AtomicInteger counter = new AtomicInteger(0);
+
+		private final int id;
+		private final AI ai;
+
+		public NetworkAI(AI ai) {
+			this.id = counter.getAndIncrement();
+			this.ai = ai;
+		}
+
+		public AI getAi() {
+			return ai;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o)
+				return true;
+			if (o == null || getClass() != o.getClass())
+				return false;
+
+			NetworkAI networkAI = (NetworkAI) o;
+
+			if (id != networkAI.id)
+				return false;
+			return ai == networkAI.ai;
+		}
+
+		@Override
+		public int hashCode() {
+			return id;
+		}
+
+		@Override
+		public void updateRobot(Robot robot) {
+			ai.updateRobot(robot);
+		}
+
+		@Override
+		public void updateInventory(Inventory inventory) {
+			ai.updateInventory(inventory);
+		}
+
+		@Override
+		public void updateVision(List<Field> fields) {
+			ai.updateVision(fields);
+		}
+
+		@Override
+		public PlayerAction makeTurn() {
+			return ai.makeTurn();
+		}
 	}
 
 }

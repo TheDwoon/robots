@@ -19,6 +19,7 @@ import com.github.TheDwoon.robots.network.serializers.entity.LivingEntitySeriali
 import com.github.TheDwoon.robots.network.serializers.entity.RobotSerializer;
 import com.github.TheDwoon.robots.network.serializers.items.GunSerializer;
 import com.github.TheDwoon.robots.network.serializers.items.WeaponSerializer;
+import com.github.TheDwoon.robots.server.AI;
 
 public class KryoRegistry {
 
@@ -38,6 +39,7 @@ public class KryoRegistry {
 		kryo.register(BoardObserver.class);
 		kryo.register(AiObserver.class);
 		kryo.register(InventoryObserver.class);
+		kryo.register(AI.class);
 		kryo.register(Field.class, new FieldSerializer());
 		kryo.addDefaultSerializer(Robot.class, RobotSerializer.class);
 		kryo.addDefaultSerializer(LivingEntity.class, LivingEntitySerializer.class);

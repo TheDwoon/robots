@@ -17,6 +17,7 @@ public final class RobotsClient {
 	private static final Logger log = LogManager.getLogger();
 
 	private static final AI MY_AI = new RandomItemCollectorAI();
+	private static boolean running;
 
 	public static void main(final String[] args) throws IOException {
 		KryoNetLoggerProxy.setAsKryoLogger();
@@ -36,8 +37,20 @@ public final class RobotsClient {
 		}
 		client.connect(5000, serverAddress, 32005);
 
+		running = true;
+		Object lock = new Object();
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			synchronized (lock) {
+				running = false;
+				lock.notifyAll();
+			}
+		}));
 		try {
-			Thread.sleep(10000);
+			synchronized (lock) {
+				while (running) {
+					lock.wait();
+				}
+			}
 		} catch (InterruptedException e) {
 			log.catching(e);
 		}
