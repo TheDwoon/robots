@@ -1,11 +1,11 @@
 package com.github.TheDwoon.robots.client.student;
 
+import com.github.TheDwoon.robots.game.AI;
 import com.github.TheDwoon.robots.game.board.Field;
-import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.entity.Robot;
+import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.items.Item;
-import com.github.TheDwoon.robots.game.AI;
 import com.github.TheDwoon.robots.server.actions.NoAction;
 import com.github.TheDwoon.robots.server.actions.item.DropItem;
 import com.github.TheDwoon.robots.server.actions.item.PickUpItem;
@@ -53,9 +53,14 @@ public abstract class AbstractBasicAI implements AI {
 		entitiesInRange = new ArrayList<>();
 		itemsInRange = new ArrayList<>();
 
+		beneath = null;
+		front = null;
+		back = null;
+		right = null;
+		left = null;
+
 		final int rx = getRobot().getX();
 		final int ry = getRobot().getY();
-
 		fields.stream().forEach(field -> {
 			final int fx = field.getX();
 			final int fy = field.getY();

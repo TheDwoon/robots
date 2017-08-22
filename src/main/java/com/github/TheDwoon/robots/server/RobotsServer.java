@@ -53,12 +53,16 @@ public final class RobotsServer implements Runnable {
 	}
 
 	public static enum Level {
-		GRASS(GameLoader::loadFromFile, "grass"), SIMPLE_TEST(new SimpleTestLoader(),
-				"simple"), WEAPON_TEST(new WeaponTestLoader(), "weapon_test"), BASIC_MOVEMENT_1(
-				GameLoader::loadFromFile, "weapon_test"), BASIC_MOVEMENT_2(GameLoader::loadFromFile,
-				"simple"), OBSTACLE_COURSE(GameLoader::loadFromFile, "simple"), MAZE(
-				GameLoader::loadFromFile, "maze"), MAZE_BIG(GameLoader::loadFromFile,
-				"maze_big"), BATTLE_ROYAL(null, "simple");
+		GRASS(GameLoader::loadFromFile, "grass"),
+		SIMPLE_TEST(new SimpleTestLoader(), "simple"),
+		WEAPON_TEST(new WeaponTestLoader(), "weapon_test"),
+		BASIC_MOVEMENT(GameLoader::loadFromFile, "weapon_test"),
+		OBSTACLE_COURSE(GameLoader::loadFromFile, "simple"),
+		MAZE(GameLoader::loadFromFile, "maze"),
+		MAZE_BIG(GameLoader::loadFromFile, "maze_big"),
+		TASK_1(GameLoader::loadFromFile, "task1"),
+		TASK_2(GameLoader::loadFromFile, "task2"),
+		BATTLE_ROYAL(null, "simple");
 
 		public final GameLoader gameLoader;
 		public final String mapName;
