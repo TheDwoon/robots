@@ -1,6 +1,6 @@
 package com.github.TheDwoon.robots.gui;
 
-import com.github.TheDwoon.robots.game.field.Material;
+import com.github.TheDwoon.robots.game.board.Material;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import javafx.scene.effect.Blend;

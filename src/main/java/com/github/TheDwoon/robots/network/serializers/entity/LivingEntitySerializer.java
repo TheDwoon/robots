@@ -3,7 +3,7 @@ package com.github.TheDwoon.robots.network.serializers.entity;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.github.TheDwoon.robots.game.field.Facing;
+import com.github.TheDwoon.robots.game.board.Facing;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 
 import java.lang.reflect.Constructor;

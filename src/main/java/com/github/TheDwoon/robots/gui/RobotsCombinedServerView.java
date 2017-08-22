@@ -28,7 +28,7 @@ public class RobotsCombinedServerView extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
-		RobotsServer robotsServer = new RobotsServer(RobotsServer.Level.WEAPON_TEST);
+		RobotsServer robotsServer = new RobotsServer(RobotsServer.Level.BASIC_MOVEMENT_2);
 		GameManager gameManager = robotsServer.getGameManager();
 		robotsServerThread = new Thread(() -> runServer(gameManager), "robotsServer");
 		robotsServerThread.start();
@@ -60,7 +60,7 @@ public class RobotsCombinedServerView extends Application {
 			Thread.sleep(500);
 			log.info("Game started");
 			for (int round = 1; !Thread.interrupted(); round++) {
-				log.info("Round {}", round);
+//				log.info("Round {}", round);
 				gameManager.makeTurn();
 
 				Thread.sleep(150);

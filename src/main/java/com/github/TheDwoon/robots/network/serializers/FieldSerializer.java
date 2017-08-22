@@ -4,8 +4,8 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.github.TheDwoon.robots.game.field.Field;
-import com.github.TheDwoon.robots.game.field.Material;
+import com.github.TheDwoon.robots.game.board.Field;
+import com.github.TheDwoon.robots.game.board.Material;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.items.Item;
 

@@ -1,6 +1,6 @@
 package com.github.TheDwoon.robots.client.student;
 
-import com.github.TheDwoon.robots.game.field.Field;
+import com.github.TheDwoon.robots.game.board.Field;
 import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.entity.Robot;

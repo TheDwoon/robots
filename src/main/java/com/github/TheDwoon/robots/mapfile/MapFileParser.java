@@ -1,7 +1,7 @@
 package com.github.TheDwoon.robots.mapfile;
 
-import com.github.TheDwoon.robots.game.field.Field;
-import com.github.TheDwoon.robots.game.field.Material;
+import com.github.TheDwoon.robots.game.board.Field;
+import com.github.TheDwoon.robots.game.board.Material;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.server.UUIDGenerator;
@@ -85,7 +85,7 @@ public class MapFileParser {
 		}
 
 		private Field[][] parseFields() throws ParseException {
-			// parse first line (field size)
+			// parse first line (board size)
 			String[] fieldSizeLineSplit = readLine().split("x");
 			int width;
 			int height;
@@ -111,7 +111,7 @@ public class MapFileParser {
 				materialAliases.put(aliasSplit[1], materialAliases.get(aliasSplit[0]));
 			}
 
-			// parse field definition
+			// parse board definition
 			Field[][] fields = new Field[width][height];
 			for (int y = 0; y < height; y++) {
 				String line;
@@ -139,7 +139,7 @@ public class MapFileParser {
 				}
 			}
 
-			// search for end of field definition (denoted by an empty line or eof)
+			// search for end of board definition (denoted by an empty line or eof)
 			while (scanner.hasNextLine()) {
 				String line = readLine();
 				if (line.isEmpty()) {

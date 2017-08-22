@@ -1,7 +1,7 @@
 package com.github.TheDwoon.robots.server.game_loader;
 
 import com.github.TheDwoon.robots.client.student.DuellingAI;
-import com.github.TheDwoon.robots.game.field.Facing;
+import com.github.TheDwoon.robots.game.board.Facing;
 import com.github.TheDwoon.robots.server.managers.GameManager;
 
 public class WeaponTestLoader implements GameLoader {

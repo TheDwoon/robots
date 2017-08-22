@@ -1,8 +1,8 @@
 package com.github.TheDwoon.robots.server.managers;
 
-import com.github.TheDwoon.robots.game.field.Facing;
-import com.github.TheDwoon.robots.game.field.Field;
-import com.github.TheDwoon.robots.game.field.Material;
+import com.github.TheDwoon.robots.game.board.Facing;
+import com.github.TheDwoon.robots.game.board.Field;
+import com.github.TheDwoon.robots.game.board.Material;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
@@ -122,12 +122,12 @@ public class BoardManager {
 	}
 
 	/**
-	 * Spawns a {@link LivingEntity} on the specified field.
+	 * Spawns a {@link LivingEntity} on the specified board.
 	 *
 	 * @param entity {@link LivingEntity} to spawn
 	 * @param x      x coordinate to spawn it on
 	 * @param y      y coordinate to spawn it on
-	 * @return false, if the entity could not be spawned on the specified field.
+	 * @return false, if the entity could not be spawned on the specified board.
 	 * Note that the entity is <u>not added to the spawn queue</u>.
 	 */
 	public boolean spawnLivingEntity(LivingEntity entity, int x, int y) {
@@ -135,11 +135,11 @@ public class BoardManager {
 	}
 
 	/**
-	 * Spawns a {@link LivingEntity} on the specified field.
+	 * Spawns a {@link LivingEntity} on the specified board.
 	 *
 	 * @param entity {@link LivingEntity} to spawn
 	 * @param field  {@link Field} to spawn it on
-	 * @return false, if the entity could not be spawned on the specified field.
+	 * @return false, if the entity could not be spawned on the specified board.
 	 * Note that the entity is <u>not added to the spawn queue</u>.
 	 */
 	private boolean spawnLivingEntity(LivingEntity entity, Field field) {
