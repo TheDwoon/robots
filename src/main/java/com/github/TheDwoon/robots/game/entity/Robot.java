@@ -36,11 +36,11 @@ public class Robot extends LivingEntity implements InventoryHolder {
 
 	public void addScore(int score) {
 		this.score += score;
-		log.info("robot #{} has a new score of {} point{}", getUUID(), score, abs(score) == 1 ? "": 's');
+		log.info("robot #{} has a new score of {} point{}", getUUID(), this.score, abs(this.score) == 1 ? "": 's');
 	}
 
 	public void subtractScore(int score) {
 		this.score -= score;
-		log.info("robot #{} has a new score of {} point{}", getUUID(), score, abs(score) == 1 ? "": 's');
+		log.info("robot #{} has a new score of {} point{}", getUUID(), this.score, abs(this.score) == 1 ? "": 's');
 	}
 }
