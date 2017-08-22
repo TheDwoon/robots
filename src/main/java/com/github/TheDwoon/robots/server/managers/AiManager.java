@@ -16,9 +16,13 @@ public class AiManager {
 
 	public static final Logger log = LogManager.getLogger();
 
+	private static final int RESPAWN_ROUNDS = 10;
+
 	private final AI ai;
 	private final Robot controlledRobot;
 	private final Inventory controlledInventory;
+
+	private int respawnCounter;
 
 	private final BoardManager boardManager;
 	private final InventoryManager inventoryManager;
@@ -28,6 +32,8 @@ public class AiManager {
 		this.ai = ai;
 		this.controlledRobot = controlledRobot;
 		this.controlledInventory = controlledInventory;
+
+		this.respawnCounter = -1;
 
 		this.boardManager = boardManager;
 		this.inventoryManager = inventoryManager;
@@ -42,6 +48,21 @@ public class AiManager {
 			if (controlledRobot.isAlive()) {
 				PlayerAction action = ai.makeTurn();
 				action.apply(this);
+			} else {
+				if (respawnCounter < 0) {
+					// just got killed
+					respawnCounter = RESPAWN_ROUNDS;
+				} else if (respawnCounter > 0) {
+					// in respawn waiting phase
+					respawnCounter--;
+				} else {
+					// respawn (if not possible, retry next round)
+					if (boardManager.spawnLivingEntity(controlledRobot)) {
+						respawnCounter = -1;
+					} else {
+						log.warn("Respawn not possible for robot " + controlledRobot.getUUID());
+					}
+				}
 			}
 		} catch (Throwable t) {
 			log.catching(t);
