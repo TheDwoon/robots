@@ -54,7 +54,7 @@ public class Gun extends Weapon {
 
 			if (field.isOccupied()) {
 				boardManager.damageLivingEntity(field.getX(), field.getY(),
-						(int) round(remainingDamage));
+						(int) round(remainingDamage), robot);
 				remainingDamage *= (1 - getPiercingLoss());
 				if (round(remainingDamage) <= 0) {
 					break;

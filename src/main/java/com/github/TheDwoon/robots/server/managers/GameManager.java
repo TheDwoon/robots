@@ -76,9 +76,7 @@ public class GameManager {
 
 	public synchronized AiManager spawnAi(AI ai) {
 		Robot controlledRobot = new Robot();
-		if (!boardManager.spawnLivingEntity(controlledRobot)) {
-			throw new RuntimeException("you broke it");
-		}
+		boardManager.spawnLivingEntity(controlledRobot);
 
 		Inventory controlledInventory = new Inventory(12);
 		inventoryManager.register(controlledRobot, controlledInventory);
@@ -136,5 +134,6 @@ public class GameManager {
 		for (AiManager aiManager : aiManagers.values()) {
 			aiManager.makeTurn();
 		}
+		// TODO (sigmarw, 22.08.2017): check win condition
 	}
 }

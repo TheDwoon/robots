@@ -16,7 +16,7 @@ public class Star extends Item {
 	
 	@Override
 	public void use(Robot robot, BoardManager boardManager, InventoryManager inventoryManager) {
-		// do nothing
+		robot.addScore(10);
 	}
 
 }

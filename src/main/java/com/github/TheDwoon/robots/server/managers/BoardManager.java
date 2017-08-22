@@ -3,6 +3,7 @@ package com.github.TheDwoon.robots.server.managers;
 import com.github.TheDwoon.robots.game.Facing;
 import com.github.TheDwoon.robots.game.Field;
 import com.github.TheDwoon.robots.game.Material;
+import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.items.Item;
@@ -22,10 +23,12 @@ public class BoardManager {
 	private final int height;
 	private final Field[][] fields;
 
+	private final Deque<BoardObserver> observers;
+
 	private final List<Field> spawnFields;
 	private final List<Field> itemFields;
 
-	private final Deque<BoardObserver> observers;
+	private final SpawnQueueManager spawnQueueManager;
 
 	public BoardManager(long uuid, final Field[][] fields) {
 		this.random = new Random();
@@ -34,6 +37,8 @@ public class BoardManager {
 		this.width = fields.length;
 		this.height = fields[0].length;
 		this.uuid = uuid;
+
+		observers = new ConcurrentLinkedDeque<>();
 
 		spawnFields = new ArrayList<>();
 		itemFields = new ArrayList<>();
@@ -46,12 +51,13 @@ public class BoardManager {
 				}
 			}
 		}
-
-		// no spawn fields -> all visitable fields get spawnfields
-		if (spawnFields.isEmpty())
+		// no spawn fields -> all visitable fields become spawn fields
+		if (spawnFields.isEmpty()) {
 			spawnFields.addAll(itemFields);
+		}
 
-		observers = new ConcurrentLinkedDeque<>();
+		spawnQueueManager = new SpawnQueueManager();
+		observers.add(spawnQueueManager);
 	}
 
 	public int getWidth() {
@@ -92,36 +98,57 @@ public class BoardManager {
 				.submit(() -> o.updateFields(uuid, updatedFields)));
 	}
 
+	/**
+	 * Spawns a {@link LivingEntity} on the board.
+	 *
+	 * @param entity {@link LivingEntity} to spawn
+	 * @return false, if the entity could not be spawned immediately and was therefor added to the spawn queue
+	 */
 	public boolean spawnLivingEntity(LivingEntity entity) {
-		for (int i = 0; i < 3; i++) {
-			Field field;
-			try {
-				Field[] possibleFields = spawnFields.parallelStream().filter(f -> !f.isOccupied())
-						.toArray(Field[]::new);
-				if (possibleFields.length == 0)
-					return false;
-				field = possibleFields[random.nextInt(possibleFields.length)];
-			} catch (NoSuchElementException e) {
-				return false;
-			}
-
-			if (spawnLivingEntity(entity, field)) {
-				return true;
-			}
+		Field field;
+		Field[] possibleFields =
+				spawnFields.parallelStream().filter(f -> !f.isOccupied()).toArray(Field[]::new);
+		if (possibleFields.length == 0) {
+			spawnQueueManager.addToQueue(entity);
+			return false;
 		}
-		return false;
+		field = possibleFields[random.nextInt(possibleFields.length)];
+
+		if (!spawnLivingEntity(entity, field)) {
+			spawnQueueManager.addToQueue(entity);
+			return false;
+		}
+		return true;
 	}
 
+	/**
+	 * Spawns a {@link LivingEntity} on the specified field.
+	 *
+	 * @param entity {@link LivingEntity} to spawn
+	 * @param x      x coordinate to spawn it on
+	 * @param y      y coordinate to spawn it on
+	 * @return false, if the entity could not be spawned on the specified field.
+	 * Note that the entity is <u>not added to the spawn queue</u>.
+	 */
 	public boolean spawnLivingEntity(LivingEntity entity, int x, int y) {
 		return spawnLivingEntity(entity, fields[x][y]);
 	}
 
+	/**
+	 * Spawns a {@link LivingEntity} on the specified field.
+	 *
+	 * @param entity {@link LivingEntity} to spawn
+	 * @param field  {@link Field} to spawn it on
+	 * @return false, if the entity could not be spawned on the specified field.
+	 * Note that the entity is <u>not added to the spawn queue</u>.
+	 */
 	private boolean spawnLivingEntity(LivingEntity entity, Field field) {
 		synchronized (field) {
 			if (field.isOccupied() || !field.isVisitable()) {
 				return false;
 			}
 			field.setOccupant(entity);
+			entity.fullHeal();
 		}
 		notifyObservers(field);
 		return true;
@@ -155,9 +182,9 @@ public class BoardManager {
 		Field sourceField = fields[entity.getX()][entity.getY()];
 		Field targetField = fields[targetX][targetY];
 
-		Field[] lockOrder = getLockOrder(sourceField, targetField);
-		synchronized (lockOrder[0]) {
-			synchronized (lockOrder[1]) {
+		Field[] lockingOrder = getLockingOrder(sourceField, targetField);
+		synchronized (lockingOrder[0]) {
+			synchronized (lockingOrder[1]) {
 				if (targetField.isOccupied() || !targetField.isVisitable()) {
 					return false;
 				}
@@ -179,7 +206,7 @@ public class BoardManager {
 		notifyObservers(fields[entity.getX()][entity.getY()]);
 	}
 
-	public void damageLivingEntity(int x, int y, int damage) {
+	public void damageLivingEntity(int x, int y, int damage, Entity origin) {
 		Field field = fields[x][y];
 		synchronized (field) {
 			if (!field.isOccupied()) {
@@ -187,10 +214,9 @@ public class BoardManager {
 			}
 
 			LivingEntity occupant = field.getOccupant();
-			occupant.damage(damage);
+			occupant.damage(damage, origin);
 			if (occupant.isDead()) {
 				field.removeOccupant();
-				// TODO (sigmarw, 18.07.2017): notify ai on death or respawn
 			}
 		}
 		notifyObservers(field);
@@ -265,7 +291,7 @@ public class BoardManager {
 		return visibleFields;
 	}
 
-	private Field[] getLockOrder(final Field... fields) {
+	private Field[] getLockingOrder(final Field... fields) {
 		Field[] fieldsSorted = Arrays.copyOf(fields, fields.length);
 		Arrays.sort(fieldsSorted, Comparator.comparingInt(f -> f.getX() * width + f.getY()));
 		return fieldsSorted;
@@ -288,5 +314,48 @@ public class BoardManager {
 			sb.append('\n');
 		}
 		return sb.toString();
+	}
+
+	private class SpawnQueueManager implements BoardObserver {
+		private final Queue<LivingEntity> spawnQueue;
+
+		public SpawnQueueManager() {
+			spawnQueue = new LinkedList<>();
+		}
+
+		public synchronized void addToQueue(LivingEntity entity) {
+			spawnQueue.add(entity);
+		}
+
+		@Override
+		public void setSize(long uuid, int width, int height) {
+			// do nothing
+		}
+
+		@Override
+		public synchronized void updateFields(long uuid, Field[] fields) {
+			if (spawnQueue.isEmpty()) {
+				return;
+			}
+			// TODO (sigmarw, 22.08.2017): performance optimization?
+			for (Field field : fields) {
+				if (!spawnFields.contains(field)) {
+					continue;
+				}
+				synchronized (field) {
+					LivingEntity entity = spawnQueue.element();
+					boolean spawned = spawnLivingEntity(entity, field);
+					if (!spawned) {
+						continue;
+					}
+
+					LivingEntity removed = spawnQueue.remove();
+					assert entity == removed;
+					if (spawnQueue.isEmpty()) {
+						break;
+					}
+				}
+			}
+		}
 	}
 }

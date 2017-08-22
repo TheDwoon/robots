@@ -13,8 +13,12 @@ import com.github.TheDwoon.robots.server.managers.GameManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RobotsCombinedServerView extends Application {
+
+	private static final Logger log = LogManager.getLogger();
 
 	public static void main(final String[] args) {
 		launch(args);
@@ -24,7 +28,7 @@ public class RobotsCombinedServerView extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
-		RobotsServer robotsServer = new RobotsServer(RobotsServer.Level.MAZE_BIG);
+		RobotsServer robotsServer = new RobotsServer(RobotsServer.Level.WEAPON_TEST);
 		GameManager gameManager = robotsServer.getGameManager();
 		robotsServerThread = new Thread(() -> runServer(gameManager), "robotsServer");
 		robotsServerThread.start();
@@ -54,13 +58,12 @@ public class RobotsCombinedServerView extends Application {
 
 		try (AIServer aiServer = new AIServer(gameManager)) {
 			Thread.sleep(500);
-			System.out.println("Game started");
+			log.info("Game started");
 			for (int round = 1; !Thread.interrupted(); round++) {
-				System.out.printf("Round %d%n", round);
-
+				log.info("Round {}", round);
 				gameManager.makeTurn();
 
-				Thread.sleep(50);
+				Thread.sleep(150);
 			}
 		} catch (IOException | InterruptedException e) {
 			// ignore

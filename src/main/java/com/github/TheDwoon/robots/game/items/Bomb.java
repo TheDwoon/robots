@@ -37,7 +37,7 @@ public class Bomb extends Weapon {
 				int damage = (int) round(
 						getDamage() * pow((1 - getPiercingLoss()), sqrt(dx * dx + dy * dy)));
 				if (damage > 0) {
-					boardManager.damageLivingEntity(x, y, damage);
+					boardManager.damageLivingEntity(x, y, damage, robot);
 				}
 			}
 		}

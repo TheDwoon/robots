@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class AiManager {
 
-	public static final Logger log = LogManager.getLogger();
+	private static final Logger log = LogManager.getLogger();
 
 	private static final int RESPAWN_ROUNDS = 10;
 
@@ -58,10 +58,12 @@ public class AiManager {
 				} else {
 					// respawn (if not possible, retry next round)
 					if (boardManager.spawnLivingEntity(controlledRobot)) {
-						respawnCounter = -1;
+						log.info("Robot #{} has been respawned at ({}/{}).", controlledRobot.getUUID(),
+								controlledRobot.getX(), controlledRobot.getY());
 					} else {
-						log.warn("Respawn not possible for robot " + controlledRobot.getUUID());
+						log.warn("Robot #{} has been added to the spawn queue.", controlledRobot.getUUID());
 					}
+					respawnCounter = -1;
 				}
 			}
 		} catch (Throwable t) {
