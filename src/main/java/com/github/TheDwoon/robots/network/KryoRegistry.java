@@ -19,7 +19,7 @@ import com.github.TheDwoon.robots.network.serializers.entity.LivingEntitySeriali
 import com.github.TheDwoon.robots.network.serializers.entity.RobotSerializer;
 import com.github.TheDwoon.robots.network.serializers.items.GunSerializer;
 import com.github.TheDwoon.robots.network.serializers.items.WeaponSerializer;
-import com.github.TheDwoon.robots.game.AI;
+import com.github.TheDwoon.robots.game.interaction.AI;
 
 public class KryoRegistry {
 

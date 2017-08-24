@@ -1,4 +1,4 @@
-package com.github.TheDwoon.robots.game;
+package com.github.TheDwoon.robots.game.interaction;
 
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.board.Field;

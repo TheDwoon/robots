@@ -5,7 +5,7 @@ import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import com.github.TheDwoon.robots.client.student.RandomItemCollectorAI;
 import com.github.TheDwoon.robots.network.KryoNetLoggerProxy;
 import com.github.TheDwoon.robots.network.KryoRegistry;
-import com.github.TheDwoon.robots.game.AI;
+import com.github.TheDwoon.robots.game.interaction.AI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

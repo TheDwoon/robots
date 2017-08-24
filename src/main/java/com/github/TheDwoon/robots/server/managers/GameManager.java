@@ -6,7 +6,7 @@ import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.game.items.Item;
-import com.github.TheDwoon.robots.game.AI;
+import com.github.TheDwoon.robots.game.interaction.AI;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

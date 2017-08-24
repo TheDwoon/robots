@@ -4,7 +4,7 @@ import com.github.TheDwoon.robots.game.board.Facing;
 import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
-import com.github.TheDwoon.robots.game.AI;
+import com.github.TheDwoon.robots.game.interaction.AI;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
