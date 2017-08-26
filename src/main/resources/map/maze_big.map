@@ -7,7 +7,7 @@ WATER:w
 SPAWN:s
 
 t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t 
-t s g g g g g t t g g g g g g g g g g g g g g t g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g t g g g s t 
+t s g g g g g t t g g g g g g g g g g g g g g t g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g t g g g g t 
 t t t t t t g t t g t t t t t t t t t t t t g t g t t t t t t t t t t t t t t t t t t t t t t t t g t t t t t g t t g t 
 t t g t g t g t g g g t g g g g g g g g t t g t g t g g g g g g g g g g g g g g g g g g g g g g t g t g g g g g t t g t 
 t t g t g t g t t t g t g t t t t t t t t t g t g t t t t t t t t t t t t t g t t g t t t t t g t g t g t t t t t t g t 
@@ -44,11 +44,11 @@ t g t t g t g t g t g t t g t g g g g g t g g g g g g g g g t g t t g t t g t t 
 t g t t g g g t g t g t t g t t t t t t t g t t t t t t t t t g t t g t t g g g g g g t g t t t t t g t g g g g g t g t 
 t g t t t t t t g t g t t g g g g g g g g g t t t t t t t t t g t t g t t t t t t t t t g g g g g t g t t t t t t t g t 
 t g t t t t t t g g g t t g t t t t t t t g g g g g g g g g g g t t g t t t t t t t t t t t t t g t g g g g g g g g g t 
-t s g g g g g g g t t t t g g g g g g g t t t t t t t t t t t t t t g g g g g g g g g g g g g g g t t t t t t t t t s t 
+t g g g g g g g g t t t t g g g g g g g t t t t t t t t t t t t t t g g g g g g g g g g g g g g g t t t t t t t t t g t 
 t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t 
 
-com.github.TheDwoon.robots.game.items.Star 22 15
+com.github.TheDwoon.robots.game.items.Star 22 16
 com.github.TheDwoon.robots.game.items.Star 4 4
-com.github.TheDwoon.robots.game.items.Star 41 25
-com.github.TheDwoon.robots.game.items.Star 5 24
-com.github.TheDwoon.robots.game.items.Star 40 5
+com.github.TheDwoon.robots.game.items.Star 42 25
+com.github.TheDwoon.robots.game.items.Star 4 24
+com.github.TheDwoon.robots.game.items.Star 41 5
