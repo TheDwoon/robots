@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" type="HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane fx:id="gameBoardContainer" HBox.hgrow="ALWAYS">
          <children>
             <GridPane fx:id="gameBoard" />
          </children>
       </Pane>
-      <VBox fx:id="robotsContainer" prefWidth="206.0" spacing="3.0" />
+      <ScrollPane fitToHeight="true" hbarPolicy="NEVER" prefViewportHeight="600.0" prefViewportWidth="206.0">
+         <content>
+            <VBox fx:id="robotsContainer" prefWidth="206.0" spacing="3.0" />
+         </content>
+      </ScrollPane>
    </children>
 </fx:root>

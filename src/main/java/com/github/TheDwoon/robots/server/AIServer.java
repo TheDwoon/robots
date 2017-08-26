@@ -4,10 +4,10 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
-import com.github.TheDwoon.robots.game.interaction.AI;
 import com.github.TheDwoon.robots.game.board.Field;
-import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.Robot;
+import com.github.TheDwoon.robots.game.interaction.AI;
+import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.network.KryoRegistry;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
 import com.github.TheDwoon.robots.server.managers.GameManager;
@@ -43,8 +43,8 @@ public class AIServer implements Closeable {
 				objectSpace.addConnection(connection);
 				AI ai = new NetworkAI(ObjectSpace.getRemoteObject(connection, 1, AI.class));
 
+				new Thread(() -> gameManager.spawnAi(ai)).start();
 				synchronized (clients) {
-					gameManager.spawnAi(ai);
 					clients.put(connection, ai);
 				}
 			}
@@ -53,10 +53,11 @@ public class AIServer implements Closeable {
 			public void disconnected(final Connection connection) {
 				objectSpace.removeConnection(connection);
 
+				AI ai;
 				synchronized (clients) {
-					AI ai = clients.remove(connection);
-					gameManager.despawnAi(ai);
+					ai = clients.remove(connection);
 				}
+				new Thread(() -> gameManager.despawnAi(ai)).start();
 			}
 		});
 		server.start();
