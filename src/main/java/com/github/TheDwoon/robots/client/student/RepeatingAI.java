@@ -2,6 +2,8 @@ package com.github.TheDwoon.robots.client.student;
 
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
 
+import java.util.Arrays;
+
 public class RepeatingAI extends AbstractBasicAI {
 	private final PlayerAction[] actions;
 	private int nextActionIndex;
@@ -16,5 +18,10 @@ public class RepeatingAI extends AbstractBasicAI {
 		PlayerAction action = actions[nextActionIndex];
 		nextActionIndex = (nextActionIndex + 1) % actions.length;
 		return action;
+	}
+
+	@Override
+	public String getRobotName() {
+		return "Repeating";
 	}
 }

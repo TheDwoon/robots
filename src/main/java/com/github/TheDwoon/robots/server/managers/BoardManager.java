@@ -5,8 +5,10 @@ import com.github.TheDwoon.robots.game.board.Field;
 import com.github.TheDwoon.robots.game.board.Material;
 import com.github.TheDwoon.robots.game.entity.Entity;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
+import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.items.Item;
+import com.github.TheDwoon.robots.server.ScoreCallback;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -29,6 +31,8 @@ public class BoardManager {
 	private final List<Field> itemFields;
 
 	private final SpawnQueueManager spawnQueueManager;
+
+	private ScoreCallback scoreCallback;
 
 	public BoardManager(long uuid, final Field[][] fields) {
 		this.random = new Random();
@@ -77,6 +81,10 @@ public class BoardManager {
 			return null;
 		}
 		return fields[x][y];
+	}
+
+	public void setScoreCallback(ScoreCallback scoreCallback) {
+		this.scoreCallback = scoreCallback;
 	}
 
 	public void addObserver(BoardObserver observer) {
@@ -214,7 +222,18 @@ public class BoardManager {
 			}
 
 			LivingEntity occupant = field.getOccupant();
-			occupant.damage(damage, origin);
+			occupant.damage(damage);
+
+			if (origin instanceof Robot) {
+				// TODO (sigmarw, 22.08.2017): move to constant holding singleton (-> property file loaded?)
+				if (occupant.isDead()) {
+					// add 3 points per kill
+					scoreCallback.increaseScore((Robot) origin, 3);
+				} else {
+					// add 1 point per target hit
+					scoreCallback.increaseScore((Robot) origin, 1);
+				}
+			}
 			if (occupant.isDead()) {
 				field.removeOccupant();
 			}

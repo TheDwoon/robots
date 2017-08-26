@@ -5,6 +5,7 @@ import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.items.Item;
 import com.github.TheDwoon.robots.game.interaction.AI;
+import com.github.TheDwoon.robots.server.ScoreCallback;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,9 +27,10 @@ public class AiManager {
 
 	private final BoardManager boardManager;
 	private final InventoryManager inventoryManager;
+	private final ScoreCallback scoreCallback;
 
 	public AiManager(AI ai, Robot controlledRobot, Inventory controlledInventory,
-			BoardManager boardManager, InventoryManager inventoryManager) {
+			BoardManager boardManager, InventoryManager inventoryManager, ScoreCallback scoreCallback) {
 		this.ai = ai;
 		this.controlledRobot = controlledRobot;
 		this.controlledInventory = controlledInventory;
@@ -37,6 +39,7 @@ public class AiManager {
 
 		this.boardManager = boardManager;
 		this.inventoryManager = inventoryManager;
+		this.scoreCallback = scoreCallback;
 	}
 
 	public void makeTurn() {
@@ -81,6 +84,10 @@ public class AiManager {
 		return controlledInventory;
 	}
 
+	public void increaseScore(int score) {
+		controlledRobot.increaseScore(score);
+	}
+
 	public void driveForward() {
 		Facing facing = controlledRobot.getFacing();
 		boardManager.moveLivingEntityRelative(controlledRobot, facing.dx, facing.dy);
@@ -101,7 +108,7 @@ public class AiManager {
 
 	public void useItem(int slot) {
 		inventoryManager.useItem(controlledRobot, slot,
-				item -> item.use(controlledRobot, boardManager, inventoryManager));
+				item -> item.use(controlledRobot, boardManager, inventoryManager, scoreCallback));
 	}
 
 	public void pickUpItem() {

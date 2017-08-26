@@ -92,4 +92,9 @@ public class DuellingAI extends AbstractBasicAI {
 		// move forward
 		return driveForward();
 	}
+
+	@Override
+	public String getRobotName() {
+		return "Duelling";
+	}
 }

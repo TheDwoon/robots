@@ -4,6 +4,7 @@ import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.items.InventoryHolder;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
 import com.github.TheDwoon.robots.game.items.Item;
+import com.github.TheDwoon.robots.server.ScoreCallback;
 
 import java.util.Deque;
 import java.util.HashMap;
@@ -20,9 +21,12 @@ public class InventoryManager {
 
 	private final Deque<InventoryObserver> observers;
 
-	public InventoryManager() {
+	private final ScoreCallback scoreCallback;
+
+	public InventoryManager(ScoreCallback scoreCallback) {
 		inventories = new HashMap<>();
 		observers = new ConcurrentLinkedDeque<>();
+		this.scoreCallback = scoreCallback;
 	}
 
 	public void addObserver(InventoryObserver observer) {

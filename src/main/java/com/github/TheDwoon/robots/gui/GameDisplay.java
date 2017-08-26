@@ -1,12 +1,12 @@
 package com.github.TheDwoon.robots.gui;
 
 import com.github.TheDwoon.robots.game.board.Field;
-import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.board.Material;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
+import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.items.Item;
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
@@ -31,9 +31,12 @@ public final class GameDisplay extends HBox
 
 	private static final Logger log = LogManager.getLogger();
 
-	@FXML private Pane gameBoardContainer;
-	@FXML private GridPane gameBoard;
-	@FXML private VBox robotsContainer;
+	@FXML
+	private Pane gameBoardContainer;
+	@FXML
+	private GridPane gameBoard;
+	@FXML
+	private VBox robotsContainer;
 
 	private DoubleBinding fieldSize;
 
@@ -158,5 +161,13 @@ public final class GameDisplay extends HBox
 		inventories.remove(inventoryUuid);
 		robotsContainer.getChildren().remove(robotDisplay);
 		Textures.removeRobot(robotUuid);
+	}
+
+	@Override
+	public void updateScore(long robotUuid, int score) {
+		RobotDisplay robotDisplay = robotDisplays.get(robotUuid);
+		if (robotDisplay != null) {
+			robotDisplay.updateScore(score);
+		}
 	}
 }

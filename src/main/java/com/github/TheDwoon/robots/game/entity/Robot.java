@@ -13,33 +13,39 @@ public class Robot extends LivingEntity implements InventoryHolder {
 
 	private static final int DEFAULT_MAX_HEALTH = 3;
 
+	private String name;
 	private int score;
 
-	public Robot() {
-		this(-1, -1);
-		this.score = 0;
+	public Robot(String name) {
+		this(-1, -1, name);
 	}
 
-	public Robot(int x, int y) {
+	public Robot(int x, int y, String name) {
 		super(x, y, DEFAULT_MAX_HEALTH);
+		this.name = name;
 		this.score = 0;
 	}
 
-	public Robot(long uuid, int x, int y, int maxHealth, int health, Facing facing, int score) {
+	public Robot(long uuid, int x, int y, int maxHealth, int health, Facing facing, String name, int score) {
 		super(uuid, x, y, maxHealth, health, facing);
+		this.name = name;
 		this.score = score;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public int getScore() {
 		return score;
 	}
 
-	public void addScore(int score) {
+	public void increaseScore(int score) {
 		this.score += score;
 		log.info("robot #{} has a new score of {} point{}", getUUID(), this.score, abs(this.score) == 1 ? "": 's');
 	}
 
-	public void subtractScore(int score) {
+	public void decreaseScore(int score) {
 		this.score -= score;
 		log.info("robot #{} has a new score of {} point{}", getUUID(), this.score, abs(this.score) == 1 ? "": 's');
 	}

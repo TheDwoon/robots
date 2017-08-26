@@ -122,6 +122,11 @@ public class AIServer implements Closeable {
 		public PlayerAction makeTurn() {
 			return ai.makeTurn();
 		}
+
+		@Override
+		public String getRobotName() {
+			return ai.getRobotName();
+		}
 	}
 
 }

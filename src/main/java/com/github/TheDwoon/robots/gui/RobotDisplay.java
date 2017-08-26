@@ -1,7 +1,7 @@
 package com.github.TheDwoon.robots.gui;
 
-import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.Robot;
+import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.items.Item;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -14,15 +14,21 @@ import java.io.IOException;
 
 public final class RobotDisplay extends HBox {
 
-	@FXML private StackPane robotImageContainer;
-	@FXML private Label robotName;
-	@FXML private TilePane inventoryContainer;
+	@FXML
+	private StackPane robotImageContainer;
+	@FXML
+	private Label robotName;
+	@FXML
+	private Label score;
+	@FXML
+	private TilePane inventoryContainer;
 
 	public RobotDisplay(final Robot robot, Inventory inventory) throws IOException {
 		FXMLUtils.loadFxRoot(this);
 
 		setRobotImage(Textures.lookup(robot));
-		robotName.setText(Long.toHexString(robot.getUUID()));
+		robotName.setText(robot.getName());
+		score.setText(Integer.toString(robot.getScore()));
 		setInventory(inventory);
 	}
 
@@ -43,6 +49,10 @@ public final class RobotDisplay extends HBox {
 
 	public void updateItem(int slot, Item item) {
 		((InventoryFieldDisplay) inventoryContainer.getChildren().get(slot)).setItem(item);
+	}
+
+	public void updateScore(int score) {
+		this.score.setText(Integer.toString(score));
 	}
 
 }

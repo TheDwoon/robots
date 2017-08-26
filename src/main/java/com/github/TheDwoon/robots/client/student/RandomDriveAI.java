@@ -18,4 +18,9 @@ public class RandomDriveAI extends AbstractBasicAI {
 	public PlayerAction makeTurn() {
 		return options[random.nextInt(options.length)];
 	}
+
+	@Override
+	public String getRobotName() {
+		return "Random Drive";
+	}
 }

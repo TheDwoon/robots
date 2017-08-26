@@ -34,4 +34,9 @@ public class RandomItemCollectorAI extends AbstractBasicAI {
 		}
 		return movementActions[random.nextInt(movementActions.length)];
 	}
+
+	@Override
+	public String getRobotName() {
+		return "Random Collector";
+	}
 }

@@ -8,4 +8,9 @@ public class BasicAI extends AbstractBasicAI {
 	public PlayerAction makeTurn() {
 		return driveForward();
 	}
+
+	@Override
+	public String getRobotName() {
+		return "BasicAI";
+	}
 }

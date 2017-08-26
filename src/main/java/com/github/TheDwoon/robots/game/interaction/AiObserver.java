@@ -10,4 +10,6 @@ public interface AiObserver {
 	void spawnAi(Robot robot, Inventory inventory);
 
 	void despawnAi(long robotUuid, long inventoryUuid);
+
+	void updateScore(long robotUuid, int score);
 }

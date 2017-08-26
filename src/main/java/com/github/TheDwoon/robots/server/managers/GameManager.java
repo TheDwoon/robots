@@ -1,12 +1,13 @@
 package com.github.TheDwoon.robots.server.managers;
 
-import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.entity.Robot;
+import com.github.TheDwoon.robots.game.interaction.AI;
 import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
+import com.github.TheDwoon.robots.game.items.Inventory;
 import com.github.TheDwoon.robots.game.items.Item;
-import com.github.TheDwoon.robots.game.interaction.AI;
+import com.github.TheDwoon.robots.server.ScoreCallback;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -28,13 +29,20 @@ public class GameManager {
 
 	private final InventoryManager inventoryManager;
 	private final Map<AI, AiManager> aiManagers;
+	private final Map<Robot, AiManager> robots;
 
 	private final Deque<AiObserver> observers;
 
+	private final ScoreCallback scoreCallback;
+
 	public GameManager(BoardManager boardManager) {
+		scoreCallback = this::increaseScore;
+
+		boardManager.setScoreCallback(scoreCallback);
 		this.boardManager = boardManager;
-		this.inventoryManager = new InventoryManager();
+		this.inventoryManager = new InventoryManager(scoreCallback);
 		this.aiManagers = new HashMap<>();
+		this.robots = new HashMap<>();
 
 		observers = new ConcurrentLinkedDeque<>();
 	}
@@ -58,8 +66,8 @@ public class GameManager {
 	public void addObserver(AiObserver observer) {
 		observerExecutor.submit(() -> {
 			synchronized (aiManagers) {
-				aiManagers.values().forEach(
-						aiManager -> observer.spawnAi(aiManager.getControlledRobot(),
+				aiManagers.values().forEach(aiManager -> observer
+						.spawnAi(aiManager.getControlledRobot(),
 								aiManager.getControlledInventory()));
 			}
 		});
@@ -79,17 +87,25 @@ public class GameManager {
 				.submit(() -> o.despawnAi(robot.getUUID(), inventory.getUUID())));
 	}
 
+	private void notifyObserversScoreUpdate(Robot robot) {
+		observers.forEach(o -> observerExecutor
+				.submit(() -> o.updateScore(robot.getUUID(), robot.getScore())));
+	}
+
 	public synchronized AiManager spawnAi(AI ai) {
-		Robot controlledRobot = new Robot();
+		Robot controlledRobot = new Robot(ai.getRobotName());
 		boardManager.spawnLivingEntity(controlledRobot);
 
 		Inventory controlledInventory = new Inventory(12);
 		inventoryManager.register(controlledRobot, controlledInventory);
 
 		AiManager aiManager = new AiManager(ai, controlledRobot, controlledInventory, boardManager,
-				inventoryManager);
+				inventoryManager, scoreCallback);
 		synchronized (aiManagers) {
 			aiManagers.put(ai, aiManager);
+		}
+		synchronized (robots) {
+			robots.put(controlledRobot, aiManager);
 		}
 
 		notifyObserversSpawn(controlledRobot, controlledInventory);
@@ -105,10 +121,15 @@ public class GameManager {
 			return;
 		}
 
-		boardManager.removeLivingEntity(aiManager.getControlledRobot());
-		inventoryManager.unregister(aiManager.getControlledRobot());
+		Robot robot = aiManager.getControlledRobot();
+		synchronized (robots) {
+			robots.remove(robot);
+		}
 
-		notifyObserversDespawn(aiManager.getControlledRobot(), aiManager.getControlledInventory());
+		boardManager.removeLivingEntity(robot);
+		inventoryManager.unregister(robot);
+
+		notifyObserversDespawn(robot, aiManager.getControlledInventory());
 	}
 
 	public synchronized void spawnItems(Item... items) {
@@ -138,6 +159,17 @@ public class GameManager {
 		for (int i = 0; i < count; i++) {
 			boardManager.spawnItem(constructor.newInstance());
 		}
+	}
+
+	public void increaseScore(Robot receiver, int score) {
+		AiManager aiManager;
+		synchronized (robots) {
+			aiManager = robots.get(receiver);
+		}
+		if (aiManager != null) {
+			aiManager.increaseScore(score);
+		}
+		notifyObserversScoreUpdate(receiver);
 	}
 
 	public void makeTurn() {

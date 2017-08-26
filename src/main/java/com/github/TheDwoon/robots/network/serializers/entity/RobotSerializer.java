@@ -22,6 +22,7 @@ public class RobotSerializer<T extends Robot> extends LivingEntitySerializer<T> 
 		output.writeInt(object.getMaxHealth());
 		output.writeInt(object.getHealth());
 		kryo.writeObject(output, object.getFacing());
+		output.writeString(object.getName());
 		output.writeInt(object.getScore());
 	}
 
@@ -33,18 +34,19 @@ public class RobotSerializer<T extends Robot> extends LivingEntitySerializer<T> 
 		int maxHealth = input.readInt();
 		int health = input.readInt();
 		Facing facing = kryo.readObject(input, Facing.class);
+		String name = input.readString();
 		int score = input.readInt();
 
-		return create(type, uuid, x, y, maxHealth, health, facing, score);
+		return create(type, uuid, x, y, maxHealth, health, facing, name, score);
 	}
 
 	protected T create(Class<T> type, long uuid, int x, int y, int maxHealth, int health,
-			Facing facing, int score) {
+			Facing facing, String name, int score) {
 		try {
 			Constructor<T> constructor =
 					type.getConstructor(long.class, int.class, int.class, int.class, int.class,
-							Facing.class, int.class);
-			return constructor.newInstance(uuid, x, y, maxHealth, health, facing, score);
+							Facing.class, String.class, int.class);
+			return constructor.newInstance(uuid, x, y, maxHealth, health, facing, name, score);
 		} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
 			return create(type, uuid, x, y, maxHealth, health, facing);
 		}
