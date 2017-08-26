@@ -9,10 +9,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public final class RobotDisplay extends HBox {
+public final class RobotDisplay extends VBox {
 
 	@FXML
 	private StackPane robotImageContainer;
