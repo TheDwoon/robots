@@ -12,4 +12,6 @@ public interface AiObserver {
 	void despawnAi(long robotUuid, long inventoryUuid);
 
 	void updateScore(long robotUuid, int score);
+
+	void robotDead(long robotUuid);
 }

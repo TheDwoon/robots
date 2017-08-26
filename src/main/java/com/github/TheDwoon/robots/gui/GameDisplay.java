@@ -2,6 +2,7 @@ package com.github.TheDwoon.robots.gui;
 
 import com.github.TheDwoon.robots.game.board.Field;
 import com.github.TheDwoon.robots.game.board.Material;
+import com.github.TheDwoon.robots.game.entity.LivingEntity;
 import com.github.TheDwoon.robots.game.entity.Robot;
 import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
@@ -103,6 +104,15 @@ public final class GameDisplay extends HBox
 	public void updateFields(long uuid, Field[] fields) {
 		for (Field field : fields) {
 			boardFieldDisplays[field.getX()][field.getY()].update(field);
+			if (field.isOccupied()) {
+				LivingEntity occupant = field.getOccupant();
+				if (occupant instanceof Robot) {
+					RobotDisplay robotDisplay = robotDisplays.get(occupant.getUUID());
+					if (robotDisplay != null) {
+						robotDisplay.updateHealth(occupant.getHealth());
+					}
+				}
+			}
 		}
 	}
 
@@ -168,6 +178,14 @@ public final class GameDisplay extends HBox
 		RobotDisplay robotDisplay = robotDisplays.get(robotUuid);
 		if (robotDisplay != null) {
 			robotDisplay.updateScore(score);
+		}
+	}
+
+	@Override
+	public void robotDead(long robotUuid) {
+		RobotDisplay robotDisplay = robotDisplays.get(robotUuid);
+		if (robotDisplay != null) {
+			robotDisplay.updateHealth(0);
 		}
 	}
 }

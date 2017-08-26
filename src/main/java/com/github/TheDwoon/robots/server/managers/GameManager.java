@@ -92,6 +92,11 @@ public class GameManager {
 				.submit(() -> o.updateScore(robot.getUUID(), robot.getScore())));
 	}
 
+	private void notifyObserversRobotDead(Robot robot) {
+		observers.forEach(o -> observerExecutor
+				.submit(() -> o.robotDead(robot.getUUID())));
+	}
+
 	public synchronized AiManager spawnAi(AI ai) {
 		Robot controlledRobot = new Robot(ai.getRobotName());
 		boardManager.spawnLivingEntity(controlledRobot);
@@ -174,10 +179,15 @@ public class GameManager {
 
 	public void makeTurn() {
 		synchronized (aiManagers) {
-			for (AiManager aiManager : aiManagers.values()) {
-				aiManager.makeTurn();
-			}
+			aiManagers.values().forEach(AiManager::makeTurn);
 			// TODO (sigmarw, 22.08.2017): check win condition
+		}
+		synchronized (robots) {
+			robots.keySet().forEach(robot -> {
+				if (robot.isDead()) {
+					notifyObserversRobotDead(robot);
+				}
+			});
 		}
 	}
 }
