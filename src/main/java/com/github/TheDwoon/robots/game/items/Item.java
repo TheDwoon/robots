@@ -26,4 +26,7 @@ public abstract class Item extends Entity {
 		return false;
 	}
 
+	public boolean isCarriable() {
+		return true;
+	}
 }

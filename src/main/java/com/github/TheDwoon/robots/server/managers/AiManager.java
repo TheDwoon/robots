@@ -113,13 +113,14 @@ public class AiManager {
 				item -> item.use(controlledRobot, boardManager, inventoryManager, scoreCallback));
 	}
 
-	public void pickUpItem() {
+	public void pickUpItem() {		
 		if (inventoryManager.getFreeSlots(controlledRobot) <= 0) {
 			return;
 		}
-
-		Item item = boardManager.removeItem(controlledRobot.getX(), controlledRobot.getY());
-		if (item != null) {
+		
+		Item item = boardManager.getField(controlledRobot.getX(), controlledRobot.getY()).getItem();
+		if (item != null && item.isCarriable()) {
+			boardManager.removeItem(item);
 			inventoryManager.giveItem(controlledRobot, item);
 		}
 	}

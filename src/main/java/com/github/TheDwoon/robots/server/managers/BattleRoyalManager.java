@@ -2,20 +2,19 @@ package com.github.TheDwoon.robots.server.managers;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import com.github.TheDwoon.robots.client.student.BasicAI;
 import com.github.TheDwoon.robots.client.student.DuellingAI;
 import com.github.TheDwoon.robots.game.board.Facing;
 import com.github.TheDwoon.robots.game.board.Field;
 import com.github.TheDwoon.robots.game.board.Material;
-import com.github.TheDwoon.robots.game.items.Bomb;
+import com.github.TheDwoon.robots.game.items.Beacon;
 
 public final class BattleRoyalManager extends GameManager {
 	private static final int MIN_RADIUS = 2;
 	private static final int INIT_ROUNDS_LEFT = 100;
-	private static final int ROUNDS_PER_CYCLE = 50;	
+	private static final int ROUNDS_PER_CYCLE = 25;	
+	private static final int TURN_FIELDS_PER_TURN = 5;
 	
 	private final List<Field> fieldsToTurn = new ArrayList<>();
 	
@@ -35,6 +34,8 @@ public final class BattleRoyalManager extends GameManager {
 		centerY = (int) (Math.random() * boardManager.getHeight());		
 		roundsLeft = INIT_ROUNDS_LEFT;	
 		
+		boardManager.spawnItem(new Beacon(), centerX, centerY);
+		
 		for (int i = 0; i < 10; i++)
 			spawnAi(new DuellingAI(Facing.SOUTH));
 	}
@@ -46,12 +47,14 @@ public final class BattleRoyalManager extends GameManager {
 			cycle++;
 			roundsLeft = ROUNDS_PER_CYCLE;
 		} else {
-			roundsLeft--;
-		}
-		
-		for (int i = 0; i < boardManager.getWidth() * boardManager.getHeight() / (1.25 * ROUNDS_PER_CYCLE) && !fieldsToTurn.isEmpty(); i++) {
-			Field field = fieldsToTurn.remove(0);
-			boardManager.setMaterial(field.getX(), field.getY(), Material.SCORCHED_EARTH);
+			if (fieldsToTurn.isEmpty()) {
+				roundsLeft--;
+			} else {
+				for (int i = 0; i < TURN_FIELDS_PER_TURN && !fieldsToTurn.isEmpty(); i++) {
+					Field field = fieldsToTurn.remove(0);
+					boardManager.setMaterial(field.getX(), field.getY(), Material.SCORCHED_EARTH);
+				}
+			}
 		}
 		
 		synchronized (robots) {
@@ -76,11 +79,13 @@ public final class BattleRoyalManager extends GameManager {
 		final int xMin = Math.max(0, centerX - radius / 2), xMax = Math.min(boardManager.getWidth(), centerX + radius / 2);
 		final int yMin = Math.max(0, centerY - radius / 2), yMax = Math.min(boardManager.getHeight(), centerY + radius / 2);
 		
+		boardManager.removeItem(centerX, centerY);
+		
 		radius = Math.max(MIN_RADIUS, radius / 2);
 		centerX = (int) (Math.random() * (xMax - xMin)) + xMin;
 		centerY = (int) (Math.random() * (yMax - yMin)) + yMin;
 		
-		boardManager.spawnItem(new Bomb(), centerX, centerY);
+		boardManager.spawnItem(new Beacon(), centerX, centerY);
 
 		final int width = boardManager.getWidth();
 		final int height = boardManager.getHeight();
