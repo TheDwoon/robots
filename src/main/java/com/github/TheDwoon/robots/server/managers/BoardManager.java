@@ -76,6 +76,22 @@ public class BoardManager {
 		return fields[x][y];
 	}
 
+	public void setField(Field field) {
+		synchronized (fields) {
+			fields[field.getX()][field.getY()] = field;
+		}
+		
+		notifyObservers(field);
+	}
+	
+	public void setMaterial(int x, int y, Material material) {
+		synchronized (fields) {
+			fields[x][y].setMaterial(material);
+		}
+		
+		notifyObservers(fields[x][y]);
+	}
+	
 	public Field getFieldChecked(int x, int y) {
 		if (!checkCoordinates(x, y)) {
 			return null;

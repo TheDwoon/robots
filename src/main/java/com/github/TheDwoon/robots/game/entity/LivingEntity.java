@@ -1,16 +1,11 @@
 package com.github.TheDwoon.robots.game.entity;
 
-import com.github.TheDwoon.robots.game.board.Facing;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+import com.github.TheDwoon.robots.game.board.Facing;
+
 public abstract class LivingEntity extends Entity {
-
-	private static final Logger log = LogManager.getLogger();
-
 	private final int maxHealth;
 	private int health;
 	private Facing facing;

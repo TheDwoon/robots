@@ -9,7 +9,7 @@ public class Field {
 	private final int x;
 	private final int y;
 	// material is also a hint to the client what texture to use.
-	private final Material material;
+	private Material material;
 
 	private LivingEntity occupant;
 	private Item item;
@@ -39,6 +39,10 @@ public class Field {
 		return material;
 	}
 
+	public final void setMaterial(Material material) {
+		this.material = Objects.requireNonNull(material);
+	}
+	
 	public final LivingEntity getOccupant() {
 		return occupant;
 	}

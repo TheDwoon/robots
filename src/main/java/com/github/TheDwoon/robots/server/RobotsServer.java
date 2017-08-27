@@ -62,7 +62,7 @@ public final class RobotsServer implements Runnable {
 		MAZE_BIG(GameLoader::loadFromFile, "maze_big"),
 		TASK_1(GameLoader::loadFromFile, "task1"),
 		TASK_2(GameLoader::loadFromFile, "task2"),
-		BATTLE_ROYAL(null, "simple");
+		BATTLE_ROYAL(GameLoader::loadBattleRoyal, "battleRoyal");
 
 		public final GameLoader gameLoader;
 		public final String mapName;

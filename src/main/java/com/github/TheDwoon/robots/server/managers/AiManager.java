@@ -27,10 +27,11 @@ public class AiManager {
 
 	private final BoardManager boardManager;
 	private final InventoryManager inventoryManager;
-	private final ScoreCallback scoreCallback;
-
+	private final ScoreCallback scoreCallback;	
+	private final boolean doRespawn;
+	
 	public AiManager(AI ai, Robot controlledRobot, Inventory controlledInventory,
-			BoardManager boardManager, InventoryManager inventoryManager, ScoreCallback scoreCallback) {
+			BoardManager boardManager, InventoryManager inventoryManager, ScoreCallback scoreCallback, boolean doRespawn) {
 		this.ai = ai;
 		this.controlledRobot = controlledRobot;
 		this.controlledInventory = controlledInventory;
@@ -40,6 +41,7 @@ public class AiManager {
 		this.boardManager = boardManager;
 		this.inventoryManager = inventoryManager;
 		this.scoreCallback = scoreCallback;
+		this.doRespawn = doRespawn;
 	}
 
 	public void makeTurn() {
@@ -60,7 +62,7 @@ public class AiManager {
 				} else if (respawnCounter > 0) {
 					// in respawn waiting phase
 					respawnCounter--;
-				} else {
+				} else if (doRespawn) {
 					// respawn (if not possible, retry next round)
 					if (boardManager.spawnLivingEntity(controlledRobot)) {
 						log.info("Robot #{} has been respawned at ({}/{}).", controlledRobot.getUUID(),

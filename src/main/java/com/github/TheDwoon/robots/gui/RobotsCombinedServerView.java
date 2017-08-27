@@ -28,7 +28,7 @@ public class RobotsCombinedServerView extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
-		RobotsServer robotsServer = new RobotsServer(RobotsServer.Level.WEAPON_TEST);
+		RobotsServer robotsServer = new RobotsServer(RobotsServer.Level.BATTLE_ROYAL);
 		GameManager gameManager = robotsServer.getGameManager();
 		robotsServerThread = new Thread(() -> runServer(gameManager), "robotsServer");
 		robotsServerThread.start();

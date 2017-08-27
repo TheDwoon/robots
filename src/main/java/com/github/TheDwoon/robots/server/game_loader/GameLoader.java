@@ -2,6 +2,7 @@ package com.github.TheDwoon.robots.server.game_loader;
 
 import com.github.TheDwoon.robots.mapfile.MapFileParser;
 import com.github.TheDwoon.robots.mapfile.ParseException;
+import com.github.TheDwoon.robots.server.managers.BattleRoyalManager;
 import com.github.TheDwoon.robots.server.managers.BoardManager;
 import com.github.TheDwoon.robots.server.managers.GameManager;
 
@@ -18,5 +19,17 @@ public interface GameLoader {
 		}
 
 		return new GameManager(boardManager);
+	}
+	
+	static GameManager loadBattleRoyal(String mapName) {
+		BoardManager boardManager;
+		try {
+			boardManager = MapFileParser
+					.parseBoard(GameLoader.class.getResourceAsStream("/map/" + mapName + ".map"));
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+
+		return new BattleRoyalManager(boardManager);
 	}
 }

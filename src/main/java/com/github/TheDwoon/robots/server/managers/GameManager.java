@@ -25,16 +25,24 @@ public class GameManager {
 
 	public static ExecutorService observerExecutor = Executors.newFixedThreadPool(4);
 
-	private final BoardManager boardManager;
+	protected final BoardManager boardManager;
 
-	private final InventoryManager inventoryManager;
-	private final Map<AI, AiManager> aiManagers;
-	private final Map<Robot, AiManager> robots;
+	protected final InventoryManager inventoryManager;
+	protected final Map<AI, AiManager> aiManagers;
+	protected final Map<Robot, AiManager> robots;
 
 	private final Deque<AiObserver> observers;
 
 	private final ScoreCallback scoreCallback;
+	
+	private boolean allowRespawn = true;
 
+	public GameManager(BoardManager boardManager, boolean allowRespawn) {
+		this(boardManager);
+		
+		this.allowRespawn = allowRespawn;
+	}
+	
 	public GameManager(BoardManager boardManager) {
 		scoreCallback = this::increaseScore;
 
@@ -105,7 +113,7 @@ public class GameManager {
 		inventoryManager.register(controlledRobot, controlledInventory);
 
 		AiManager aiManager = new AiManager(ai, controlledRobot, controlledInventory, boardManager,
-				inventoryManager, scoreCallback);
+				inventoryManager, scoreCallback, allowRespawn);
 		synchronized (aiManagers) {
 			aiManagers.put(ai, aiManager);
 		}
