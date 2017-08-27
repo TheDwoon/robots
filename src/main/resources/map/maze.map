@@ -7,7 +7,7 @@ WATER:w
 SPAWN:s
 
 r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r 
-r s g g g g g g g t g t t t t t t t t t t t t t t t t t t t t t t t t t t g g g g g g s r 
+r s g g g g g g g t g t t t t t t t t t t t t t t t t t t t t t t t t t t g g g g g g g r 
 r t t t t t t t g t g t g g g g g t g g g g g g g t g g g g g g g g g g t t g t t t t g r 
 r t t t t t t t g t g t t t t t g t g t t t g t g t t t g t t t t t t g t t g g g g t g r 
 r g g g g g g t g t g g g g g g g t g t g t g t g t g g g t g g g t t g t t t t t t t g r 
@@ -34,7 +34,7 @@ r g g g g g t g t t t t t t t t g t t g g g t t t t t t t t t t t t g t t g t g 
 r g t t t t t g g g g g g g g t g t t t g t t t g g g g g g g g t t g t t g t g t g t g r 
 r g t t g t t g t t g t t t t t g t g g g g g t g t t t t t t g t t g t t g t t t t t g r 
 r g t t g t t g t t g g g g g g g t t t t t t t g t t t t t t g t t g t t g g g g g g g r 
-r s t t g g g g t t t t t t t t g g g g g g g g g t g g g g g g g g g t t g t t t t t s r
+r g t t g g g g t t t t t t t t g g g g g g g g g t g g g g g g g g g t t g t t t t t g r
 r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r
 
 com.github.TheDwoon.robots.game.items.Star 22 15

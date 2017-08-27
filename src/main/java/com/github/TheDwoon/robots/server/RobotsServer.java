@@ -57,11 +57,12 @@ public final class RobotsServer implements Runnable {
 		SIMPLE_TEST(new SimpleTestLoader(), "simple"),
 		WEAPON_TEST(new WeaponTestLoader(), "weapon_test"),
 		BASIC_MOVEMENT(GameLoader::loadFromFile, "weapon_test"),
-		OBSTACLE_COURSE(GameLoader::loadFromFile, "simple"),
-		MAZE(GameLoader::loadFromFile, "maze"),
-		MAZE_BIG(GameLoader::loadFromFile, "maze_big"),
 		TASK_1(GameLoader::loadFromFile, "task1"),
 		TASK_2(GameLoader::loadFromFile, "task2"),
+		TASK_3(GameLoader::loadFromFile, "task3"),
+		TASK_4(GameLoader::loadFromFile, "task4"),
+		TASK_5(GameLoader::loadFromFile, "maze"),
+		TASK_6(GameLoader::loadFromFile, "maze_big"),
 		BATTLE_ROYAL(GameLoader::loadBattleRoyal, "battleRoyal");
 
 		public final GameLoader gameLoader;
