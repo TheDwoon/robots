@@ -1,5 +1,12 @@
 package com.github.TheDwoon.robots.server;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -12,15 +19,8 @@ import com.github.TheDwoon.robots.network.KryoRegistry;
 import com.github.TheDwoon.robots.server.actions.PlayerAction;
 import com.github.TheDwoon.robots.server.managers.GameManager;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class AIServer implements Closeable {
-
+	private final int AI_SERVER_PORT = 80;
 	private final Server discoveryServer;
 	private final Server server;
 
@@ -29,7 +29,7 @@ public class AIServer implements Closeable {
 	public AIServer(GameManager gameManager) throws IOException {
 		discoveryServer = new Server();
 		discoveryServer.start();
-		discoveryServer.bind(32007, 32006);
+		discoveryServer.bind(32007);
 
 		server = new Server();
 		KryoRegistry.register(server.getKryo());
@@ -61,7 +61,7 @@ public class AIServer implements Closeable {
 			}
 		});
 		server.start();
-		server.bind(32005);
+		server.bind(AI_SERVER_PORT);
 	}
 
 	@Override
