@@ -1,5 +1,6 @@
 package com.github.TheDwoon.robots.client.student;
 
+import com.github.TheDwoon.robots.game.board.Facing;
 import com.github.TheDwoon.robots.game.interaction.AI;
 import com.github.TheDwoon.robots.game.board.Field;
 import com.github.TheDwoon.robots.game.entity.LivingEntity;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractBasicAI implements AI {
+
 	private Robot robot;
 	private Inventory inventory;
 	private List<Field> fields;
@@ -59,29 +61,33 @@ public abstract class AbstractBasicAI implements AI {
 		right = null;
 		left = null;
 
-		final int rx = getRobot().getX();
-		final int ry = getRobot().getY();
+		final int rx = robot.getX();
+		final int ry = robot.getY();
+		final Facing facing = robot.getFacing();
 		fields.stream().forEach(field -> {
-			final int fx = field.getX();
-			final int fy = field.getY();
-			if (rx == fx && ry == fy) {
+			final int dx = field.getX() - rx;
+			final int dy = field.getY() - ry;
+			if (dx == 0 && dy == 0) {
 				beneath = field;
-			} else if (rx == fx && ry + 1 == fy) {
+			} else if (checkFacing(dx, dy, facing)) {
 				front = field;
-			} else if (rx == fx && ry - 1 == fy) {
+			} else if (checkFacing(dx, dy, facing.opposite())) {
 				back = field;
-			} else if (rx + 1 == fx && ry == fy) {
+			} else if (checkFacing(dx, dy, facing.right())) {
 				right = field;
-			} else if (rx - 1 == fx && ry == fy) {
+			} else if (checkFacing(dx, dy, facing.left())) {
 				left = field;
-			}
-			if (field.isOccupied()) {
+			} if (field.isOccupied()) {
 				entitiesInRange.add(field.getOccupant());
 			}
 			if (field.hasItem()) {
 				itemsInRange.add(field.getItem());
 			}
 		});
+	}
+
+	private boolean checkFacing(int dx, int dy, Facing facing) {
+		return dx == facing.dx && dy == facing.dy;
 	}
 
 	protected final DriveForward driveForward() {
