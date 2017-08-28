@@ -21,113 +21,126 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AIServer implements Closeable {
 
-	private final Server discoveryServer;
-	private final Server server;
+    private final Server discoveryServer;
+    private final Server server;
 
-	private final Map<Connection, AI> clients;
+    private final Map<Connection, AI> clients;
 
-	public AIServer(GameManager gameManager) throws IOException {
-		discoveryServer = new Server();
-		discoveryServer.start();
-		discoveryServer.bind(32007, 32006);
+    public AIServer(GameManager gameManager) throws IOException {
+        this(gameManager, 32005, true);
+    }
 
-		server = new Server();
-		KryoRegistry.register(server.getKryo());
-		ObjectSpace objectSpace = new ObjectSpace();
+    public AIServer(GameManager gameManager, int port, boolean discoveryServerEnabled)
+            throws IOException {
+        if (discoveryServerEnabled) {
+            discoveryServer = new Server();
+            discoveryServer.start();
+            discoveryServer.bind(32007, 32006);
+        } else {
+            discoveryServer = null;
+        }
 
-		clients = new HashMap<>();
+        server = new Server();
+        KryoRegistry.register(server.getKryo());
+        ObjectSpace objectSpace = new ObjectSpace();
 
-		server.addListener(new Listener() {
-			@Override
-			public void connected(final Connection connection) {
-				objectSpace.addConnection(connection);
-				AI ai = new NetworkAI(ObjectSpace.getRemoteObject(connection, 1, AI.class));
+        clients = new HashMap<>();
 
-				new Thread(() -> gameManager.spawnAi(ai)).start();
-				synchronized (clients) {
-					clients.put(connection, ai);
-				}
-			}
+        server.addListener(new Listener() {
 
-			@Override
-			public void disconnected(final Connection connection) {
-				objectSpace.removeConnection(connection);
+            @Override
+            public void connected(final Connection connection) {
+                objectSpace.addConnection(connection);
+                AI ai = new NetworkAI(ObjectSpace.getRemoteObject(connection, 1, AI.class));
 
-				AI ai;
-				synchronized (clients) {
-					ai = clients.remove(connection);
-				}
-				new Thread(() -> gameManager.despawnAi(ai)).start();
-			}
-		});
-		server.start();
-		server.bind(32005);
-	}
+                new Thread(() -> gameManager.spawnAi(ai)).start();
+                synchronized (clients) {
+                    clients.put(connection, ai);
+                }
+            }
 
-	@Override
-	public void close() throws IOException {
-		discoveryServer.stop();
-		server.stop();
-	}
+            @Override
+            public void disconnected(final Connection connection) {
+                objectSpace.removeConnection(connection);
 
-	public static final class NetworkAI implements AI {
-		private static AtomicInteger counter = new AtomicInteger(0);
+                AI ai;
+                synchronized (clients) {
+                    ai = clients.remove(connection);
+                }
+                new Thread(() -> gameManager.despawnAi(ai)).start();
+            }
+        });
+        server.start();
+        server.bind(port);
+    }
 
-		private final int id;
-		private final AI ai;
+    @Override
+    public void close() throws IOException {
+        if (discoveryServer != null) {
+            discoveryServer.stop();
+        }
+        server.stop();
+    }
 
-		public NetworkAI(AI ai) {
-			this.id = counter.getAndIncrement();
-			this.ai = ai;
-		}
+    public static final class NetworkAI implements AI {
 
-		public AI getAi() {
-			return ai;
-		}
+        private static AtomicInteger counter = new AtomicInteger(0);
 
-		@Override
-		public boolean equals(Object o) {
-			if (this == o)
-				return true;
-			if (o == null || getClass() != o.getClass())
-				return false;
+        private final int id;
+        private final AI ai;
 
-			NetworkAI networkAI = (NetworkAI) o;
+        public NetworkAI(AI ai) {
+            this.id = counter.getAndIncrement();
+            this.ai = ai;
+        }
 
-			if (id != networkAI.id)
-				return false;
-			return ai == networkAI.ai;
-		}
+        public AI getAi() {
+            return ai;
+        }
 
-		@Override
-		public int hashCode() {
-			return id;
-		}
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
 
-		@Override
-		public void updateRobot(Robot robot) {
-			ai.updateRobot(robot);
-		}
+            NetworkAI networkAI = (NetworkAI) o;
 
-		@Override
-		public void updateInventory(Inventory inventory) {
-			ai.updateInventory(inventory);
-		}
+            if (id != networkAI.id)
+                return false;
+            return ai == networkAI.ai;
+        }
 
-		@Override
-		public void updateVision(List<Field> fields) {
-			ai.updateVision(fields);
-		}
+        @Override
+        public int hashCode() {
+            return id;
+        }
 
-		@Override
-		public PlayerAction makeTurn() {
-			return ai.makeTurn();
-		}
+        @Override
+        public void updateRobot(Robot robot) {
+            ai.updateRobot(robot);
+        }
 
-		@Override
-		public String getRobotName() {
-			return ai.getRobotName();
-		}
-	}
+        @Override
+        public void updateInventory(Inventory inventory) {
+            ai.updateInventory(inventory);
+        }
+
+        @Override
+        public void updateVision(List<Field> fields) {
+            ai.updateVision(fields);
+        }
+
+        @Override
+        public PlayerAction makeTurn() {
+            return ai.makeTurn();
+        }
+
+        @Override
+        public String getRobotName() {
+            return ai.getRobotName();
+        }
+    }
 
 }
