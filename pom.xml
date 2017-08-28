@@ -92,6 +92,22 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>server_combined</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+						<configuration>
+							<finalName>${project.name}-server_combined</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<archive>
+								<manifest>
+									<mainClass>${project.groupId}.${project.artifactId}.gui.RobotsCombinedServerView</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</execution>
+					<execution>
 						<id>gui</id>
 						<phase>package</phase>
 						<goals>
