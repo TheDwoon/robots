@@ -285,9 +285,6 @@ public class BoardManager {
 				return false;
 			}
 			field.setItem(item);
-			if (item != null) {
-				item.setPosition(field.getX(), field.getY());
-			}
 		}
 
 		notifyObservers(field);
