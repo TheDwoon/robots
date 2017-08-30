@@ -76,13 +76,13 @@ public final class AStar {
 			result.add(new State(state, x, y, state.facing, DriveForward.INSTANCE, state.walkingCost + 1, heuristicFunction.cost(x, y, tx, ty)));
 			visited[x][y][state.facing.ordinal()] = true;			
 		}
-			 
+		
 		// drive backward
 		x = state.x - state.facing.dx;
 		y = state.y - state.facing.dy;
-		if (map.isWithinMap(x, y) && !visited[x][y][state.facing.ordinal()] && map.getField(x, y).isVisitable()) {
+		if (map.isWithinMap(x, y) && !visited[x][y][state.facing.opposite().ordinal()] && map.getField(x, y).isVisitable()) {
 			result.add(new State(state, x, y, state.facing, DriveBackward.INSTANCE, state.walkingCost + 1, heuristicFunction.cost(x, y, tx, ty)));
-			visited[x][y][state.facing.ordinal()] = true;
+			visited[x][y][state.facing.opposite().ordinal()] = true;
 		}
 		
 		Facing nextFacing;
@@ -104,12 +104,11 @@ public final class AStar {
 		
 		return result;
 	}
-	
+		
 	public static interface HeuristicFunction {
 		double cost(int cx, int cy, int tx, int ty);
 	}
 	
-	@SuppressWarnings("unused")
 	private static class State implements Comparable<State> {
 		private final State previous;
 		private final int x;
