@@ -86,6 +86,30 @@ public class Field {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		Field field = (Field) o;
+
+		if (x != field.x)
+			return false;
+		if (y != field.y)
+			return false;
+		return material == field.material;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = x;
+		result = 31 * result + y;
+		result = 31 * result + material.hashCode();
+		return result;
+	}
+
+	@Override
 	public String toString() {
 		return String.format("[(%d,%d)/%s]", x, y, material.name());
 	}
