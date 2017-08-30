@@ -2,6 +2,7 @@ package com.github.TheDwoon.robots.gui;
 
 import java.io.IOException;
 
+import com.github.TheDwoon.robots.client.student.astar.PathingAI;
 import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
 import com.github.TheDwoon.robots.game.interaction.InventoryObserver;
@@ -28,7 +29,7 @@ public class RobotsCombinedServerView extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
-		RobotsServer robotsServer = new RobotsServer(RobotsServer.Level.TASK_1);
+		RobotsServer robotsServer = new RobotsServer(RobotsServer.Level.TASK_6);
 		GameManager gameManager = robotsServer.getGameManager();
 		robotsServerThread = new Thread(() -> runServer(gameManager), "robotsServer");
 		robotsServerThread.start();
@@ -41,7 +42,8 @@ public class RobotsCombinedServerView extends Application {
 		gameManager.addObserver((BoardObserver) gameDisplayFxThreadAdapter);
 		gameManager.addObserver((AiObserver) gameDisplayFxThreadAdapter);
 		gameManager.addObserver((InventoryObserver) gameDisplayFxThreadAdapter);
-
+		gameManager.spawnAi(new PathingAI());
+		
 		primaryStage.setScene(new Scene(gameDisplay));
 		primaryStage.setTitle("RobotsUI");
 		// primaryStage.setFullScreen(true);
