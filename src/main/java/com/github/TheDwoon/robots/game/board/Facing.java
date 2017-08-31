@@ -1,5 +1,7 @@
 package com.github.TheDwoon.robots.game.board;
 
+import static java.lang.Integer.signum;
+
 public enum Facing {
 	NORTH(0, -1), WEST(-1, 0), SOUTH(0, 1), EAST(1, 0);
 
@@ -54,5 +56,24 @@ public enum Facing {
 		default:
 			return null;
 		}
+	}
+
+	public static Facing of(int dx, int dy) {
+		if (dx < 0) {
+			if (dy != 0) {
+				return WEST;
+			}
+		} else if (dx > 0) {
+			if (dy == 0) {
+				return EAST;
+			}
+		} else {
+			if (dy < 0) {
+				return NORTH;
+			} else if (dy > 0) {
+				return SOUTH;
+			}
+		}
+		throw new IllegalArgumentException("Invalid facing: dx = " + dx + ", dy = " + dy);
 	}
 }
