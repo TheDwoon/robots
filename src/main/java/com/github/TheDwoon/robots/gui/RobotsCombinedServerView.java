@@ -2,6 +2,9 @@ package com.github.TheDwoon.robots.gui;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.github.TheDwoon.robots.client.student.astar.PathingAI;
 import com.github.TheDwoon.robots.game.interaction.AiObserver;
 import com.github.TheDwoon.robots.game.interaction.BoardObserver;
@@ -14,8 +17,6 @@ import com.github.TheDwoon.robots.server.managers.GameManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class RobotsCombinedServerView extends Application {
 
