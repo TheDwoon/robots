@@ -114,6 +114,7 @@ public class GameManager {
 
 		AiManager aiManager = new AiManager(ai, controlledRobot, controlledInventory, boardManager,
 				inventoryManager, scoreCallback, allowRespawn);
+		aiManager.init();
 		synchronized (aiManagers) {
 			aiManagers.put(ai, aiManager);
 		}

@@ -14,6 +14,8 @@ public interface AI {
 
 	void updateVision(List<Field> fields);
 
+	default void init() {}
+
 	PlayerAction makeTurn();
 
 	String getRobotName();

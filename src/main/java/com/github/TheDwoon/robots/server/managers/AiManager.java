@@ -27,11 +27,12 @@ public class AiManager {
 
 	private final BoardManager boardManager;
 	private final InventoryManager inventoryManager;
-	private final ScoreCallback scoreCallback;	
+	private final ScoreCallback scoreCallback;
 	private final boolean doRespawn;
-	
+
 	public AiManager(AI ai, Robot controlledRobot, Inventory controlledInventory,
-			BoardManager boardManager, InventoryManager inventoryManager, ScoreCallback scoreCallback, boolean doRespawn) {
+			BoardManager boardManager, InventoryManager inventoryManager,
+			ScoreCallback scoreCallback, boolean doRespawn) {
 		this.ai = ai;
 		this.controlledRobot = controlledRobot;
 		this.controlledInventory = controlledInventory;
@@ -42,6 +43,18 @@ public class AiManager {
 		this.inventoryManager = inventoryManager;
 		this.scoreCallback = scoreCallback;
 		this.doRespawn = doRespawn;
+	}
+
+	public void init() {
+		try {
+			ai.updateRobot(controlledRobot);
+			ai.updateInventory(controlledInventory);
+			ai.updateVision(
+					boardManager.getVisibleFields(controlledRobot.getX(), controlledRobot.getY()));
+			ai.init();
+		} catch (Throwable t) {
+			log.catching(t);
+		}
 	}
 
 	public void makeTurn() {
@@ -65,10 +78,12 @@ public class AiManager {
 				} else if (doRespawn) {
 					// respawn (if not possible, retry next round)
 					if (boardManager.spawnLivingEntity(controlledRobot)) {
-						log.info("Robot #{} has been respawned at ({}/{}).", controlledRobot.getUUID(),
-								controlledRobot.getX(), controlledRobot.getY());
+						log.info("Robot #{} has been respawned at ({}/{}).",
+								controlledRobot.getUUID(), controlledRobot.getX(),
+								controlledRobot.getY());
 					} else {
-						log.warn("Robot #{} has been added to the spawn queue.", controlledRobot.getUUID());
+						log.warn("Robot #{} has been added to the spawn queue.",
+								controlledRobot.getUUID());
 					}
 					respawnCounter = -1;
 				}
@@ -113,11 +128,11 @@ public class AiManager {
 				item -> item.use(controlledRobot, boardManager, inventoryManager, scoreCallback));
 	}
 
-	public void pickUpItem() {		
+	public void pickUpItem() {
 		if (inventoryManager.getFreeSlots(controlledRobot) <= 0) {
 			return;
 		}
-		
+
 		Item item = boardManager.getField(controlledRobot.getX(), controlledRobot.getY()).getItem();
 		if (item != null && item.isCarriable()) {
 			boardManager.removeItem(item);
