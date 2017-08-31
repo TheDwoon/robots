@@ -12,6 +12,7 @@ import com.github.TheDwoon.robots.server.ScoreCallback;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.function.Consumer;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -37,16 +38,16 @@ public class BoardManager {
 	public BoardManager(long uuid, final Field[][] fields) {
 		this.random = new Random();
 
-		this.fields = fields;
-		this.width = fields.length;
-		this.height = fields[0].length;
+		this.fields = ensureBorderExists(fields);
+		this.width = this.fields.length;
+		this.height = this.fields[0].length;
 		this.uuid = uuid;
 
 		observers = new ConcurrentLinkedDeque<>();
 
 		spawnFields = new ArrayList<>();
 		itemFields = new ArrayList<>();
-		for (Field[] row : fields) {
+		for (Field[] row : this.fields) {
 			for (Field field : row) {
 				if (field.getMaterial() == Material.SPAWN) {
 					spawnFields.add(field);
@@ -62,6 +63,87 @@ public class BoardManager {
 
 		spawnQueueManager = new SpawnQueueManager();
 		observers.add(spawnQueueManager);
+	}
+
+	private Field[][] ensureBorderExists(Field[][] fields) {
+		List<Consumer<Field[][]>> borderGenerators = new ArrayList<>(4);
+		int width = fields.length;
+		int resultWidth = width;
+		int xOffset = 0;
+		int height = fields[0].length;
+		int resultHeight = height;
+		int yOffset = 0;
+		// upper border
+		for (int x = 0; x < width; x++) {
+			if (fields[x][0].getMaterial() != Material.MAP_BORDER) {
+				borderGenerators.add(result -> {
+					for (int x1 = 0; x1 < result.length; x1++) {
+						result[x1][0] = new Field(x1, 0, Material.MAP_BORDER);
+					}
+				});
+				yOffset++;
+				resultHeight++;
+				break;
+			}
+		}
+		// lower border
+		for (int x = 0; x < width; x++) {
+			if (fields[x][height - 1].getMaterial() != Material.MAP_BORDER) {
+				borderGenerators.add(result -> {
+					for (int x1 = 0; x1 < result.length; x1++) {
+						result[x1][result[0].length - 1] =
+								new Field(x1, result[0].length - 1, Material.MAP_BORDER);
+					}
+				});
+				resultHeight++;
+				break;
+			}
+		}
+		// left border
+		for (int y = 0; y < height; y++) {
+			if (fields[0][y].getMaterial() != Material.MAP_BORDER) {
+				borderGenerators.add(result -> {
+					for (int y1 = 0; y1 < result[0].length; y1++) {
+						result[0][y1] = new Field(0, y1, Material.MAP_BORDER);
+					}
+				});
+				xOffset++;
+				resultWidth++;
+				break;
+			}
+		}
+		// right border
+		for (int y = 0; y < height; y++) {
+			if (fields[width - 1][y].getMaterial() != Material.MAP_BORDER) {
+				borderGenerators.add(result -> {
+					for (int y1 = 0; y1 < result[0].length; y1++) {
+						result[result.length - 1][y1] =
+								new Field(result.length - 1, y1, Material.MAP_BORDER);
+					}
+				});
+				resultWidth++;
+				break;
+			}
+		}
+
+		System.out.printf("width: %d (%d) - new: %d, height: %d (%d) - new: %d%n", width,
+				fields.length, resultWidth, height, fields[0].length, resultHeight);
+		// generating resulting fields
+		if (!borderGenerators.isEmpty()) {
+			Field[][] result = new Field[resultWidth][resultHeight];
+			for (int x = 0; x < width; x++) {
+				for (int y = 0; y < height; y++) {
+					Field field = fields[x][y];
+					result[x + xOffset][y + yOffset] =
+							new Field(x + xOffset, y + yOffset, field.getMaterial(),
+									field.getOccupant(), field.getItem());
+				}
+			}
+			borderGenerators.forEach(gen -> gen.accept(result));
+			return result;
+		} else {
+			return fields;
+		}
 	}
 
 	public int getWidth() {
@@ -80,18 +162,18 @@ public class BoardManager {
 		synchronized (fields) {
 			fields[field.getX()][field.getY()] = field;
 		}
-		
+
 		notifyObservers(field);
 	}
-	
+
 	public void setMaterial(int x, int y, Material material) {
 		synchronized (fields) {
 			fields[x][y].setMaterial(material);
 		}
-		
+
 		notifyObservers(fields[x][y]);
 	}
-	
+
 	public Field getFieldChecked(int x, int y) {
 		if (!checkCoordinates(x, y)) {
 			return null;

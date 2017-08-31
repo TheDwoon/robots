@@ -6,7 +6,14 @@ package com.github.TheDwoon.robots.game.board;
  * @author TheDwoon
  */
 public enum Material {
-	VOID(false), GRASS(true), TREE(false), ROCK(false), WATER(false), SPAWN(true), SCORCHED_EARTH(true);
+	MAP_BORDER(false),
+	VOID(false),
+	GRASS(true),
+	TREE(false),
+	ROCK(false),
+	WATER(false),
+	SPAWN(true),
+	SCORCHED_EARTH(true);
 
 	private final boolean visitable;
 

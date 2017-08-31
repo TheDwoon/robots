@@ -23,8 +23,8 @@ public class Field {
 		this.y = y;
 		this.material = Objects.requireNonNull(material);
 
-		this.occupant = occupant;
-		this.item = item;
+		setOccupant(occupant);
+		setItem(item);
 	}
 
 	public final int getX() {
@@ -48,8 +48,12 @@ public class Field {
 	}
 
 	public final void setOccupant(LivingEntity occupant) {
-		occupant.setPosition(x, y);
-		this.occupant = occupant;
+		if (occupant != null) {
+			occupant.setPosition(x, y);
+			this.occupant = occupant;
+		} else {
+			this.occupant = null;
+		}
 	}
 
 	public final LivingEntity removeOccupant() {
@@ -67,8 +71,12 @@ public class Field {
 	}
 
 	public final void setItem(Item item) {
-		item.setPosition(x, y);
-		this.item = item;
+		if (item != null) {
+			item.setPosition(x, y);
+			this.item = item;
+		} else {
+			this.item = null;
+		}
 	}
 
 	public final Item removeItem() {

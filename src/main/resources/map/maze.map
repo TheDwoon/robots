@@ -3,39 +3,40 @@ VOID:v
 GRASS:g
 TREE:t
 ROCK:r
+MAP_BORDER:b
 WATER:w
 SPAWN:s
 
-r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r 
-r s g g g g g g g t g t t t t t t t t t t t t t t t t t t t t t t t t t t g g g g g g g r 
-r t t t t t t t g t g t g g g g g t g g g g g g g t g g g g g g g g g g t t g t t t t g r 
-r t t t t t t t g t g t t t t t g t g t t t g t g t t t g t t t t t t g t t g g g g t g r 
-r g g g g g g t g t g g g g g g g t g t g t g t g t g g g t g g g t t g t t t t t t t g r 
-r g t t t t g t g t g t t g t t t t g t g t g t g t g t g t t t g t t g g g g g g g t g r 
-r g t t g g g t g t g t t g t t g t g t g t g t g t g t g g g t g t t t t t t t t g g g r 
-r g t t g t t t g t g t g g g g g t g t g t g t g t g t g t t t g g g g g g g t t g t t r 
-r t t t g t t t g t t t t t t t g g g g g t g t t t g t g t t t t t t t t t g t t g t g r 
-r t g g g g g t g g g g g g t t t t t t t t g t g g g t g g g g g g g t g t g t t g t g r 
-r t g t t t t t t t t t t g t t g g g g g g g t g t t t t t t t t t g t g t g g g g t g r 
-r t g t t t t t t t t t t g t t g t t t t t g t g t g g g g g g g t g t g t g t t t t g r 
-r t g t t g g g g g g g g g t t g t t t g g g t g t g t t t t t g t g t g t g t g g g g r 
-r t g t t g t t t t t t t t t g g g g t g t t t g t g g g g t t g t g t g t g t t t t g r 
-r g g g t g t t g g g t t g t g t t g t g t t t g t t t t g t t g t g t g g g g g g g g r 
-r g t g t g t t g t g t t g t g t t g t g g g t g t t t t g t t g t g t t t t t t t t g r 
-r g t g t g t t g t g g g g t g t t g t t t t t g g g t t g t t t t g g g g g g t g t g r 
-r g t g t g t t g t t t t t t g t t g t t t t t t t g t t g t t t t t t t t t g t g t g r 
-r g t g t g t t g g g g g g g g t t g t t g g g g t g t t g g g g g g g g g t g t g t g r 
-r g t g g g t t t t t t t g t t t t g t t g t t g t g t t g t t t t t t t g t g t g g g r 
-r t t g t g g g g g g g t g t g g g g g g g t t g t g t t g t t g g g g g g t g t t t t r 
-r g t g t t t t t t t g t g t t t t t t t g t t g t g t t t t t g t t t t t t g g g g g r 
-r g t g t g t g t t t g t t t t t t t g t g t t g g g g g g g g g t g g g g t g t t t g r 
-r g t g t g t g g g t g g g g g g t t g t g t t t t t t t t t t t t g t t g t g g g t g r 
-r g g g g g t g t t t t t t t t g t t g g g t t t t t t t t t t t t g t t g t g t g t g r 
-r g t t t t t g g g g g g g g t g t t t g t t t g g g g g g g g t t g t t g t g t g t g r 
-r g t t g t t g t t g t t t t t g t g g g g g t g t t t t t t g t t g t t g t t t t t g r 
-r g t t g t t g t t g g g g g g g t t t t t t t g t t t t t t g t t g t t g g g g g g g r 
-r g t t g g g g t t t t t t t t g g g g g g g g g t g g g g g g g g g t t g t t t t t g r
-r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r
+b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b 
+b s g g g g g g g t g t t t t t t t t t t t t t t t t t t t t t t t t t t g g g g g g g b 
+b t t t t t t t g t g t g g g g g t g g g g g g g t g g g g g g g g g g t t g t t t t g b 
+b t t t t t t t g t g t t t t t g t g t t t g t g t t t g t t t t t t g t t g g g g t g b 
+b g g g g g g t g t g g g g g g g t g t g t g t g t g g g t g g g t t g t t t t t t t g b 
+b g t t t t g t g t g t t g t t t t g t g t g t g t g t g t t t g t t g g g g g g g t g b 
+b g t t g g g t g t g t t g t t g t g t g t g t g t g t g g g t g t t t t t t t t g g g b 
+b g t t g t t t g t g t g g g g g t g t g t g t g t g t g t t t g g g g g g g t t g t t b 
+b t t t g t t t g t t t t t t t g g g g g t g t t t g t g t t t t t t t t t g t t g t g b 
+b t g g g g g t g g g g g g t t t t t t t t g t g g g t g g g g g g g t g t g t t g t g b 
+b t g t t t t t t t t t t g t t g g g g g g g t g t t t t t t t t t g t g t g g g g t g b 
+b t g t t t t t t t t t t g t t g t t t t t g t g t g g g g g g g t g t g t g t t t t g b 
+b t g t t g g g g g g g g g t t g t t t g g g t g t g t t t t t g t g t g t g t g g g g b 
+b t g t t g t t t t t t t t t g g g g t g t t t g t g g g g t t g t g t g t g t t t t g b 
+b g g g t g t t g g g t t g t g t t g t g t t t g t t t t g t t g t g t g g g g g g g g b 
+b g t g t g t t g t g t t g t g t t g t g g g t g t t t t g t t g t g t t t t t t t t g b 
+b g t g t g t t g t g g g g t g t t g t t t t t g g g t t g t t t t g g g g g g t g t g b 
+b g t g t g t t g t t t t t t g t t g t t t t t t t g t t g t t t t t t t t t g t g t g b 
+b g t g t g t t g g g g g g g g t t g t t g g g g t g t t g g g g g g g g g t g t g t g b 
+b g t g g g t t t t t t t g t t t t g t t g t t g t g t t g t t t t t t t g t g t g g g b 
+b t t g t g g g g g g g t g t g g g g g g g t t g t g t t g t t g g g g g g t g t t t t b 
+b g t g t t t t t t t g t g t t t t t t t g t t g t g t t t t t g t t t t t t g g g g g b 
+b g t g t g t g t t t g t t t t t t t g t g t t g g g g g g g g g t g g g g t g t t t g b 
+b g t g t g t g g g t g g g g g g t t g t g t t t t t t t t t t t t g t t g t g g g t g b 
+b g g g g g t g t t t t t t t t g t t g g g t t t t t t t t t t t t g t t g t g t g t g b 
+b g t t t t t g g g g g g g g t g t t t g t t t g g g g g g g g t t g t t g t g t g t g b 
+b g t t g t t g t t g t t t t t g t g g g g g t g t t t t t t g t t g t t g t t t t t g b 
+b g t t g t t g t t g g g g g g g t t t t t t t g t t t t t t g t t g t t g g g g g g g b 
+b g t t g g g g t t t t t t t t g g g g g g g g g t g g g g g g g g g t t g t t t t t g b
+b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b
 
 com.github.TheDwoon.robots.game.items.Star 22 15
 com.github.TheDwoon.robots.game.items.Star 4 4
