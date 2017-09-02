@@ -102,16 +102,18 @@ public final class PathingAI implements AI {
 					it.remove();
 					continue;
 				}
-				
-				Path p = AStar.findPath(x, y, facing, w.x, w.y, map);
-				if (!p.reached || p.actions.isEmpty()) {
-					it.remove();
-					continue;
-				}
-				
-				if (!p.actions.isEmpty())
-					paths.add(p);
 			}
+			
+			List<Waypoint> removeExplore = new LinkedList<>();
+			explorationPoints.parallelStream().forEach(w -> { 
+				Path p = AStar.findPath(x, y, facing, w.x, w.y, map);
+				if (!p.reached || p.actions.isEmpty()) 
+					removeExplore.add(w);
+				
+				paths.add(p);
+			});
+			
+			explorationPoints.removeAll(removeExplore);
 		}
 		
 		// sort shortest path to be first
@@ -135,8 +137,8 @@ public final class PathingAI implements AI {
 	private void exploreWorld() {		
 		final double acceptedDistance = 2;					
 		
-		for (int x = map.getXMin(); x < map.getXMax(); x += 3) {
-			for (int y = map.getYMin(); y < map.getYMax(); y += 3) {
+		for (int x = map.getXMin(); x < map.getXMax() + 3; x += 3) {
+			for (int y = map.getYMin(); y < map.getYMax() + 3; y += 3) {
 				if (!map.isExplored(x, y))
 					explorationPoints.add(new Waypoint(x, y, acceptedDistance));
 			}
